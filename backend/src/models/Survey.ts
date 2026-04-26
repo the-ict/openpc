@@ -38,6 +38,10 @@ const surveySchema = new mongoose.Schema({
   createdAt: {
     type: Date,
     default: Date.now
+  },
+  tg_username: {
+    type: String,
+    default: ""
   }
 });
 
