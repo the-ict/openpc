@@ -16,7 +16,7 @@ import surveyRouter from "./routers/survey.routes.js";
 app.use(helmet());
 app.use(morgan("combined"));
 app.use(cors({
-    origin: ["http://localhost:5173", "http://localhost:3000"],
+    origin: ["http://localhost:5173", "http://localhost:3000", "https://openpc-research.vercel.app/"],
 }));
 app.use(express.json());
 
@@ -40,7 +40,7 @@ const startServer = async () => {
             logger.warn("MONGO_URI not found, skipping database connection");
         }
 
-        app.listen(3000, () => {
+        app.listen(7777, () => {
             logger.info("Server is running on port 3000");
         });
     } catch (error) {

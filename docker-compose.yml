@@ -1,0 +1,19 @@
+name: openpc
+
+services:
+  server:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: openpc-server
+    ports:
+      - "7777:7777"
+    env_file:
+      - ./backend/.env
+    networks:
+      - openpc-network
+    restart: always
+
+networks:
+  openpc-network:
+    driver: bridge
