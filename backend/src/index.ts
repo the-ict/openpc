@@ -16,7 +16,7 @@ import surveyRouter from "./routers/survey.routes.js";
 app.use(helmet());
 app.use(morgan("combined"));
 app.use(cors({
-    origin: ["http://localhost:5173", "http://localhost:3000", "https://openpc-research.vercel.app/"],
+    origin: ["http://localhost:5173", "http://localhost:3000", "https://openpc-research.vercel.app"],
 }));
 app.use(express.json());
 
@@ -24,7 +24,7 @@ app.get("/", (req: Request, res: Response) => {
     res.send("Working !");
 });
 
-app.use("/api/survey", surveyRouter);
+app.use("/api/surveys", surveyRouter);
 
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
     logger.error(err.message, "error middleware");
