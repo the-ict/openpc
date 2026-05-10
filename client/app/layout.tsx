@@ -1,33 +1,6 @@
-import { Geist, Geist_Mono } from "next/font/google";
-import localFont from "next/font/local";
 import type { Metadata } from "next";
 import "./globals.css";
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
-
-const Orbitron = localFont({
-  src: [
-    {
-      path: "../public/fonts/orbitron/Orbitron-Bold.ttf",
-      weight: "700",
-      style: "normal",
-    },
-    {
-      path: "../public/fonts/orbitron/Orbitron-Black.ttf",
-      weight: "900",
-      style: "normal",
-    }
-  ],
-  variable: "--font-orbitron",
-});
+import { geistSans, geistMono, Orbitron } from "@/src/shared/fonts";
 
 export const metadata: Metadata = {
   title: "Create Next App",
