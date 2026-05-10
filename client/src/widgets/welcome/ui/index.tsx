@@ -82,12 +82,17 @@ export default function Welcome() {
                     />
                 </svg>
 
-                WELCOME TO THE FUTURE OF CUSTOM PC
-                <div className={`absolute left-[3%] bottom-[20%] w-[300px] font-bold`}>
+                <div className={`absolute left-[3%] bottom-[20%] w-[300px] font-extrabold`}>
+                    WELCOME TO THE FUTURE OF CUSTOM PC
                 </div>
 
-                <div className={`absolute right-[3%] bottom-[20%] w-[300px] font-bold`}>
-                    WELCOME TO THE FUTURE OF CUSTOM PC
+                <div className={`absolute right-[3%] bottom-[20%] w-[300px] font-extrabold`}>
+                    BUILD YOUR DREAM MACHINE WITH OPENPC
+                </div>
+
+                <div className='absolute bottom-10 w-full flex-center gap-10 z-10'>
+                    <button className='py-5 px-10 rounded-full border-2 cursor-pointer uppercase hover:border-yellow-400 transition-all'>Start your build</button>
+                    <button className='py-5 px-10 rounded-full border-2 cursor-pointer uppercase hover:border-yellow-400 transition-all'>Explose</button>
                 </div>
             </div>
             <Canvas shadows camera={{ position: [-0.8, 0, 1], fov: 45 }}>
@@ -100,4 +105,4 @@ export default function Welcome() {
             </Canvas>
         </div>
     )
-}
+};
