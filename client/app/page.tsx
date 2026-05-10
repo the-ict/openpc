@@ -1,7 +1,11 @@
+"use client"
+
+import Welcome from "@/src/widgets/welcome/ui";
+
 export default function Home() {
   return (
-    <div>
-      <h1>Salom nima gap!</h1>
-    </div>
+    <main>
+      <Welcome />
+    </main>
   );
 }
