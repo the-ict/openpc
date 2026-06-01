@@ -1,6 +1,8 @@
+import { spaceGrotesk } from "@/src/shared/fonts";
+import Navbar from "@/src/widgets/navbar/ui";
+import Footer from "@/src/widgets/footer/ui";
 import type { Metadata } from "next";
 import "./globals.css";
-import { geistSans, geistMono, Orbitron } from "@/src/shared/fonts";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -15,9 +17,16 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} ${Orbitron.variable} h-full antialiased`}
+      className={`${spaceGrotesk.variable} h-full antialiased ${spaceGrotesk.className}`}
     >
-      <body className={`${Orbitron.className} min-h-full flex flex-col`}>{children}</body>
+      <body className={`min-h-full flex flex-col`}>
+        <Navbar />
+
+        <main className="flex-1">
+          {children}
+        </main>
+        <Footer />
+      </body>
     </html>
   );
-}
+};

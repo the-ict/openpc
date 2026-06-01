@@ -1,8 +1,9 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #0A0A0A;
+  --foreground: #ededed;
+  --yellow-bg: #fef102;
 }
 
 @theme inline {
@@ -15,7 +16,7 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
+    --background: #0A0A0A;
     --foreground: #ededed;
   }
 }
@@ -36,5 +37,13 @@ body {
 
   .flex-col-center {
     @apply flex flex-col items-center justify-center;
+  }
+
+  .grid-center {
+    @apply grid place-items-center;
+  }
+
+  .grid-2 {
+    @apply grid grid-cols-2;
   }
 }
