@@ -4,6 +4,11 @@
   --background: #0A0A0A;
   --foreground: #ededed;
   --yellow-bg: #fef102;
+  --red: #DD0000;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 @theme inline {
@@ -46,4 +51,22 @@ body {
   .grid-2 {
     @apply grid grid-cols-2;
   }
+}
+
+.highlighted-text {
+  position: relative;
+  display: inline-block;
+  margin: 0px 10px;
+  color: black;
+}
+
+.highlighted-text::after {
+  content: '';
+  position: absolute;
+  top: 0%;
+  left: 0%;
+  right: 0%;
+  height: 90%;
+  background-color: #efefef;
+  z-index: -1;
 }
