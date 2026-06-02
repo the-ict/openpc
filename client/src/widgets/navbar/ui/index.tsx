@@ -1,9 +1,14 @@
 "use client";
 
 import { solitreo } from "@/src/shared/fonts";
+import { usePathname } from "next/navigation";
 
 export default function Navbar() {
+  const pathname = usePathname();
 
+  if (pathname.includes("register") || pathname.includes("login") || pathname.includes("builder")) {
+    return null;
+  };
   return (
     <div className="flex-between lg:mx-10 py-10" id="home">
       <div>

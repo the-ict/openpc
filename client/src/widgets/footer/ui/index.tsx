@@ -1,6 +1,13 @@
 "use client";
 
+import { usePathname } from "next/navigation";
+
 export default function Footer() {
+  const pathname = usePathname();
+
+  if (pathname.includes("register") || pathname.includes("login") || pathname.includes("builder")) {
+    return null;
+  };
   return (
     <footer className="w-full flex justify-center py-8">
       <div className="text-5xl md:text-6xl font-normal tracking-tight flex items-center gap-2 select-none">
