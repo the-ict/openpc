@@ -63,13 +63,10 @@ export default function Welcome() {
             ease: 'power3.out',
         }, '-=0.5');
 
+        // how it works 
         const howItWorksText = SplitText.create('.how-it-works-text', {
             type: 'words',
             wordsClass: 'word',
-            scrollTrigger: {
-                trigger: '#howitworks',
-                start: 'top 20%',
-            },
         });
 
         howItWorksTimeline.from(howItWorksText.words, {
@@ -78,6 +75,7 @@ export default function Welcome() {
             duration: 0.8,
             stagger: 0.05,
             ease: 'power3.out',
+            scrollTrigger: "#howitworks"
         });
 
         howItWorksTimeline.from(".how-p", {
@@ -87,44 +85,30 @@ export default function Welcome() {
             ease: 'power3.out',
         }, '-=0.5');
 
-        howItWorksTimeline.from("#howitworks", {
-            ease: 'power3.out',
-            scrollTrigger: {
-                trigger: '#howitworks',
-                start: 'top 100%',
-                end: 'bottom 90%',
-                markers: true,
-                pin: true,
-                scrub: 1,
-            }
-        }, '-=0.5');
-
-        const ourTeamText = SplitText.create('.our-team-text', {
-            type: 'words',
-            wordsClass: 'word'
+        // pin the cards
+        ScrollTrigger.create({
+            trigger: ".cards",
+            scrub: true,
+            start: "top top",
+            end: "bottom bottom",
         });
 
-        ourTeamTimeline.from(ourTeamText.words, {
-            opacity: 0,
-            y: 50,
-            duration: 0.8,
-            stagger: 0.05,
-            scrollTrigger: {
-                trigger: '#ourteam',
-                start: 'top 80%',
-                end: 'bottom 20%',
-                toggleActions: 'play none none none',
-            }
+        const cards = gsap.utils.toArray(".card");
+        cards.forEach((card, index) => {
+            gsap.from(card as Element, {
+                opacity: 0,
+                y: 50,
+                duration: 0.8,
+                ease: 'power3.out',
+                scrollTrigger: {
+                    trigger: card as Element,
+                    start: "top 80%",
+                    end: "bottom 20%",
+                    scrub: true,
+                }
+            });
         });
-
-        ourTeamTimeline.from(ourTeamText.words, {
-            opacity: 0,
-            y: 50,
-            duration: 0.8,
-            stagger: 0.05,
-            ease: 'power3.out',
-        });
-    })
+    });
 
     return (
         <div>
@@ -176,10 +160,11 @@ export default function Welcome() {
                         Ipsum has been the industry's standard dum my text.
                     </p>
 
-                    <div className="tutorial-slider relative w-full bg-[#D9D9D9] text-black rounded-[2.5rem] p-8 md:p-12 min-h-[80vh] flex flex-col justify-between overflow-hidden group">
-                        <div className="absolute inset-0 bg-gradient-to-br from-[#D9D9D9] to-[#C4D335] opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                        <div className="relative z-10 bg-red-500"></div>
-                        <div className="relative z-10 bg-blue-500"></div>
+                    <div className="cards w-full min-h-screen gap-5 flex-center flex-col">
+                        <div className="card1 card bg-red-500 h-[750px] w-full flex rounded-2xl content-center text-[30px]"></div>
+                        <div className="card2 card bg-blue-500 h-[750px] w-full flex rounded-2xl content-center text-[30px]"></div>
+                        <div className="card3 card bg-green-500 h-[750px] w-full flex rounded-2xl content-center text-[30px]"></div>
+                        <div className="card4 card bg-yellow-500 h-[750px] w-full flex rounded-2xl content-center text-[30px]"></div>
                     </div>
                 </section>
 
@@ -194,13 +179,15 @@ export default function Welcome() {
 
                     <div className="flex flex-col gap-3 w-full">
                         {socialLinks.map((link) => (
-                            <a
-                                key={link.name}
-                                href={link.url}
-                                className="w-full bg-[#D9D9D9] text-black font-bold py-4 px-6 text-sm tracking-wider transition-colors duration-200 hover:bg-gray-300 flex items-center"
-                            >
-                                {link.name}
-                            </a>
+                            <div key={link.name} className='w-full cursor-pointer bg-[#D9D9D9] text-black font-bold py-4 px-6 text-sm tracking-wider transition-colors duration-200 hover:bg-gray-300 flex items-center'>
+                                <img src={link.icon.src} alt={link.name} className='w-6 h-6 mr-2' />
+                                <a
+                                    key={link.name}
+                                    href={link.url}
+                                >
+                                    {link.name}
+                                </a>
+                            </div>
                         ))}
                     </div>
                 </section>

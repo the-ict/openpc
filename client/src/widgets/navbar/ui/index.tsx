@@ -4,9 +4,6 @@ import { solitreo } from "@/src/shared/fonts";
 
 export default function Navbar() {
 
-  
-  
-
   return (
     <div className="flex-between lg:mx-10 py-10" id="home">
       <div>
