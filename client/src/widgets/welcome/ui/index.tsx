@@ -156,10 +156,10 @@ export default function Welcome() {
                     </p>
 
                     <div className="cards w-full min-h-screen gap-5 flex-center flex-col relative">
-                        <div className="card1 card bg-red-500 h-[750px] w-full flex rounded-2xl content-center text-[30px] sticky top-20"></div>
-                        <div className="card2 card bg-blue-500 h-[750px] w-full flex rounded-2xl content-center text-[30px] sticky top-20"></div>
-                        <div className="card3 card bg-green-500 h-[750px] w-full flex rounded-2xl content-center text-[30px] sticky top-20"></div>
-                        <div className="card4 card bg-yellow-500 h-[750px] w-full flex rounded-2xl content-center text-[30px] sticky top-20"></div>
+                        <div className="card1 card bg-red-500 h-187.5 w-full flex rounded-2xl content-center text-[30px] sticky top-20"></div>
+                        <div className="card2 card bg-blue-500 h-187.5 w-full flex rounded-2xl content-center text-[30px] sticky top-20"></div>
+                        <div className="card3 card bg-green-500 h-187.5 w-full flex rounded-2xl content-center text-[30px] sticky top-20"></div>
+                        <div className="card4 card bg-yellow-500 h-187.5 w-full flex rounded-2xl content-center text-[30px] sticky top-20"></div>
                     </div>
                 </section>
 
