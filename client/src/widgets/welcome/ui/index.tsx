@@ -12,14 +12,6 @@ gsap.registerPlugin(SplitText, ScrollTrigger);
 export default function Welcome() {
     useGSAP(() => {
         const howItWorksTimeline = gsap.timeline();
-        const ourTeamTimeline = gsap.timeline({
-            scrollTrigger: {
-                trigger: '#ourteam',
-                start: 'top 80%',
-                end: 'bottom 20%',
-                toggleActions: 'play none none none',
-            }
-        });
         const heroTimeline = gsap.timeline();
 
         const heroText = SplitText.create('.hero-text', {
@@ -63,7 +55,6 @@ export default function Welcome() {
             ease: 'power3.out',
         }, '-=0.5');
 
-        // how it works 
         const howItWorksText = SplitText.create('.how-it-works-text', {
             type: 'words',
             wordsClass: 'word',
@@ -75,7 +66,11 @@ export default function Welcome() {
             duration: 0.8,
             stagger: 0.05,
             ease: 'power3.out',
-            scrollTrigger: "#howitworks"
+            scrollTrigger: {
+                trigger: ".how-it-works-text",
+                start: "top 80%",
+                end: "top 50%",
+            }
         });
 
         howItWorksTimeline.from(".how-p", {
@@ -85,7 +80,6 @@ export default function Welcome() {
             ease: 'power3.out',
         }, '-=0.5');
 
-        // pin the cards
         ScrollTrigger.create({
             trigger: ".cards",
             scrub: true,
@@ -94,6 +88,7 @@ export default function Welcome() {
         });
 
         const cards = gsap.utils.toArray(".card");
+
         cards.forEach((card, index) => {
             gsap.from(card as Element, {
                 opacity: 0,
@@ -160,11 +155,11 @@ export default function Welcome() {
                         Ipsum has been the industry's standard dum my text.
                     </p>
 
-                    <div className="cards w-full min-h-screen gap-5 flex-center flex-col">
-                        <div className="card1 card bg-red-500 h-[750px] w-full flex rounded-2xl content-center text-[30px]"></div>
-                        <div className="card2 card bg-blue-500 h-[750px] w-full flex rounded-2xl content-center text-[30px]"></div>
-                        <div className="card3 card bg-green-500 h-[750px] w-full flex rounded-2xl content-center text-[30px]"></div>
-                        <div className="card4 card bg-yellow-500 h-[750px] w-full flex rounded-2xl content-center text-[30px]"></div>
+                    <div className="cards w-full min-h-screen gap-5 flex-center flex-col relative">
+                        <div className="card1 card bg-red-500 h-[750px] w-full flex rounded-2xl content-center text-[30px] sticky top-10"></div>
+                        <div className="card2 card bg-blue-500 h-[750px] w-full flex rounded-2xl content-center text-[30px] sticky top-10"></div>
+                        <div className="card3 card bg-green-500 h-[750px] w-full flex rounded-2xl content-center text-[30px] sticky top-10"></div>
+                        <div className="card4 card bg-yellow-500 h-[750px] w-full flex rounded-2xl content-center text-[30px] sticky top-10"></div>
                     </div>
                 </section>
 
