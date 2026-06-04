@@ -27,7 +27,7 @@ export default function Navbar() {
           <a href="#ourteam">Biz haqimizda</a>
         </li>
       </ul>
-      <button className="cursor-pointer bg-[#E4E728] text-black font-bold hover:bg-[#d4d718] px-6 py-2 rounded-full">
+      <button className="cursor-pointer bg-[#efefef] text-black font-bold hover:bg-[#ffffff] transition-all px-6 py-3 rounded-full">
         Urunib ko'rish
       </button>
     </div>

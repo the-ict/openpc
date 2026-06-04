@@ -1,7 +1,8 @@
-interface Category {
-  id: string;
-  label: string;
+interface IRequirements {
+  name: string;
+  icon: any;
+};
+
+export type {
+  IRequirements
 }
-
-
-export type { Category };

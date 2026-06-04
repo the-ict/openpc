@@ -10,7 +10,7 @@ export default function RegisterPage() {
   const [confirmPassword, setConfirmPassword] = useState('')
 
   return (
-    <section className="max-h-screen text-white flex flex-col items-center justify-center px-4 py-20 font-sans select-none">
+    <section className="min-h-screen text-white flex flex-col items-center justify-center px-4 py-20 font-sans select-none">
       <div className="max-w-md w-full flex flex-col items-center">
         <a
           href="/"
