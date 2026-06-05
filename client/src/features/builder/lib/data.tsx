@@ -38,11 +38,13 @@ const requirements: IRequirements[] = [
 
 const cpuModels = [
   {
+    id: 1,
     name: "Intel Core i9-13900K",
     img: "https://example.com/intel-core-i9-13900k.png",
     price: 599.99,
   },
   {
+    id: 2,
     name: "AMD Ryzen 9 7950X",
     img: "https://example.com/amd-ryzen-9-7950x.png",
     price: 699.99,

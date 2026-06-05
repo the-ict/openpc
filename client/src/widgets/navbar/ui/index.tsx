@@ -2,11 +2,12 @@
 
 import { solitreo } from "@/src/shared/fonts";
 import { usePathname } from "next/navigation";
+import { whereToIgnore } from "../lib/fnc";
 
 export default function Navbar() {
   const pathname = usePathname();
 
-  if (pathname.includes("register") || pathname.includes("login") || pathname.includes("builder")) {
+  if (whereToIgnore().some((path) => pathname.includes(path))) {
     return null;
   };
   return (

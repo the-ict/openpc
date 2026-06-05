@@ -1,11 +1,12 @@
 "use client";
 
 import { usePathname } from "next/navigation";
+import { whereToIgnore } from "../../navbar/lib/fnc";
 
 export default function Footer() {
   const pathname = usePathname();
 
-  if (pathname.includes("register") || pathname.includes("login") || pathname.includes("builder")) {
+  if (whereToIgnore().some((path) => pathname.includes(path))) {
     return null;
   };
   return (

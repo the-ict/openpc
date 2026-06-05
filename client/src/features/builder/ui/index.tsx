@@ -1,227 +1,228 @@
 "use client";
 
-import { Stage } from '@react-three/drei';
-import { Canvas } from '@react-three/fiber';
-import { requirements, cpuModels } from '../lib/data';
-import { Popover, PopoverContent, PopoverTrigger, PopoverPortal } from "@/src/shared/ui/popover";
-import { Search, X, ChevronDown } from 'lucide-react';
 import React, { useState } from 'react';
+import { Canvas } from '@react-three/fiber';
+import { Stage } from '@react-three/drei';
+import { Search, X, ChevronDown, Plus, Check } from 'lucide-react';
+import { Popover, PopoverContent, PopoverTrigger, PopoverPortal } from "@/src/shared/ui/popover";
 import { Modal, ModalTrigger, ModalPortal, ModalContent } from '@/src/shared/ui/dialog';
+import { requirements, cpuModels } from '../lib/data';
 
 export const BuilderPage: React.FC = () => {
     const [selectedCategory, setSelectedCategory] = useState<string>('cpu');
     const [priceRange, setPriceRange] = useState<[number, number]>([0, 5000]);
     const [selectedType, setSelectedType] = useState<string>('all');
     const [searchQuery, setSearchQuery] = useState<string>('');
-    const [selectedModelId, setSelectedModelId] = useState<number | null>(null);
+    const [activeBuild, setActiveBuild] = useState<Record<string, number>>({});
+
+    const formatPrice = (usdAmount: number) => {
+        return `$${usdAmount.toLocaleString()}`;
+    };
 
     return (
-        <div className="flex h-screen w-screen bg-linear-to-br from-slate-900 via-slate-800 to-slate-900 overflow-hidden font-sans select-none">
-            <aside className="w-full max-w-md h-full flex flex-col overflow-hidden z-10 shrink-0 bg-slate-950/60 border-r border-slate-700/50">
-                <div className="flex-1 border-b border-slate-700/30 py-4 px-4">
-                    <div className="px-2 py-1 text-xs font-semibold text-slate-400 uppercase tracking-wider mb-3">Components</div>
-                    
-                    <div className="space-y-2 overflow-y-auto h-full">
-                        {requirements.map((req, idx) => (
-                            <button
-                                onClick={() => setSelectedCategory(req.name.toLowerCase())}
-                                key={idx}
-                                className={`w-full flex items-center cursor-pointer justify-between gap-3 px-4 py-3 rounded-lg transition-all duration-200 ${
-                                    selectedCategory === req.name.toLowerCase()
-                                        ? 'bg-linear-to-r from-cyan-500/20 to-blue-500/20 border border-cyan-400/50 shadow-lg shadow-cyan-500/10'
-                                        : 'border border-transparent text-slate-300 hover:bg-slate-800/30'
-                                }`}
-                            >
-                                <div className="flex items-center gap-3">
+        <div className="flex h-screen w-screen bg-[#0A0A0A] text-[#FFFFFF] overflow-hidden font-sans select-none antialiased">
+            <aside className="w-full max-w-md h-full flex flex-col overflow-hidden z-10 shrink-0 bg-[#0A0A0A] border-r border-neutral-900">
+                
+                <div className="px-6 py-4 border-b border-neutral-900 flex items-center justify-between bg-[#0A0A0A]">
+                    <div className="text-xl font-bold tracking-tight italic">
+                        open<span className="text-[#E4E728] not-italic">PC</span>
+                    </div>
+                    <span className="text-[10px] font-mono tracking-widest text-neutral-500 uppercase">
+                        3D Configurator
+                    </span>
+                </div>
+                <div className="flex-none border-b border-neutral-900 bg-neutral-950/40 p-4">
+                    <div className="text-[11px] font-mono tracking-widest text-neutral-500 uppercase mb-3 px-1">
+                        Komponentlar
+                    </div>
+                    <div className="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1">
+                        {requirements.map((req, idx) => {
+                            const isSelected = selectedCategory === req.name.toLowerCase();
+                            return (
+                                <button
+                                    key={idx}
+                                    onClick={() => setSelectedCategory(req.name.toLowerCase())}
+                                    className={`shrink-0 flex items-center gap-2 px-4 py-2.5 rounded-xl border text-xs font-medium transition-all duration-200 cursor-pointer ${
+                                        isSelected
+                                            ? 'bg-neutral-900 text-[#E4E728] border-neutral-800'
+                                            : 'bg-transparent text-neutral-400 border-transparent hover:text-white hover:bg-neutral-900/40'
+                                    }`}
+                                >
                                     {req.icon}
-                                    <span className="text-sm font-medium">{req.name}</span>
-                                </div>
-                                <svg className="w-4 h-4 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                                </svg>
-                            </button>
-                        ))}
+                                    <span>{req.name}</span>
+                                </button>
+                            );
+                        })}
                     </div>
                 </div>
 
-                <div className="flex-1 flex flex-col overflow-hidden">
-                    <div className="flex-none px-4 py-3 border-b border-slate-700/30 bg-slate-950/40">
-                        <h2 className="text-sm font-semibold text-slate-200 capitalize mb-2">{selectedCategory}</h2>
-                        
-                        <div className="mb-2 flex items-center gap-2 px-3 py-2 bg-slate-800/50 border border-slate-700/50 rounded-lg focus-within:border-cyan-500/50 transition-colors">
-                            <Search className="w-4 h-4 text-slate-400" />
-                            <input
-                                type="text"
-                                placeholder="Search..."
-                                value={searchQuery}
-                                onChange={(e) => setSearchQuery(e.target.value)}
-                                className="flex-1 bg-transparent text-slate-100 placeholder-slate-500 outline-none text-sm"
-                            />
-                            {searchQuery && (
-                                <button onClick={() => setSearchQuery('')} className="text-slate-400 hover:text-slate-200">
-                                    <X className="w-4 h-4" />
-                                </button>
-                            )}
-                        </div>
-
-                        <div className="flex items-center gap-1.5 flex-wrap">
-                            <span className="text-xs text-slate-400 font-semibold uppercase tracking-wider">Filters:</span>
-
-                            <Popover>
-                                <PopoverTrigger>
-                                    <>
-                                        Price
-                                        <ChevronDown className="w-3 h-3" />
-                                    </>
-                                </PopoverTrigger>
-                                <PopoverPortal>
-                                    <PopoverContent>
-                                        <div className="space-y-3">
-                                            <label className="text-xs font-semibold text-slate-300">Price Range</label>
-                                            <div className="flex items-center justify-between gap-2">
-                                                <input
-                                                    type="number"
-                                                    min="0"
-                                                    value={priceRange[0]}
-                                                    onChange={(e) => setPriceRange([Number(e.target.value), priceRange[1]])}
-                                                    className="w-20 px-2 py-1 bg-slate-800 border border-slate-700 rounded text-xs text-slate-200 text-center"
-                                                    placeholder="Min"
-                                                />
-                                                <span className="text-slate-400">-</span>
-                                                <input
-                                                    type="number"
-                                                    max="10000"
-                                                    value={priceRange[1]}
-                                                    onChange={(e) => setPriceRange([priceRange[0], Number(e.target.value)])}
-                                                    className="w-20 px-2 py-1 bg-slate-800 border border-slate-700 rounded text-xs text-slate-200 text-center"
-                                                    placeholder="Max"
-                                                />
-                                            </div>
-                                            <div className="text-xs text-cyan-400">${priceRange[0]} - ${priceRange[1]}</div>
-                                        </div>
-                                    </PopoverContent>
-                                </PopoverPortal>
-                            </Popover>
-
-                            <Popover>
-                                <PopoverTrigger>
-                                    <>
-                                        Type
-                                        <ChevronDown className="w-3 h-3" />
-                                    </>
-                                </PopoverTrigger>
-                                <PopoverPortal>
-                                    <PopoverContent>
-                                        <div className="space-y-2">
-                                            {['all', 'gaming', 'workstation', 'budget', 'high-end'].map((type) => (
-                                                <label key={type} className="flex items-center gap-2 px-2 py-1.5 hover:bg-slate-800/50 rounded cursor-pointer">
-                                                    <input
-                                                        type="radio"
-                                                        name="type"
-                                                        value={type}
-                                                        checked={selectedType === type}
-                                                        onChange={(e) => setSelectedType(e.target.value)}
-                                                        className="w-3 h-3 accent-cyan-500"
-                                                    />
-                                                    <span className="text-xs text-slate-300 capitalize">{type}</span>
-                                                </label>
-                                            ))}
-                                        </div>
-                                    </PopoverContent>
-                                </PopoverPortal>
-                            </Popover>
-
-                            <button
-                                onClick={() => {
-                                    setSearchQuery('');
-                                    setPriceRange([0, 5000]);
-                                    setSelectedType('all');
-                                }}
-                                className="text-xs font-medium text-slate-400 hover:text-slate-200 transition-colors"
-                            >
-                                Reset
+                <div className="flex-none px-5 py-4 border-b border-neutral-900 bg-neutral-950/20">
+                    <div className="flex items-center gap-2 px-3 py-2.5 bg-neutral-900 border border-neutral-900 rounded-xl focus-within:border-neutral-800 transition-all duration-200">
+                        <Search className="w-4 h-4 text-neutral-500" />
+                        <input
+                            type="text"
+                            placeholder="Komponent qidirish..."
+                            value={searchQuery}
+                            onChange={(e) => setSearchQuery(e.target.value)}
+                            className="flex-1 bg-transparent text-neutral-200 placeholder-neutral-600 outline-none text-sm"
+                        />
+                        {searchQuery && (
+                            <button onClick={() => setSearchQuery('')} className="text-neutral-500 hover:text-neutral-200">
+                                <X className="w-4 h-4" />
                             </button>
-                        </div>
+                        )}
                     </div>
 
-                    <div className="flex-1 overflow-y-auto px-3 py-3">
-                        <div className="space-y-2">
-                            {cpuModels.map((item, idx) => (
-                                <Modal key={idx}>
-                                    <ModalTrigger>
-                                        <div
-                                            className="flex items-center justify-between p-3 rounded-lg bg-slate-800/40 border border-slate-700/40 hover:border-cyan-500/40 hover:bg-slate-800/60 transition-all duration-200 group cursor-pointer w-full text-left"
+                    <div className="flex items-center gap-2 mt-3">
+                        <span className="text-[10px] text-neutral-500 font-mono uppercase tracking-wider">Filtr:</span>
+
+                        <Popover>
+                            <PopoverTrigger props={{ className: "flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-neutral-900/60 border border-neutral-900 text-xs text-neutral-300 hover:border-neutral-800 transition-colors" }}>
+                                Narx <ChevronDown className="w-3 h-3 text-neutral-500" />
+                            </PopoverTrigger>
+                            <PopoverPortal>
+                                <PopoverContent props={{ className: "bg-[#0A0A0A] border border-neutral-800 p-4 rounded-xl shadow-2xl space-y-3 z-50" }}>
+                                    <label className="text-xs font-medium text-neutral-400 block">Narx oralig'ini kiriting</label>
+                                    <div className="flex items-center justify-between gap-2">
+                                        <input
+                                            type="number"
+                                            value={priceRange[0]}
+                                            onChange={(e) => setPriceRange([Number(e.target.value), priceRange[1]])}
+                                            className="w-24 px-2 py-1.5 bg-neutral-900 border border-neutral-800 rounded-lg text-xs text-center outline-none focus:border-neutral-700"
+                                            placeholder="Min"
+                                        />
+                                        <span className="text-neutral-600">-</span>
+                                        <input
+                                            type="number"
+                                            value={priceRange[1]}
+                                            onChange={(e) => setPriceRange([priceRange[0], Number(e.target.value)])}
+                                            className="w-24 px-2 py-1.5 bg-neutral-900 border border-neutral-800 rounded-lg text-xs text-center outline-none focus:border-neutral-700"
+                                            placeholder="Max"
+                                        />
+                                    </div>
+                                </PopoverContent>
+                            </PopoverPortal>
+                        </Popover>
+
+                        <Popover>
+                            <PopoverTrigger props={{ className: "flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-neutral-900/60 border border-neutral-900 text-xs text-neutral-300 hover:border-neutral-800 transition-colors" }}>
+                                Turi <ChevronDown className="w-3 h-3 text-neutral-500" />
+                            </PopoverTrigger>
+                            <PopoverPortal>
+                                <PopoverContent props={{ className: "bg-[#0A0A0A] border border-neutral-800 p-2 rounded-xl shadow-2xl space-y-1 z-50 min-w-[140px]" }}>
+                                    {['all', 'gaming', 'workstation', 'budget'].map((type) => (
+                                        <button
+                                            key={type}
+                                            onClick={() => setSelectedType(type)}
+                                            className={`w-full text-left px-3 py-1.5 text-xs rounded-lg capitalize transition-colors ${
+                                                selectedType === type ? 'bg-neutral-900 text-[#E4E728]' : 'text-neutral-400 hover:bg-neutral-900/40 hover:text-white'
+                                            }`}
                                         >
-                                            <div className="flex items-center gap-3 flex-1 min-w-0">
-                                                <div className="w-10 h-10 rounded-lg bg-slate-700/50 flex items-center justify-center group-hover:bg-slate-600/50 transition-colors shrink-0">
-                                                    <img src={item.img} alt={item.name} className="w-5 h-5 opacity-80" />
-                                                </div>
-                                                <div className="flex flex-col gap-0.5 min-w-0">
-                                                    <span className="text-xs font-semibold text-slate-200 truncate">{item.name}</span>
-                                                    <span className="text-xs text-slate-400">Xususiyatlari</span>
-                                                </div>
+                                            {type}
+                                        </button>
+                                    ))}
+                                </PopoverContent>
+                            </PopoverPortal>
+                        </Popover>
+
+                        <button
+                            onClick={() => {
+                                setSearchQuery('');
+                                setPriceRange([0, 5000]);
+                                setSelectedType('all');
+                            }}
+                            className="text-[11px] text-neutral-600 hover:text-neutral-400 font-medium ml-auto transition-colors"
+                        >
+                            Tozalash
+                        </button>
+                    </div>
+                </div>
+
+                <div className="flex-1 overflow-y-auto p-4 space-y-2 bg-neutral-950/10">
+                    {cpuModels.map((item, idx) => {
+                        const isAdded = activeBuild[selectedCategory] === item.id;
+                        return (
+                            <Modal key={idx}>
+                                <div className="group relative bg-neutral-900/20 hover:bg-neutral-900/50 border border-neutral-900/60 hover:border-neutral-800 rounded-xl p-3 flex items-center justify-between transition-all duration-200">
+                                    <ModalTrigger props={{ className: "flex items-center gap-3 flex-1 min-w-0 text-left cursor-pointer" }}>
+                                        <div className="flex items-center gap-3 flex-1 min-w-0">
+                                            <div className="w-11 h-11 rounded-lg bg-neutral-900 border border-neutral-800 flex items-center justify-center shrink-0">
+                                                <img src={item.img} alt={item.name} className="w-6 h-6 object-contain opacity-70 group-hover:opacity-100 transition-opacity" />
                                             </div>
-                                            <div className="flex items-center gap-2 shrink-0">
-                                                <span className="text-sm font-bold text-cyan-400 whitespace-nowrap">${item.price}</span>
+                                            <div className="flex flex-col min-w-0">
+                                                <span className="text-xs font-bold text-neutral-200 group-hover:text-white transition-colors truncate">{item.name}</span>
+                                                <span className="text-[11px] text-neutral-500 font-mono mt-0.5">Batafsil ko'rish</span>
                                             </div>
                                         </div>
                                     </ModalTrigger>
-                                    <ModalPortal>
-                                        <ModalContent>
-                                            <h2 className="text-lg font-bold mb-4 text-slate-100">{item.name}</h2>
-                                            <div className="space-y-4 text-slate-300">
-                                                <div className="flex items-center gap-4 mb-4">
-                                                    <div className="w-16 h-16 rounded-lg bg-slate-700/50 flex items-center justify-center">
-                                                        <img src={item.img} alt={item.name} className="w-10 h-10 opacity-80" />
-                                                    </div>
-                                                    <div>
-                                                        <h3 className="text-base font-semibold text-slate-100">{item.name}</h3>
-                                                        <p className="text-lg font-bold text-cyan-400">${item.price}</p>
-                                                    </div>
-                                                </div>
-                                                <div className="border-t border-slate-700/50 pt-4">
-                                                    <h4 className="font-semibold text-slate-200 mb-3">Specifications</h4>
-                                                    <div className="space-y-2 text-sm">
-                                                        <div className="flex justify-between">
-                                                            <span className="text-slate-400">Type:</span>
-                                                            <span className="text-slate-200 capitalize">{selectedCategory}</span>
-                                                        </div>
-                                                        <div className="flex justify-between">
-                                                            <span className="text-slate-400">Category:</span>
-                                                            <span className="text-slate-200 capitalize">Premium Component</span>
-                                                        </div>
-                                                        <div className="flex justify-between">
-                                                            <span className="text-slate-400">Availability:</span>
-                                                            <span className="text-green-400 font-semibold">In Stock</span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <button className="w-full mt-4 px-4 py-2 bg-cyan-600 hover:bg-cyan-500 text-white font-semibold rounded-lg transition-colors">
-                                                    Add to Build
-                                                </button>
+
+                                    <div className="flex items-center gap-3 ml-2 shrink-0">
+                                        <span className="text-xs font-mono font-bold text-neutral-300">{formatPrice(item.price)}</span>
+                                        <button 
+                                            onClick={() => setActiveBuild(prev => ({ ...prev, [selectedCategory]: item.id }))}
+                                            className={`p-1.5 rounded-lg border transition-all duration-200 ${
+                                                isAdded 
+                                                    ? 'bg-[#E4E728] text-[#0A0A0A] border-[#E4E728]' 
+                                                    : 'bg-neutral-900 text-neutral-400 border-neutral-800 hover:text-white hover:border-neutral-700'
+                                            }`}
+                                        >
+                                            {isAdded ? <Check className="w-3.5 h-3.5 stroke-[3]" /> : <Plus className="w-3.5 h-3.5" />}
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <ModalPortal>
+                                    <ModalContent props={{ className: "bg-[#0A0A0A] border border-neutral-900 text-white p-6 max-w-md w-full rounded-2xl shadow-2xl" }}>
+                                        <div className="flex items-start gap-4 pb-4 border-b border-neutral-900">
+                                            <div className="w-16 h-16 rounded-xl bg-neutral-900 border border-neutral-800 flex items-center justify-center shrink-0">
+                                                <img src={item.img} alt={item.name} className="w-10 h-10 object-contain" />
                                             </div>
-                                        </ModalContent>
-                                    </ModalPortal>
-                                </Modal>
-                            ))}
-                        </div>
-                    </div>
+                                            <div>
+                                                <h3 className="text-base font-bold text-white">{item.name}</h3>
+                                                <p className="text-lg font-mono font-bold text-[#E4E728] mt-1">{formatPrice(item.price)}</p>
+                                            </div>
+                                        </div>
+                                        
+                                        <div className="py-4 space-y-2.5 text-xs font-medium">
+                                            <div className="flex justify-between">
+                                                <span className="text-neutral-500">Kategoriya:</span>
+                                                <span className="text-neutral-200 uppercase tracking-wider font-mono text-[11px]">{selectedCategory}</span>
+                                            </div>
+                                            <div className="flex justify-between">
+                                                <span className="text-neutral-500">Holati:</span>
+                                                <span className="text-emerald-400">Omborda Mavjud</span>
+                                            </div>
+                                        </div>
+
+                                        <button 
+                                            onClick={() => setActiveBuild(prev => ({ ...prev, [selectedCategory]: item.id }))}
+                                            className="w-full py-3 mt-2 bg-[#E4E728] text-[#0A0A0A] font-bold text-xs rounded-xl hover:bg-[#d0max-value] transition-colors"
+                                        >
+                                            Konfiguratsiyaga qo'shish
+                                        </button>
+                                    </ModalContent>
+                                </ModalPortal>
+                            </Modal>
+                        );
+                    })}
                 </div>
             </aside>
 
-            <main className="flex-1 h-full relative">
-                <Canvas
-                    gl={{ preserveDrawingBuffer: true }}
-                    className="w-full h-full"
-                >
-                    <ambientLight intensity={0.5} />
-                    <directionalLight position={[10, 10, 5]} intensity={1} />
-                    <pointLight position={[-10, -10, -10]} intensity={0.5} />
+            <main className="flex-1 h-full relative bg-radial from-neutral-900/40 to-[#0A0A0A]">
+                <div className="absolute top-6 right-6 z-20 bg-[#0A0A0A]/80 backdrop-blur-md border border-neutral-900 px-5 py-3.5 rounded-2xl flex flex-col pointer-events-auto">
+                    <span className="text-[10px] text-neutral-500 font-mono uppercase tracking-wider">Umumiy Narxi</span>
+                    <span className="text-lg font-bold font-mono text-[#E4E728] mt-0.5">
+                        {formatPrice(Object.keys(activeBuild).length * 1250 || 0)}
+                    </span>
+                </div>
 
-                    <Stage environment="city" intensity={0.6}>
+                <Canvas gl={{ preserveDrawingBuffer: true }} className="w-full h-full">
+                    <ambientLight intensity={0.4} />
+                    <directionalLight position={[5, 15, 5]} intensity={0.8} />
+                    <Stage environment="city" intensity={0.5}>
                         <mesh>
-                            <boxGeometry args={[1.5, 1.5, 1.5]} />
-                            <meshStandardMaterial color="#06b6d4" roughness={0.3} />
+                            <boxGeometry args={[1.4, 1.4, 1.4]} />
+                            <meshStandardMaterial color="#262626" roughness={0.1} metalness={0.8} />
                         </mesh>
                     </Stage>
                 </Canvas>
