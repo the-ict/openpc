@@ -3,6 +3,10 @@ import Navbar from "@/src/widgets/navbar/ui";
 import Footer from "@/src/widgets/footer/ui";
 import type { Metadata } from "next";
 import "./globals.css";
+import { Geist } from "next/font/google";
+import { cn } from "@/lib/utils";
+
+const geist = Geist({subsets:['latin'],variable:'--font-sans'});
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -17,7 +21,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${spaceGrotesk.variable} h-full antialiased ${spaceGrotesk.className}`}
+      className={cn("h-full", "antialiased", spaceGrotesk.variable, spaceGrotesk.className, "font-sans", geist.variable)}
     >
       <body className={`min-h-full flex flex-col`}>
         <Navbar />
