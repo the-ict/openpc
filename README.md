@@ -1,1 +1,2 @@
-# Where should this store be located
+# removing ai slops
+# changing ai design slop.

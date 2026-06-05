@@ -29,12 +29,12 @@ export default function Projects() {
         </div>
 
         <div className="flex items-center gap-4">
-          <button className="bg-neutral-900 cursor-pointer hover:bg-neutral-800 border border-neutral-800 text-sm font-medium px-4 py-2 rounded-xl transition-all duration-200 flex items-center gap-2">
+          <button className="bg-neutral-900 border border-[#555] cursor-pointer hover:bg-neutral-800 text-sm font-medium px-4 py-2 rounded-xl transition-all duration-200 flex items-center gap-2">
             <Plus className="w-4 h-4 text-[#E4E728]" />
             <span className="hidden sm:inline">Yaratish</span>
           </button>
           
-          <div className="w-9 h-9 rounded-full border border-neutral-800 bg-neutral-900 overflow-hidden flex items-center justify-center cursor-pointer hover:border-neutral-700 transition-colors">
+          <div className="w-9 h-9 rounded-full border border-[#555] bg-neutral-900 overflow-hidden flex items-center justify-center cursor-pointer hover:border-neutral-700 transition-colors">
             <span className="text-xs font-semibold text-neutral-400">AA</span>
           </div>
         </div>
@@ -43,15 +43,15 @@ export default function Projects() {
       <div className="flex">
         <main className="flex-1 p-8 space-y-8">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            <div className="bg-neutral-900/40 border border-neutral-900 rounded-2xl p-6">
+            <div className="bg-neutral-900/40 border border-[#555] rounded-2xl p-6">
               <span className="text-xs text-neutral-500 font-medium uppercase tracking-wider">Jami Konfiguratsiyalar</span>
               <p className="text-3xl font-bold mt-2 text-[#FFFFFF] font-mono">142</p>
             </div>
-            <div className="bg-neutral-900/40 border border-neutral-900 rounded-2xl p-6">
+            <div className="bg-neutral-900/40 border border-[#555] rounded-2xl p-6">
               <span className="text-xs text-neutral-500 font-medium uppercase tracking-wider">O'rtacha Narx</span>
               <p className="text-3xl font-bold mt-2 text-[#E4E728] font-mono">24,500,000 UZS</p>
             </div>
-            <div className="bg-neutral-900/40 border border-neutral-900 rounded-2xl p-6 sm:col-span-2 lg:col-span-1">
+            <div className="bg-neutral-900/40 border border-[#555] rounded-2xl p-6 sm:col-span-2 lg:col-span-1">
               <span className="text-xs text-neutral-500 font-medium uppercase tracking-wider">Faol loyihalar</span>
               <p className="text-3xl font-bold mt-2 text-[#FFFFFF] font-mono">3 <span className="text-xs text-neutral-500 font-sans font-normal">ta oqim</span></p>
             </div>
@@ -62,7 +62,7 @@ export default function Projects() {
             {projects.map((project) => (
               <div 
                 key={project.id} 
-                className="group cursor-pointer relative bg-neutral-900/30 hover:bg-neutral-900/60 border border-neutral-900 hover:border-neutral-800 rounded-2xl p-6 transition-all duration-300 flex flex-col justify-between"
+                className="group cursor-pointer relative bg-neutral-900/30 hover:bg-neutral-900/60 border border-[#555] hover:border-neutral-800 rounded-2xl p-6 transition-all duration-300 flex flex-col justify-between"
               >
                 <div>
                   <div className="flex items-start justify-between gap-4 mb-4">
@@ -72,7 +72,7 @@ export default function Projects() {
                   </div>
 
                   {/* Build Specifications Spec Box */}
-                  <div className="space-y-2 bg-neutral-900 border border-neutral-900/80 rounded-xl p-3.5 mb-6">
+                  <div className="space-y-2 bg-neutral-900 border border-[#555] rounded-xl p-3.5 mb-6">
                     <div className="flex justify-between text-xs">
                       <span className="text-neutral-500">CPU</span>
                       <span className="text-neutral-300 font-medium truncate max-w-[180px]">{project.cpu}</span>
@@ -85,12 +85,12 @@ export default function Projects() {
                 </div>
 
                 <div>
-                  <div className="border-t border-neutral-900/60 pt-4 flex items-end justify-between">
+                  <div className="border-t border-[#555] pt-4 flex items-end justify-between">
                     <div>
                       <span className="text-[10px] text-neutral-500 block uppercase tracking-wider font-medium">Taxminiy Narxi</span>
                       <span className="text-base font-bold font-mono text-[#E4E728]">{formatUZS(project.priceUZS)}</span>
                     </div>
-                    <button className="text-neutral-400 hover:text-white p-2 rounded-lg bg-neutral-900/50 hover:bg-neutral-900 border border-neutral-800 transition-all">
+                    <button className="text-neutral-400 hover:text-white p-2 rounded-lg bg-neutral-900/50 hover:bg-neutral-900 border border-[#555] transition-all">
                       <ExternalLink className="w-3.5 h-3.5" />
                     </button>
                   </div>
@@ -103,8 +103,8 @@ export default function Projects() {
             ))}
 
             {/* CREATE BLANK NEW PROJECT PLACEHOLDER CARD */}
-            <div className="border-2 cursor-pointer border-dashed border-neutral-900 hover:border-neutral-800 rounded-2xl flex flex-col items-center justify-center p-8 text-center cursor-pointer group transition-all min-h-[250px]">
-              <div className="w-12 h-12 rounded-full bg-neutral-900 border border-neutral-800 flex items-center justify-center mb-4 group-hover:scale-105 group-hover:border-neutral-700 transition-all">
+            <div className="border-2 cursor-pointer border-dashed border-[#555] hover:border-neutral-800 rounded-2xl flex flex-col items-center justify-center p-8 text-center cursor-pointer group transition-all min-h-[250px]">
+              <div className="w-12 h-12 rounded-full bg-neutral-900 border border-[#555] flex items-center justify-center mb-4 group-hover:scale-105 group-hover:border-neutral-700 transition-all">
                 <Plus className="w-5 h-5 text-neutral-400 group-hover:text-[#E4E728]" />
               </div>
               <p className="font-medium text-sm text-neutral-400 group-hover:text-neutral-200 transition-colors">Yangi loyiha qo'shish</p>
