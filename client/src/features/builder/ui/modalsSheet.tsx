@@ -27,8 +27,7 @@ interface PropsModalSheet {
   setSearchQuery: (query: string) => void;
   setSelectedType: (type: string) => void;
   selectedType: string;
-}
-
+};
 
 export default function ModalShet({}: PropsModalSheet) {
   return (
