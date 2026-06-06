@@ -18,8 +18,19 @@ import { Gamepad2, Search } from "lucide-react";
 import ComponentCard from "./componentCard";
 import { cpuModels } from "../lib/data";
 
+interface PropsModalSheet {
+  activeBuild: Record<string, number>;
+  setActiveBuild: (props:Record<string, number>) => void;
+  setPriceRange: (priceRange: [number, number]) => void;
+  priceRange: [number,number];
+  searchQuery: string;
+  setSearchQuery: (query: string) => void;
+  setSelectedType: (type: string) => void;
+  selectedType: string;
+}
 
-export default function ModalShet() {
+
+export default function ModalShet({}: PropsModalSheet) {
   return (
     <div className="flex-3 w-full h-full bg-[#222] px-8 py-5 space-y-7">
       <form className="flex items-center gap-3 justify-between w-full bg-[#333] px-6 py-3 rounded-full">

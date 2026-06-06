@@ -1,10 +1,12 @@
 "use client";
 
+import { Model } from "../../../../public/models/Pcmodal";
 import { CameraControls } from '@react-three/drei';
 import { Canvas } from '@react-three/fiber';
 import { requirements } from '../lib/data';
 import React, { useState } from 'react';
 import ModalSheet from './modalsSheet';
+
 
 export const BuilderPage: React.FC = () => {
     const [selectedCategory, setSelectedCategory] = useState<string>('cpu');
@@ -12,6 +14,7 @@ export const BuilderPage: React.FC = () => {
     const [priceRange, setPriceRange] = useState<[number, number]>([0, 5000]);
     const [selectedType, setSelectedType] = useState<string>('all');
     const [searchQuery, setSearchQuery] = useState<string>('');
+
     return (
         <div className="flex h-screen w-screen bg-[#0A0A0A] text-[#FFFFFF] overflow-hidden font-sans select-none antialiased flex-col items-start">
             <header className="border-b border-[#555] bg-[#0A0A0A]/80 backdrop-blur-md sticky top-0 z-50 px-8 py-4 flex items-center justify-between w-full">
@@ -43,19 +46,22 @@ export const BuilderPage: React.FC = () => {
             </header>
 
             <aside className="flex gap-3 items-start h-full w-full">
-                <ModalSheet />
+                <ModalSheet activeBuild={activeBuild} setActiveBuild={setActiveBuild} priceRange={priceRange} setPriceRange={setPriceRange} setSelectedType={setSelectedType} selectedType={selectedType} searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
                 <main className="flex-10 h-full relative bg-radial from-neutral-900/40 to-[#0A0A0A] w-full">
-                <Canvas camera={{ position: [0, 0, 5] }}>
-                    <ambientLight intensity={0.5} />
-                    <pointLight position={[10, 10, 10]} />
-                    <mesh>
-                        <sphereGeometry args={[1, 32, 32]} />
-                        <meshStandardMaterial color="hotpink" />
-                    </mesh>
+                    <Canvas camera={{ position: [0, 0, 5] }}>
+                        <ambientLight intensity={1.5} />
+                        <directionalLight
+                            position={[5, 5, 5]}
+                            intensity={3}
+                            castShadow
+                        />
+                        <directionalLight position={[-5, -5, -5]} intensity={1} />
 
-                    <CameraControls makeDefault />
-                </Canvas>
-            </main>
+                        <Model />
+
+                        <CameraControls makeDefault />
+                    </Canvas>
+                </main>
             </aside>
         </div>
     );

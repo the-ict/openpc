@@ -1,5 +1,14 @@
 import { IRequirements } from "./modal";
-import { Cpu, Gpu, MemoryStick, CardSim, Microchip, Power, PcCase, AirVent} from "lucide-react"
+import {
+  Cpu,
+  Gpu,
+  MemoryStick,
+  CardSim,
+  Microchip,
+  Power,
+  PcCase,
+  AirVent
+} from "lucide-react"
 
 const requirements: IRequirements[] = [
   {
