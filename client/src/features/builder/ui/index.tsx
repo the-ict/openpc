@@ -1,7 +1,7 @@
 "use client";
 
 import { Model } from "../../../../public/models/Pcmodal";
-import { CameraControls } from '@react-three/drei';
+import CameraController from "./CameraController";
 import { Canvas } from '@react-three/fiber';
 import { requirements } from '../lib/data';
 import React, { useState } from 'react';
@@ -14,6 +14,7 @@ export const BuilderPage: React.FC = () => {
     const [priceRange, setPriceRange] = useState<[number, number]>([0, 5000]);
     const [selectedType, setSelectedType] = useState<string>('all');
     const [searchQuery, setSearchQuery] = useState<string>('');
+    const [focusTarget, setFocusTarget] = useState<string>("cpu");
 
     return (
         <div className="flex h-screen w-screen bg-[#0A0A0A] text-[#FFFFFF] overflow-hidden font-sans select-none antialiased flex-col items-start">
@@ -31,6 +32,7 @@ export const BuilderPage: React.FC = () => {
                                 key={idx}
                                 onClick={() => {
                                     setSelectedCategory(req.name.toLowerCase());
+                                    setFocusTarget(req.name);
                                 }}
                                 className={`shrink-0 flex items-center gap-2 px-4 py-2.5 rounded-xl border text-xs font-medium transition-all duration-200 cursor-pointer ${isSelected
                                     ? 'bg-neutral-900 text-[#E4E728] border-neutral-800'
@@ -59,7 +61,7 @@ export const BuilderPage: React.FC = () => {
 
                         <Model />
 
-                        <CameraControls makeDefault />
+                        <CameraController focusTarget={focusTarget} />
                     </Canvas>
                 </main>
             </aside>
