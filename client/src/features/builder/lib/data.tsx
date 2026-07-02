@@ -60,9 +60,8 @@ const cpuModels = [
   }
 ]
 
-
 const DEFAULT_CAMERA = {
-  position: [0, 0, 5] as [number, number, number],
+  position: [0, 0, 0] as [number, number, number],
   target: [0, 0, 0] as [number, number, number],
 };
 
@@ -73,11 +72,11 @@ const PART_POSITIONS: Record<string, {
   cpu: { position: [0.8, 0.4, 1.2], target: [0.8, 0.2, 0] },
   gpu: { position: [-0.5, 0.2, 1.5], target: [-0.5, 0, 0] },
   ram: { position: [0.3, 0.5, 1.0], target: [0.3, 0.3, 0] },
-  storage: { position: [0.1, -0.3, 1.2], target: [0.1, -0.4, 0] },
+  storage: { position: [-0.052843, 1.626965, -1.608937], target: [-0.052843, 1.526965, -1.608937] },
   motherboard: { position: [0, 0.1, 2.5], target: [0, 0, 0] },
   "power supply": { position: [-0.8, -0.5, 1.5], target: [-0.8, -0.5, 0] },
   case: { position: [0, 0, 3.5], target: [0, 0, 0] },
-  cooling: { position: [0.5, 0.8, 1.2], target: [0.5, 0.5, 0] },
+  cooling: { position: [0.5, 1.2, 1.5], target: [0, 0, 0] },
 };
 
 export { requirements, cpuModels, PART_POSITIONS, DEFAULT_CAMERA };

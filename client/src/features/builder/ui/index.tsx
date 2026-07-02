@@ -1,6 +1,6 @@
 "use client";
 
-import { Model } from "../../../../public/models/Pcmodal";
+import { Lantern} from "../../../../public/Lantern/Lantern";
 import CameraController from "./CameraController";
 import { Canvas } from '@react-three/fiber';
 import { requirements } from '../lib/data';
@@ -15,15 +15,11 @@ export const BuilderPage: React.FC = () => {
     const [selectedType, setSelectedType] = useState<string>('all');
     const [searchQuery, setSearchQuery] = useState<string>('');
     const [focusTarget, setFocusTarget] = useState<string>("cpu");
+    const [focusFire, setFocusFire] = useState<boolean>(false);
 
     return (
         <div className="flex h-screen w-screen bg-[#0A0A0A] text-[#FFFFFF] overflow-hidden font-sans select-none antialiased flex-col items-start">
             <header className="border-b border-[#555] bg-[#0A0A0A]/80 backdrop-blur-md sticky top-0 z-50 px-8 py-4 flex items-center justify-between w-full">
-                <div className="flex items-center gap-2 select-none">
-                    <span className="text-xl font-bold tracking-tight italic">
-                        open<span className="text-[#E4E728] not-italic">PC</span>
-                    </span>
-                </div>
                 <div className="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1">
                     {requirements.map((req, idx) => {
                         const isSelected = selectedCategory === req.name.toLowerCase();
@@ -59,9 +55,9 @@ export const BuilderPage: React.FC = () => {
                         />
                         <directionalLight position={[-5, -5, -5]} intensity={1} />
 
-                        <Model />
+                        <Lantern />
 
-                        <CameraController focusTarget={focusTarget} />
+                        <CameraController focusTarget={focusFire ? 'fire' : focusTarget} />
                     </Canvas>
                 </main>
             </aside>
