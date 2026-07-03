@@ -2,7 +2,8 @@ import { Router } from "express";
 import { validate } from "../middleware/validate.js";
 import { login, register } from "../controllers/auth.controller.js";
 import { login_schema, register_schema } from "../validators/auth.validator.js";
-import passport, { type Profile, type DoneCallback } from "passport";
+import passport, { type Profile } from "passport";
+import { Strategy as GoogleStrategy, type StrategyOptions, type VerifyCallback } from "passport-google-oauth20";
 import prisma from "../lib/prisma.js";
 
 const router = Router();
@@ -10,17 +11,17 @@ const router = Router();
 router.post("/login", validate(login_schema), login);
 
 router.post("/register", validate(register_schema), register);
+const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID || "";
+const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET || "";
 
-let GoogleStrategy = require('passport-google-oauth20').Strategy;
-const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
-const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
-
-passport.use(new GoogleStrategy({
+const googleOptions: StrategyOptions = {
     clientID: GOOGLE_CLIENT_ID,
     clientSecret: GOOGLE_CLIENT_SECRET,
     callbackURL: "http://localhost:3000/auth/google/callback"
-},
-    async function (access_token: string, refresh_token: string, profile: Profile, cb: DoneCallback) {
+};
+
+passport.use(new GoogleStrategy(googleOptions,
+    async function (access_token: string, refresh_token: string, profile: Profile, cb: VerifyCallback) {
         const user = await prisma.user.findUnique({
             where: {
                 google_id: profile.id,
