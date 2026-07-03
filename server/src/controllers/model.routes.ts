@@ -3,13 +3,9 @@ import prisma from "../lib/prisma.js";
 
 export const create_model = async (req: Request, res: Response, next: NextFunction) => {
     try {
+        console.log("body: ", req.body);
         const model = await prisma.model.create({
-            data: {
-                cordinations: {
-                    create: { ...req.body.cordinations }
-                },
-                ...req.body
-            }
+            data: req.body,
         });
 
         if (!model) {

@@ -35,7 +35,7 @@ model Model {
   updatedAt       DateTime      @updatedAt
   cordinations    Cordinations?
   sessions        Session?      @relation(fields: [session_id], references: [id])
-  session_id      String
+  session_id      String?
 }
 
 model Cordinations {

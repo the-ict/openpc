@@ -7,7 +7,7 @@ export const create_session = async (req: Request, res: Response, next: NextFunc
             data: req.body,
         });
 
-        if(!new_session) {
+        if (!new_session) {
             return res.status(406).json({ message: "Not Acceptable" });
         }
 
@@ -19,7 +19,8 @@ export const create_session = async (req: Request, res: Response, next: NextFunc
 
 export const add_model_to_session = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const {model_id} = req.body;
+        const { model_id } = req.body;
+        console.log("model_if:", model_id);
 
         const updated_session = await prisma.session.update({
             where: {
@@ -32,9 +33,12 @@ export const add_model_to_session = async (req: Request, res: Response, next: Ne
                     },
                 },
             },
+            include: {
+                models: true,
+            },
         });
-        
-        if(!updated_session) {
+
+        if (!updated_session) {
             return res.status(406).json({ message: "Not Acceptable" });
         }
 
@@ -53,7 +57,7 @@ export const update_session = async (req: Request, res: Response, next: NextFunc
             data: req.body,
         });
 
-        if(!updated_session) {
+        if (!updated_session) {
             return res.status(406).json({ message: "Not Acceptable" });
         }
 
@@ -65,17 +69,13 @@ export const update_session = async (req: Request, res: Response, next: NextFunc
 
 export const delete_session = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const deleted_session = await prisma.session.delete({
+        await prisma.session.delete({
             where: {
                 id: req.params.id as string,
             },
         });
 
-        if(!deleted_session) {
-            return res.status(406).json({ message: "Not Acceptable" });
-        }
-
-        res.status(200).json(deleted_session);
+        res.status(200).json({ message: "Session deleted successfully", ok: true });
     } catch (error) {
         next(error);
     }
