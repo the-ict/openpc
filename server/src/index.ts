@@ -3,11 +3,12 @@ import type { NextFunction, Request, Response } from "express";
 import logger from "./utils/loggers.js";
 import helmet from "helmet";
 import dotenv from "dotenv";
-import cors from "cors";
 import morgan from "morgan";
+import cors from "cors";
 
 import authRoutes from "./routers/auth.routes.js";
 import modelRoutes from "./routers/model.routes.js";
+import sessionRoutes from "./routers/session.routes.js";
 
 // configure dotenv
 dotenv.config();
@@ -26,6 +27,7 @@ app.use(cors({
 // routes
 app.use("/api/auth", authRoutes);
 app.use("/api/models", modelRoutes);
+app.use("/api/sessions", sessionRoutes);
 
 app.get("/", (req: Request, res: Response) => {
     res.send("Working !");
