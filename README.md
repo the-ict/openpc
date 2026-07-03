@@ -1,1 +1,1 @@
-1. IF he gives me everything about the model, for example CPU, GPU and other things condinations and positions, I will create a 3D model of the computer and place it in the scene. i must just naviagate the camera to the model. and update the model there.
+1. I Think i ust first write backend

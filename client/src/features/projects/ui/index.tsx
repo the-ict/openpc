@@ -1,17 +1,17 @@
 "use client";
 
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Plus, Search, ExternalLink } from 'lucide-react';
 import { formatUZS } from '../lib/fnc';
 import { PCProject } from '../lib/modal';
 import { projectsData } from '../lib/data';
 
 export default function Projects() {
-    const [projects] = useState<PCProject[]>(projectsData);
+  const [projects] = useState<PCProject[]>(projectsData);
 
   return (
     <div className="min-h-screen bg-[#0A0A0A] text-[#FFFFFF] font-sans selection:bg-[#E4E728] selection:text-[#0A0A0A]">
-      
+
       <header className="border-b border-neutral-900 bg-[#0A0A0A]/80 backdrop-blur-md sticky top-0 z-50 px-8 py-4 flex items-center justify-between">
         <div className="flex items-center gap-2 select-none">
           <span className="text-xl font-bold tracking-tight italic">
@@ -33,7 +33,7 @@ export default function Projects() {
             <Plus className="w-4 h-4 text-[#E4E728]" />
             <span className="hidden sm:inline">Yaratish</span>
           </button>
-          
+
           <div className="w-9 h-9 rounded-full border border-[#555] bg-neutral-900 overflow-hidden flex items-center justify-center cursor-pointer hover:border-neutral-700 transition-colors">
             <span className="text-xs font-semibold text-neutral-400">AA</span>
           </div>
@@ -60,8 +60,8 @@ export default function Projects() {
           {/* PROJECTS GRID CARD VIEW */}
           <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
             {projects.map((project) => (
-              <div 
-                key={project.id} 
+              <div
+                key={project.id}
                 className="group cursor-pointer relative bg-neutral-900/30 hover:bg-neutral-900/60 border border-[#555] hover:border-neutral-800 rounded-2xl p-6 transition-all duration-300 flex flex-col justify-between"
               >
                 <div>
@@ -94,7 +94,7 @@ export default function Projects() {
                       <ExternalLink className="w-3.5 h-3.5" />
                     </button>
                   </div>
-                  
+
                   <div className="text-[11px] text-neutral-600 mt-3 font-mono text-right">
                     Yangilandi: {project.updatedAt}
                   </div>

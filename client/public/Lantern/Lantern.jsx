@@ -1,13 +1,9 @@
 import { useGLTF } from '@react-three/drei'
 
 export function Lantern() {
-  const { nodes, materials, scene } = useGLTF('/Lantern/Lantern.glb')
+  const { nodes, materials } = useGLTF('/Lantern/Lantern.glb');
 
-  console.log("scene: ", scene);
-  console.log(nodes, "nodes");
-  console.log(materials, "materials");
-  const firePart = scene.getObjectByName("LNT_Fire")
-  console.log("firePart: ", firePart);
+  console.log(nodes);
   return (
     <group dispose={null}>
       <mesh

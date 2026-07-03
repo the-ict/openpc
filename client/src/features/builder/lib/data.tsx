@@ -8,7 +8,7 @@ import {
   Power,
   PcCase,
   AirVent
-} from "lucide-react"
+} from "lucide-react";
 
 const requirements: IRequirements[] = [
   {
@@ -76,7 +76,7 @@ const PART_POSITIONS: Record<string, {
   motherboard: { position: [0, 0.1, 2.5], target: [0, 0, 0] },
   "power supply": { position: [-0.8, -0.5, 1.5], target: [-0.8, -0.5, 0] },
   case: { position: [0, 0, 3.5], target: [0, 0, 0] },
-  cooling: { position: [0.5, 1.2, 1.5], target: [0, 0, 0] },
+  cooling: { position: [1.540254, 1.949105, -1.583699], target: [0, 1, 0] },
 };
 
 export { requirements, cpuModels, PART_POSITIONS, DEFAULT_CAMERA };

@@ -15,7 +15,6 @@ export const BuilderPage: React.FC = () => {
     const [selectedType, setSelectedType] = useState<string>('all');
     const [searchQuery, setSearchQuery] = useState<string>('');
     const [focusTarget, setFocusTarget] = useState<string>("cpu");
-    const [focusFire, setFocusFire] = useState<boolean>(false);
 
     return (
         <div className="flex h-screen w-screen bg-[#0A0A0A] text-[#FFFFFF] overflow-hidden font-sans select-none antialiased flex-col items-start">
@@ -57,7 +56,7 @@ export const BuilderPage: React.FC = () => {
 
                         <Lantern />
 
-                        <CameraController focusTarget={focusFire ? 'fire' : focusTarget} />
+                        <CameraController focusTarget={focusTarget} />
                     </Canvas>
                 </main>
             </aside>
