@@ -30,12 +30,13 @@ export const login = async(req: Request, res: Response, next: NextFunction) => {
 
 export const register = async (req: Request, res: Response, next: NextFunction) => {
     try {
+        console.log("registerreed");
         const body = req.body;
 
         const { password, ...user_data } = body;
         const hash_password = await bcrypt.hash(password, 10);
 
-        const new_user = await prisma.user.create({ ...user_data, password: hash_password });
+        const new_user = await prisma.user.create({ data: { ...user_data, password: hash_password } });
         if (!new_user.id) {
             return res.status(406).json({ message: "Not Acceptable", ok: false });
         };

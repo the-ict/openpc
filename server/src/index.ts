@@ -8,6 +8,7 @@ import cors from "cors";
 
 import authRoutes from "./routers/auth.routes.js";
 import modelRoutes from "./routers/model.routes.js";
+import uploadRoutes from "./routers/upload.routes.js"
 import sessionRoutes from "./routers/session.routes.js";
 
 // configure dotenv
@@ -27,6 +28,7 @@ app.use(cors({
 // routes
 app.use("/api/auth", authRoutes);
 app.use("/api/models", modelRoutes);
+app.use("/api/upload", uploadRoutes);
 app.use("/api/sessions", sessionRoutes);
 
 app.get("/", (req: Request, res: Response) => {

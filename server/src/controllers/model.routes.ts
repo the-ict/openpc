@@ -4,7 +4,12 @@ import prisma from "../lib/prisma.js";
 export const create_model = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const model = await prisma.model.create({
-            data: req.body
+            data: {
+                cordinations: {
+                    create: { ...req.body.cordinations }
+                },
+                ...req.body
+            }
         });
 
         if (!model) {
