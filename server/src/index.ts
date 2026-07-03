@@ -1,6 +1,6 @@
-import express from "express";
 import type { NextFunction, Request, Response } from "express";
 import logger from "./utils/loggers.js";
+import express from "express";
 import helmet from "helmet";
 import dotenv from "dotenv";
 import morgan from "morgan";
