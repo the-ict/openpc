@@ -7,6 +7,7 @@ import cors from "cors";
 import morgan from "morgan";
 
 import authRoutes from "./routers/auth.routes.js";
+import modelRoutes from "./routers/model.routes.js";
 
 // configure dotenv
 dotenv.config();
@@ -24,6 +25,7 @@ app.use(cors({
 
 // routes
 app.use("/api/auth", authRoutes);
+app.use("/api/models", modelRoutes);
 
 app.get("/", (req: Request, res: Response) => {
     res.send("Working !");
@@ -41,6 +43,6 @@ app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
 });
 
 // start server
-app.listen(3000, async () => {
-    logger.info("Server is running on port 3000");
+app.listen(3001, async () => {
+    logger.info("Server is running on port 3001");
 });
