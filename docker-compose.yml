@@ -1,18 +1,23 @@
 name: openpc
 
 services:
-  server:
-    build:
-      context: ./backend
-      dockerfile: Dockerfile
-    container_name: openpc-server
+  postgres:
+    image: postgres:15
+    container_name: openpc-postgres
+    environment:
+      POSTGRES_USER: openpc
+      POSTGRES_PASSWORD: openpc
+      POSTGRES_DB: openpc
     ports:
-      - "7777:7777"
-    env_file:
-      - ./backend/.env
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
     networks:
       - openpc-network
     restart: always
+
+volumes:
+  postgres_data:
 
 networks:
   openpc-network:

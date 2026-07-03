@@ -6,6 +6,8 @@ import dotenv from "dotenv";
 import cors from "cors";
 import morgan from "morgan";
 
+import authRoutes from "./routers/auth.routes.js";
+
 // configure dotenv
 dotenv.config();
 
@@ -13,6 +15,7 @@ dotenv.config();
 const app = express();
 
 // middlewares
+app.use(express.json());
 app.use(helmet());
 app.use(morgan("combined"));
 app.use(cors({
@@ -20,13 +23,21 @@ app.use(cors({
 }));
 
 // routes
+app.use("/api/auth", authRoutes);
+
 app.get("/", (req: Request, res: Response) => {
     res.send("Working !");
 });
 
 // error handler
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
-    res.status(500).send("Something broke!");
+    console.log("bad error: ", err);
+
+    return res.status(500).json({
+        message: err.message || "Internal server error",
+        ok: false,
+        cause: err.cause || "No data"
+    });
 });
 
 // start server
