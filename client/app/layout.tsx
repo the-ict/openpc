@@ -1,4 +1,4 @@
-import { spaceGrotesk } from "@/src/shared/fonts";
+import { spaceGrotesk } from "@/src/shared/fonts/fonts";
 import Navbar from "@/src/widgets/navbar/ui";
 import Footer from "@/src/widgets/footer/ui";
 import type { Metadata } from "next";

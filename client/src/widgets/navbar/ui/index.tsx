@@ -1,6 +1,6 @@
 "use client";
 
-import { solitreo } from "@/src/shared/fonts";
+import { solitreo } from "@/src/shared/fonts/fonts";
 import { usePathname } from "next/navigation";
 import { whereToIgnore } from "../lib/fnc";
 

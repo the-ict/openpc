@@ -1,6 +1,6 @@
 export const whereToIgnore = () => {
     return [
-        '/projects',
+        '/session',
         '/register',
         '/login',
         "/builder"
