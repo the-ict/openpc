@@ -1,16 +1,17 @@
 import { Router } from "express";
+import prisma from "../lib/prisma.js";
+import passport, { type Profile } from "passport";
 import { validate } from "../middleware/validate.js";
 import { login, register } from "../controllers/auth.controller.js";
 import { login_schema, register_schema } from "../validators/auth.validator.js";
-import passport, { type Profile } from "passport";
 import { Strategy as GoogleStrategy, type StrategyOptions, type VerifyCallback } from "passport-google-oauth20";
-import prisma from "../lib/prisma.js";
 
 const router = Router();
 
 router.post("/login", validate(login_schema), login);
 
 router.post("/register", validate(register_schema), register);
+
 const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID || "";
 const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET || "";
 
@@ -59,5 +60,25 @@ router.get('/auth/google/callback',
     function (req, res) {
         res.redirect('/');
     });
+
+
+passport.serializeUser((user: any, done: (err: any, id?: unknown) => void) => {
+    done(null, user.id);
+});
+
+passport.deserializeUser(async (id: string, done: (err: any, user?: any) => void) => {
+    try {
+        const user = await prisma.user.findUnique({
+            where: {
+                id: id,
+            }
+        });
+        done(null, user);
+    } catch (error) {
+        done(error);
+    }
+});
+
+export { passport };
 
 export default router;

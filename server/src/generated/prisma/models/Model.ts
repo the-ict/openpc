@@ -226,7 +226,7 @@ export type ModelGroupByOutputType = {
   model_code_file: string
   createdAt: Date
   updatedAt: Date
-  session_id: string
+  session_id: string | null
   _count: ModelCountAggregateOutputType | null
   _avg: ModelAvgAggregateOutputType | null
   _sum: ModelSumAggregateOutputType | null
@@ -263,7 +263,7 @@ export type ModelWhereInput = {
   model_code_file?: Prisma.StringFilter<"Model"> | string
   createdAt?: Prisma.DateTimeFilter<"Model"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Model"> | Date | string
-  session_id?: Prisma.StringFilter<"Model"> | string
+  session_id?: Prisma.StringNullableFilter<"Model"> | string | null
   cordinations?: Prisma.XOR<Prisma.CordinationsNullableScalarRelationFilter, Prisma.CordinationsWhereInput> | null
   sessions?: Prisma.XOR<Prisma.SessionNullableScalarRelationFilter, Prisma.SessionWhereInput> | null
 }
@@ -279,7 +279,7 @@ export type ModelOrderByWithRelationInput = {
   model_code_file?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
-  session_id?: Prisma.SortOrder
+  session_id?: Prisma.SortOrderInput | Prisma.SortOrder
   cordinations?: Prisma.CordinationsOrderByWithRelationInput
   sessions?: Prisma.SessionOrderByWithRelationInput
 }
@@ -298,7 +298,7 @@ export type ModelWhereUniqueInput = Prisma.AtLeast<{
   model_code_file?: Prisma.StringFilter<"Model"> | string
   createdAt?: Prisma.DateTimeFilter<"Model"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Model"> | Date | string
-  session_id?: Prisma.StringFilter<"Model"> | string
+  session_id?: Prisma.StringNullableFilter<"Model"> | string | null
   cordinations?: Prisma.XOR<Prisma.CordinationsNullableScalarRelationFilter, Prisma.CordinationsWhereInput> | null
   sessions?: Prisma.XOR<Prisma.SessionNullableScalarRelationFilter, Prisma.SessionWhereInput> | null
 }, "id">
@@ -314,7 +314,7 @@ export type ModelOrderByWithAggregationInput = {
   model_code_file?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
-  session_id?: Prisma.SortOrder
+  session_id?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.ModelCountOrderByAggregateInput
   _avg?: Prisma.ModelAvgOrderByAggregateInput
   _max?: Prisma.ModelMaxOrderByAggregateInput
@@ -336,7 +336,7 @@ export type ModelScalarWhereWithAggregatesInput = {
   model_code_file?: Prisma.StringWithAggregatesFilter<"Model"> | string
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Model"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Model"> | Date | string
-  session_id?: Prisma.StringWithAggregatesFilter<"Model"> | string
+  session_id?: Prisma.StringNullableWithAggregatesFilter<"Model"> | string | null
 }
 
 export type ModelCreateInput = {
@@ -365,7 +365,7 @@ export type ModelUncheckedCreateInput = {
   model_code_file: string
   createdAt?: Date | string
   updatedAt?: Date | string
-  session_id: string
+  session_id?: string | null
   cordinations?: Prisma.CordinationsUncheckedCreateNestedOneWithoutCase_modelInput
 }
 
@@ -395,7 +395,7 @@ export type ModelUncheckedUpdateInput = {
   model_code_file?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  session_id?: Prisma.StringFieldUpdateOperationsInput | string
+  session_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   cordinations?: Prisma.CordinationsUncheckedUpdateOneWithoutCase_modelNestedInput
 }
 
@@ -410,7 +410,7 @@ export type ModelCreateManyInput = {
   model_code_file: string
   createdAt?: Date | string
   updatedAt?: Date | string
-  session_id: string
+  session_id?: string | null
 }
 
 export type ModelUpdateManyMutationInput = {
@@ -437,7 +437,7 @@ export type ModelUncheckedUpdateManyInput = {
   model_code_file?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  session_id?: Prisma.StringFieldUpdateOperationsInput | string
+  session_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type ModelCountOrderByAggregateInput = {
@@ -598,7 +598,7 @@ export type ModelUncheckedCreateWithoutCordinationsInput = {
   model_code_file: string
   createdAt?: Date | string
   updatedAt?: Date | string
-  session_id: string
+  session_id?: string | null
 }
 
 export type ModelCreateOrConnectWithoutCordinationsInput = {
@@ -642,7 +642,7 @@ export type ModelUncheckedUpdateWithoutCordinationsInput = {
   model_code_file?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  session_id?: Prisma.StringFieldUpdateOperationsInput | string
+  session_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type ModelCreateWithoutSessionsInput = {
@@ -713,7 +713,7 @@ export type ModelScalarWhereInput = {
   model_code_file?: Prisma.StringFilter<"Model"> | string
   createdAt?: Prisma.DateTimeFilter<"Model"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Model"> | Date | string
-  session_id?: Prisma.StringFilter<"Model"> | string
+  session_id?: Prisma.StringNullableFilter<"Model"> | string | null
 }
 
 export type ModelCreateManySessionsInput = {
@@ -861,7 +861,7 @@ export type $ModelPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
     model_code_file: string
     createdAt: Date
     updatedAt: Date
-    session_id: string
+    session_id: string | null
   }, ExtArgs["result"]["model"]>
   composites: {}
 }

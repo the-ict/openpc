@@ -13,13 +13,14 @@ datasource db {
 }
 
 model User {
-  id        String   @id @default(uuid())
+  id        String    @id @default(uuid())
   name      String
-  email     String   @unique
+  email     String    @unique
   password  String
-  google_id String?  @unique
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  google_id String?   @unique
+  sessions  Session[]
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
 }
 
 model Model {
@@ -68,9 +69,11 @@ model Cordinations {
 }
 
 model Session {
-  id     String  @id @default(uuid())
-  name   String
-  models Model[]
+  id      String  @id @default(uuid())
+  name    String
+  models  Model[]
+  user    User    @relation(fields: [user_id], references: [id])
+  user_id String
 }
 
 enum MODEL_TYPES {

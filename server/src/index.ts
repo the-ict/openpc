@@ -5,6 +5,8 @@ import helmet from "helmet";
 import dotenv from "dotenv";
 import morgan from "morgan";
 import cors from "cors";
+import session from "express-session";
+import { passport } from "./routers/auth.routes.js";
 
 import authRoutes from "./routers/auth.routes.js";
 import modelRoutes from "./routers/model.routes.js";
@@ -23,7 +25,22 @@ app.use(helmet());
 app.use(morgan("combined"));
 app.use(cors({
     origin: "http://localhost:3000",
+    credentials: true,
 }));
+
+app.use(session({
+    secret: process.env.SESSION_SECRET || "default-secret-key",
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+        secure: process.env.NODE_ENV === "production",
+        httpOnly: true,
+        maxAge: 1000 * 60 * 60 * 24 * 7,
+    },
+}));
+
+app.use(passport.initialize());
+app.use(passport.session());
 
 // routes
 app.use("/api/auth", authRoutes);

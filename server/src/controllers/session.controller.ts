@@ -121,6 +121,9 @@ export const get_one_session = async (req: Request, res: Response, next: NextFun
 export const get_all_sessions = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const sessions = await prisma.session.findMany({
+            where: {
+                user_id: req.user?.id || "",
+            },
             include: {
                 models: true,
             },
