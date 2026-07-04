@@ -11,7 +11,11 @@ export const create_session = async (req: Request, res: Response, next: NextFunc
             return res.status(406).json({ message: "Not Acceptable" });
         }
 
-        res.status(201).json(new_session);
+        res.status(201).json({
+            message: "Session created successfully",
+            ok: true,
+            data: new_session,
+        });
     } catch (error) {
         next(error);
     }
@@ -42,7 +46,11 @@ export const add_model_to_session = async (req: Request, res: Response, next: Ne
             return res.status(406).json({ message: "Not Acceptable" });
         }
 
-        res.status(200).json(updated_session);
+        res.status(200).json({
+            message: "Model added to session successfully",
+            ok: true,
+            data: updated_session,
+        });
     } catch (error) {
         next(error);
     }
@@ -61,7 +69,11 @@ export const update_session = async (req: Request, res: Response, next: NextFunc
             return res.status(406).json({ message: "Not Acceptable" });
         }
 
-        res.status(200).json(updated_session);
+        res.status(200).json({
+            message: "Session updated successfully",
+            ok: true,
+            data: updated_session,
+        });
     } catch (error) {
         next(error);
     }
@@ -75,7 +87,50 @@ export const delete_session = async (req: Request, res: Response, next: NextFunc
             },
         });
 
-        res.status(200).json({ message: "Session deleted successfully", ok: true });
+        res.status(200).json({ message: "Session deleted successfully", ok: true, data: null });
+    } catch (error) {
+        next(error);
+    }
+};
+
+export const get_one_session = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const session = await prisma.session.findUnique({
+            where: {
+                id: req.params.id as string,
+            },
+            include: {
+                models: true,
+            },
+        });
+
+        if (!session) {
+            return res.status(404).json({ message: "Session not found" });
+        }
+
+        res.status(200).json({
+            message: "Session retrieved successfully",
+            ok: true,
+            data: session,
+        });
+    } catch (error) {
+        next(error);
+    }
+};
+
+export const get_all_sessions = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const sessions = await prisma.session.findMany({
+            include: {
+                models: true,
+            },
+        });
+
+        res.status(200).json({
+            message: "Sessions retrieved successfully",
+            ok: true,
+            data: sessions,
+        });
     } catch (error) {
         next(error);
     }

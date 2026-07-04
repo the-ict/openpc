@@ -17,6 +17,8 @@ export const SESSION_URLS = {
   UPDATE: "/api/sessions/:id",
   ADD_MODEL: "/api/sessions/:id/models",
   DELETE: "/api/sessions/:id",
+  GET: "/api/sessions/:id",
+  GET_ALL: "/api/sessions",
 } as const;
 
 export const UPLOAD_URLS = {
