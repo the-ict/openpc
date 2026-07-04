@@ -33,7 +33,7 @@ const ModalContent = ({ children, props }: { children: React.ReactNode, props?: 
                 {children}
                 <Dialog.Close asChild>
                     <button
-                        className="absolute right-4 top-4 inline-flex h-8 w-8 items-center justify-center rounded-md text-slate-400 hover:bg-slate-800 hover:text-slate-200 focus:outline-none focus:ring-2 focus:ring-cyan-500/50"
+                        className="absolute cursor-pointer right-4 top-4 inline-flex h-8 w-8 items-center justify-center rounded-md text-slate-400 hover:bg-slate-800 hover:text-slate-200 focus:outline-none focus:ring-2 focus:ring-cyan-500/50"
                         aria-label="Close"
                     >
                         <Cross2Icon className="h-4 w-4" />

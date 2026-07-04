@@ -1,6 +1,5 @@
-  const formatUZS = (value: number) => {
-    return new Intl.NumberFormat('uz-UZ', { style: 'currency', currency: 'UZS', maximumFractionDigits: 0 }).format(value);
-  };
-
-
-  export {formatUZS}
+const formatUZS = (value: number) => {
+  const formattedNumber = new Intl.NumberFormat('en-US', { maximumFractionDigits: 0 }).format(value);
+  return `UZS ${formattedNumber}`;
+};
+export { formatUZS }

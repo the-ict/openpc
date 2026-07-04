@@ -3,13 +3,23 @@ import prisma from "../lib/prisma.js";
 
 export const create_session = async (req: Request, res: Response, next: NextFunction) => {
     try {
+        console.log("this is request id: ", req.user?.id);
+        console.log("req body: ", req.body);
+
         const new_session = await prisma.session.create({
-            data: req.body,
+            data: {
+                name: req.body.name,
+                user: {
+                    connect: {
+                        id: req.user?.id!
+                    }
+                }
+            },
         });
 
         if (!new_session) {
             return res.status(406).json({ message: "Not Acceptable" });
-        }
+        };
 
         res.status(201).json({
             message: "Session created successfully",
@@ -18,7 +28,7 @@ export const create_session = async (req: Request, res: Response, next: NextFunc
         });
     } catch (error) {
         next(error);
-    }
+    };
 };
 
 export const add_model_to_session = async (req: Request, res: Response, next: NextFunction) => {

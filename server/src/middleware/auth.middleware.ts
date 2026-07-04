@@ -4,15 +4,19 @@ import jwt from "jsonwebtoken";
 export const isAuthenticated = (req: Request, res: Response, next: NextFunction) => {
     try {
         const token = req.headers["authorization"]?.split(" ")[1];
+
         if (!token) {
             return res.status(401).json({ message: "Unauthorized", ok: false });
 
         };
         const decoded = jwt.verify(token, process.env.JWT_SECRET!) as { id: string };
+
         if (!decoded) {
             throw new Error("Invalid token");
         };
+
         req.user = decoded;
+        console.log("req_user: ", decoded);
         next();
     } catch (error) {
         next(error);

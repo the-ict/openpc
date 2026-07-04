@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { ArrowLeft } from 'lucide-react'
 import { useRegister } from '../lib/hooks'
 import user_store from '@/src/shared/store/user.store'
@@ -16,7 +16,9 @@ export default function RegisterPage() {
 
   const {token} = user_store.getState();
 
-  if(token.length > 0) router.push("/");
+  useEffect(() => {
+    if(token.length > 0) router.push("/");
+  }, [token, router]);
   return (
     <section className="min-h-screen text-white flex flex-col items-center justify-center px-4 py-20 font-sans select-none">
       <div className="max-w-md w-full flex flex-col items-center">

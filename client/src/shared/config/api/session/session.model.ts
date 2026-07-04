@@ -16,7 +16,10 @@ export interface UpdateSessionRequest {
 export interface ISession {
     id: string;
     name: string;
-    models: IModel[]
+    status: string;
+    models: IModel[];
+    updatedAt: Date;
+    createdAt: Date;
 };
 
 export type CreateSessionResponse = Response<ISession>;

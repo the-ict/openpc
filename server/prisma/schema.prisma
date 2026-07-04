@@ -70,11 +70,14 @@ model Cordinations {
 }
 
 model Session {
-  id      String  @id @default(uuid())
-  name    String
-  models  Model[]
-  user    User    @relation(fields: [user_id], references: [id])
-  user_id String
+  id        String   @id @default(uuid())
+  name      String
+  status    String   @default("In Progress")
+  models    Model[]
+  user      User     @relation(fields: [user_id], references: [id])
+  user_id   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 enum MODEL_TYPES {

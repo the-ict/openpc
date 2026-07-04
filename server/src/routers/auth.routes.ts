@@ -86,7 +86,7 @@ router.get('/google',
 router.get('/google/callback',
     passport.authenticate('google', { failureRedirect: '/login' }),
     function (req, res) {
-        res.redirect('http://localhost:3000');
+        res.redirect('http://localhost:3000/session');
     });
 
 

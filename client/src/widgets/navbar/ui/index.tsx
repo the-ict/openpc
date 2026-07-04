@@ -1,14 +1,21 @@
 "use client";
 
-import { solitreo } from "@/src/shared/fonts/fonts";
-import { usePathname } from "next/navigation";
-import { whereToIgnore } from "../lib/fnc";
+import { useState, useEffect } from "react";
 import Link from "next/link";
+import { whereToIgnore } from "../lib/fnc";
+import { usePathname } from "next/navigation";
+import { solitreo } from "@/src/shared/fonts/fonts";
 import user_store from "@/src/shared/store/user.store";
 
 export default function Navbar() {
+  const [mounted, setMounted] = useState<boolean>(false);
   const pathname = usePathname();
-  const { token } = user_store.getState();
+
+  const token = user_store.getState().token;
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   if (whereToIgnore().some((path) => pathname.includes(path))) {
     return null;
@@ -36,19 +43,20 @@ export default function Navbar() {
       </ul>
 
       {
-        token.length > 0 ? (
-          <Link href={"/session"}>
-            <button className="cursor-pointer bg-[#efefef] text-black font-bold hover:bg-[#ffffff] transition-all px-4 py-2 rounded-full">
-              Zborkalar
-            </button>
-          </Link>
-        ) : (
-          <Link href={"/register"}>
-            <button className="cursor-pointer bg-[#efefef] text-black font-bold hover:bg-[#ffffff] transition-all px-4 py-2 rounded-full">
-              Sinab ko'ring !
-            </button>
-          </Link>
-        )
+        mounted && token.length > 0
+          ? (
+            <Link href={"/session"}>
+              <button className="cursor-pointer bg-[#efefef] text-black font-bold hover:bg-[#ffffff] transition-all px-4 py-2 rounded-full">
+                Zborkalar
+              </button>
+            </Link>
+          ) : (
+            <Link href={"/register"}>
+              <button className="cursor-pointer bg-[#efefef] text-black font-bold hover:bg-[#ffffff] transition-all px-4 py-2 rounded-full">
+                Sinab ko'ring !
+              </button>
+            </Link>
+          )
       }
     </div>
   )

@@ -1,14 +1,23 @@
 "use client"
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { ArrowLeft } from 'lucide-react'
 import { useLogin } from '../lib/hooks'
+import { useRouter } from 'next/navigation'
+import user_store from '@/src/shared/store/user.store'
 
 export default function LoginPage() {
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
+  const [email, setEmail] = useState<string>('')
+  const [password, setPassword] = useState<string>('')
+
+  const router = useRouter();
+  const { token } = user_store.getState();
 
   const { mutateAsync: login_mutation, isPending: login_loading } = useLogin();
+
+  useEffect(() => {
+    if (token) router.push("/");
+  }, [token, router]);
   return (
     <section className="h-screen text-white flex flex-col items-center justify-center px-4 py-20 font-sans select-none">
       <div className="max-w-md w-full flex flex-col items-center">

@@ -138,7 +138,10 @@ export type CordinationsScalarFieldEnum = (typeof CordinationsScalarFieldEnum)[k
 export const SessionScalarFieldEnum = {
   id: 'id',
   name: 'name',
-  user_id: 'user_id'
+  status: 'status',
+  user_id: 'user_id',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 } as const
 
 export type SessionScalarFieldEnum = (typeof SessionScalarFieldEnum)[keyof typeof SessionScalarFieldEnum]

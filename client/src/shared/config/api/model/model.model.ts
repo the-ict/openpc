@@ -68,6 +68,7 @@ export interface IModel {
     name: string;
     brand: string;
     type: MODEL_TYPES;
+    price: number;
     image: string;
     model_file: string;
     model_code_file: string;
