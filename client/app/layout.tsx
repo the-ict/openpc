@@ -5,8 +5,9 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { Geist } from "next/font/google";
 import { cn } from "@/lib/utils";
+import Providers from "./providers";
 
-const geist = Geist({subsets:['latin'],variable:'--font-sans'});
+const geist = Geist({ subsets: ['latin'], variable: '--font-sans' });
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -24,12 +25,14 @@ export default function RootLayout({
       className={cn("h-full", "antialiased", spaceGrotesk.variable, spaceGrotesk.className, "font-sans", geist.variable)}
     >
       <body className={`min-h-full flex flex-col`}>
-        <Navbar />
+        <Providers>
+          <Navbar />
 
-        <main className="flex-1">
-          {children}
-        </main>
-        <Footer />
+          <main className="flex-1">
+            {children}
+          </main>
+          <Footer />
+        </Providers>
       </body>
     </html>
   );

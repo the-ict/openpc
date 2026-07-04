@@ -6,10 +6,16 @@ import { PCProject } from '../lib/modal';
 import { projectsData } from '../lib/data';
 import { Plus, ExternalLink } from 'lucide-react';
 import SessionSearch from './SessionSearch';
+import user_store from '@/src/shared/store/user.store';
+import { useRouter } from 'next/navigation';
 
 export default function index() {
   const [projects] = useState<PCProject[]>(projectsData);
+  const { token } = user_store.getState();
 
+  const router = useRouter();
+
+  if (token.length <= 0 || !token) return router.push("/login")
   return (
     <div className="min-h-screen relative bg-[#0A0A0A] text-[#FFFFFF] font-sans selection:bg-[#E4E728] selection:text-[#0A0A0A]">
       <div className="flex">
