@@ -6,13 +6,17 @@ export interface LoginRequest {
 };
 
 export interface LoginData {
-    id: string;
-    name: string;
-    email: string;
-    password: string;
-    google_id?: string | null;
-    createdAt: Date;
-    updatedAt: Date;
+    user: {
+        id: string;
+        name: string;
+        email: string;
+        password: string;
+        google_id?: string | null;
+        createdAt: Date;
+        updatedAt: Date;
+    };
+    token: string;
+    refresh_token: string;
 }
 
 export type LoginResponse = Response<LoginData>;
