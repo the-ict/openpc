@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { validate } from "../middleware/validate.js";
 import { create_model_schema, update_model_schema } from "../validators/model.validator.js";
-import { create_model, update_model } from "../controllers/model.routes.js";
+import { create_model, update_model } from "../controllers/model.controller.js";
 
 const router = Router();
 

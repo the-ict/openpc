@@ -9,7 +9,7 @@ export const login = async(req: Request, res: Response, next: NextFunction) => {
         const user = await prisma.user.findUnique({
             where: {
                 email: email,
-            }
+        }
         });
         
         if (!user) {
