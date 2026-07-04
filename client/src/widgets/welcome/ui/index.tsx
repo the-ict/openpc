@@ -7,6 +7,7 @@ import { SplitText } from 'gsap/SplitText';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import Link from 'next/link';
+import { useMe } from '../lib/hooks';
 
 gsap.registerPlugin(SplitText, ScrollTrigger);
 
@@ -105,6 +106,9 @@ export default function Welcome() {
             });
         });
     });
+
+    const { data } = useMe();
+    console.log(data, "data");
 
     return (
         <div>

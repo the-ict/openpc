@@ -11,3 +11,8 @@ export const register = async (data: RegisterRequest): Promise<RegisterResponse>
     const response = await http.post<RegisterResponse>(AUTH_URLS.REGISTER, data);
     return response.data;
 };
+
+export const me = async () => {
+    const response = await http.get(AUTH_URLS.ME);
+    return response.data;
+}

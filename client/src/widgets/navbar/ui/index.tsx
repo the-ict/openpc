@@ -17,9 +17,11 @@ export default function Navbar() {
   return (
     <div className="flex-between lg:mx-10 py-10" id="home">
       <div>
-        <h1 className={`${solitreo.className} ${solitreo.variable} text-3xl`}>
-          open<span className="text-[#E4E728]">Pc</span>
-        </h1>
+        <Link href={"/"}>
+          <h1 className={`${solitreo.className} ${solitreo.variable} text-3xl`}>
+            open<span className="text-[#E4E728]">Pc</span>
+          </h1>
+        </Link>
       </div>
       <ul className="flex-center gap-12.5">
         <li className="cursor-pointer">

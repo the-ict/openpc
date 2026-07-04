@@ -1,5 +1,6 @@
 import type { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
+
 export const isAuthenticated = (req: Request, res: Response, next: NextFunction) => {
     try {
         const token = req.headers["authorization"]?.split(" ")[1];

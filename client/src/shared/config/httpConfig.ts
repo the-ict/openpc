@@ -3,7 +3,8 @@ import { BASE_URL } from "./URLS";
 import user_store from "../store/user.store";
 
 const http = axios.create({
-    baseURL: BASE_URL
+    baseURL: BASE_URL,
+    withCredentials: true,
 })
 
 http.interceptors.request.use((config) => {

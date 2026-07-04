@@ -18,6 +18,7 @@ model User {
   email     String    @unique
   password  String
   google_id String?   @unique
+  picture   String?
   sessions  Session[]
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt

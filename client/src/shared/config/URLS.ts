@@ -5,6 +5,7 @@ export const AUTH_URLS = {
   REGISTER: "/api/auth/register",
   GOOGLE: "/api/auth/google",
   GOOGLE_CALLBACK: "/api/auth/google/callback",
+  ME: "/api/auth/me",
 } as const;
 
 export const MODEL_URLS = {
