@@ -1,12 +1,12 @@
 import type { NextFunction, Request, Response } from "express";
+import { passport } from "./routers/auth.routes.js";
 import logger from "./utils/loggers.js";
+import session from "express-session";
 import express from "express";
 import helmet from "helmet";
 import dotenv from "dotenv";
 import morgan from "morgan";
 import cors from "cors";
-import session from "express-session";
-import { passport } from "./routers/auth.routes.js";
 
 import authRoutes from "./routers/auth.routes.js";
 import modelRoutes from "./routers/model.routes.js";
@@ -40,6 +40,13 @@ app.use(session({
 
 app.use(passport.initialize());
 app.use(passport.session());
+
+// static files
+app.use("/uploads", express.static("public/uploads", {
+    setHeaders: (res, path) => {
+        res.setHeader('Access-Control-Allow-Origin', '*');
+    }
+}));
 
 // routes
 app.use("/api/auth", authRoutes);

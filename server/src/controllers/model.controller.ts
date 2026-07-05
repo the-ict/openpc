@@ -73,3 +73,16 @@ export const get_models = async (req: Request, res: Response, next: NextFunction
         next(error);
     }
 };
+
+export const delete_model = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        await prisma.model.delete({
+            where: {
+                id: req.params.id as string,
+            }
+        })
+        return res.status(200).json({ message: "Model deleted successfully", ok: true });
+    } catch (error) {
+        next(error);
+    }
+}

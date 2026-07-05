@@ -18,6 +18,8 @@ import { Gamepad2, Search } from "lucide-react";
 import ComponentCard from "./componentCard";
 import { useBuilder } from "../lib/hooks";
 import { MODEL_TYPES } from "@/src/shared/config/api/model/model.model";
+import ModelDetail from "./ModelDetail";
+import { useState } from "react";
 
 interface PropsModalSheet {
   activeBuild: Record<string, number>;
@@ -29,6 +31,8 @@ interface PropsModalSheet {
   setSelectedType: (type: string) => void;
   selectedType: string;
   selectedCategory: string;
+  hasSelectedCase: boolean;
+  onChooseComponent?: (model: any) => void;
 };
 
 export default function ModalShet({ 
@@ -38,8 +42,13 @@ export default function ModalShet({
   setPriceRange, 
   selectedType, 
   setSelectedType,
-  selectedCategory 
+  selectedCategory,
+  hasSelectedCase,
+  onChooseComponent
 }: PropsModalSheet) {
+  const [selectedModel, setSelectedModel] = useState<any>(null);
+  const [isModelDetailOpen, setIsModelDetailOpen] = useState(false);
+
   const categoryToModelType: Record<string, MODEL_TYPES> = {
     'cpu': 'CPU',
     'gpu': 'GPU',
@@ -58,13 +67,25 @@ export default function ModalShet({
     maxPrice: priceRange[1],
   });
 
+  const handleModelClick = (model: any) => {
+    setSelectedModel(model);
+    setIsModelDetailOpen(true);
+  };
+
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
   };
 
   return (
     <div className="flex-3 w-full h-full bg-[#222] px-8 py-5 space-y-7">
-      <form onSubmit={handleSearch} className="flex items-center gap-3 justify-between w-full bg-[#333] px-6 py-3 rounded-full">
+      {!hasSelectedCase && (
+        <div className="bg-[#111] border border-[#333] rounded-lg p-6 text-center">
+          <p className="text-neutral-400 text-sm mb-2">Select a case first</p>
+          <p className="text-neutral-500 text-xs">Choose a case from the Case category to start building your PC</p>
+        </div>
+      )}
+
+      <form onSubmit={handleSearch} className={`flex items-center gap-3 justify-between w-full bg-[#333] px-6 py-3 rounded-full ${!hasSelectedCase ? 'opacity-50 pointer-events-none' : ''}`}>
         <input 
           type="text" 
           value={searchQuery}
@@ -135,12 +156,26 @@ export default function ModalShet({
           <p className="text-neutral-500 text-sm">Loading...</p>
         ) : data?.data && data.data.length > 0 ? (
           data.data.map((model) => (
-            <ComponentCard key={model.id} item={model} />
+            <ComponentCard 
+              key={model.id} 
+              item={model} 
+              onClick={() => handleModelClick(model)}
+              onChoose={onChooseComponent}
+            />
           ))
         ) : (
           <p className="text-neutral-500 text-sm">No models found</p>
         )}
       </div>
+
+      {selectedModel && (
+        <ModelDetail 
+          model={selectedModel} 
+          open={isModelDetailOpen} 
+          onClose={() => setIsModelDetailOpen(false)} 
+          add_to_build={onChooseComponent!}
+        />
+      )}
     </div>
   );
 }

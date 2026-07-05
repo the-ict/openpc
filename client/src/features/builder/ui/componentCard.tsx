@@ -1,23 +1,54 @@
 import { IModel } from "@/src/shared/config/api/model/model.model";
-import { BASE_URL } from "@/src/shared/config/URLS";
+import { UPLOAD_URL } from "@/src/shared/config/URLS";
 
 interface ComponentCardProps {
     item: IModel;
+    onClick?: () => void;
+    onChoose?: (model: IModel) => void;
 };
 
-export default function ComponentCard({ item }: ComponentCardProps) {
-    const imageUrl = item.image.startsWith('http') ? item.image : `${BASE_URL}${item.image}`;
+export default function ComponentCard({ item, onClick, onChoose }: ComponentCardProps) {
+    const imageUrl = UPLOAD_URL + item.image;
 
     return (
-        <div className="bg-[#333] cursor-pointer rounded-lg px-2 py-4 flex items-end gap-4 justify-between">
-            <div className="flex items-start gap-3 h-full">
-                <img src={imageUrl} alt={item.name} className="h-full w-[50%] object-contain" />
-                <div className="flex flex-col items-start gap-3">
-                    <h3 className="font-bold text-white line-clamp-2">{item.name}</h3>
-                    <p className="text-white">{item.price}$</p>
+        <div 
+            onClick={onClick}
+            className="bg-[#1a1a1a] hover:bg-[#222] cursor-pointer rounded-xl p-4 transition-all duration-200 border border-[#333] hover:border-[#555] group"
+        >
+            <div className="flex items-start gap-4">
+                <div className="relative w-24 h-24 flex-shrink-0 bg-[#111] rounded-lg overflow-hidden">
+                    <img 
+                        src={imageUrl} 
+                        alt={item.name} 
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-200" 
+                        crossOrigin="anonymous" 
+                        onError={(e) => {
+                            e.currentTarget.src = '/placeholder.png';
+                        }}
+                    />
+                </div>
+                <div className="flex-1 min-w-0">
+                    <div className="flex items-start justify-between gap-2 mb-2">
+                        <h3 className="font-semibold text-white text-sm line-clamp-2 group-hover:text-[#E4E728] transition-colors">{item.name}</h3>
+                        <span className="text-xs px-2 py-1 rounded bg-[#E4E728]/10 text-[#E4E728] font-medium whitespace-nowrap">
+                            {item.type}
+                        </span>
+                    </div>
+                    <p className="text-neutral-400 text-xs mb-2">{item.brand}</p>
+                    <div className="flex items-center justify-between">
+                        <p className="text-lg font-bold text-[#E4E728]">${item.price}</p>
+                        <button 
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                if (onChoose) onChoose(item);
+                            }}
+                            className="px-3 cursor-pointer py-1.5 bg-[#E4E728] hover:bg-[#C4D335] text-black text-xs font-semibold rounded-lg transition-colors"
+                        >
+                            Choose
+                        </button>
+                    </div>
                 </div>
             </div>
-            <button className="bg-[#E4E728] font-bold text-black px-4 py-2 rounded-lg cursor-pointer">Choose</button>
         </div>
     );
-}
+};

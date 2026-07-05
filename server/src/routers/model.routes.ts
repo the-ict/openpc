@@ -1,12 +1,13 @@
 import { Router } from "express";
 import { validate } from "../middleware/validate.js";
 import { create_model_schema, update_model_schema } from "../validators/model.validator.js";
-import { create_model, update_model, get_models } from "../controllers/model.controller.js";
+import { create_model, update_model, get_models, delete_model } from "../controllers/model.controller.js";
 
 const router = Router();
 
 router.post("/", validate(create_model_schema), create_model);
 router.put("/:id", validate(update_model_schema), update_model);
 router.get("/", get_models);
+router.delete("/:id", delete_model);
 
 export default router;

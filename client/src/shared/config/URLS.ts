@@ -1,4 +1,5 @@
 export const BASE_URL = process.env.NODE_ENV === "production" ? "https://openpc.uz" : "http://localhost:3001";
+export const UPLOAD_URL = process.env.NODE_ENV === "production"? "https://openpc.uz/uploads/" : "http://localhost:3001/uploads/";
 
 export const AUTH_URLS = {
   LOGIN: "/api/auth/login",
