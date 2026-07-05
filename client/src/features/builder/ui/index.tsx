@@ -8,12 +8,13 @@ import React, { useState, useEffect } from 'react';
 import ModalSheet from './modalsSheet';
 import { Loader2 } from 'lucide-react';
 import { IModel } from '@/src/shared/config/api/model/model.model';
+import { OrbitControls } from "@react-three/drei";
 
 interface ComponentBuild {
-  id: string;
-  type: string;
-  modelFile: string;
-  name: string;
+    id: string;
+    type: string;
+    modelFile: string;
+    name: string;
 }
 
 
@@ -75,7 +76,7 @@ export const BuilderPage: React.FC = () => {
                         const isSelected = selectedCategory === req.name.toLowerCase();
                         const isCase = req.name.toLowerCase() === 'case';
                         const isDisabled = !hasSelectedCase && !isCase;
-                        
+
                         return (
                             <button
                                 key={idx}
@@ -88,8 +89,8 @@ export const BuilderPage: React.FC = () => {
                                 className={`shrink-0 flex items-center gap-2 px-4 py-2.5 rounded-xl border text-xs font-medium transition-all duration-200 cursor-pointer ${isDisabled
                                     ? 'bg-neutral-900/30 text-neutral-600 border-neutral-800 cursor-not-allowed opacity-50'
                                     : isSelected
-                                    ? 'bg-neutral-900 text-[#E4E728] border-neutral-800'
-                                    : 'bg-transparent text-neutral-400 border-transparent hover:text-white hover:bg-neutral-900/40'
+                                        ? 'bg-neutral-900 text-[#E4E728] border-neutral-800'
+                                        : 'bg-transparent text-neutral-400 border-transparent hover:text-white hover:bg-neutral-900/40'
                                     }`}
                             >
                                 {req.icon}
@@ -101,15 +102,15 @@ export const BuilderPage: React.FC = () => {
             </header>
 
             <aside className="flex gap-3 items-start h-full w-full">
-                <ModalSheet 
-                    activeBuild={activeBuild} 
-                    setActiveBuild={setActiveBuild} 
-                    priceRange={priceRange} 
-                    setPriceRange={setPriceRange} 
-                    setSelectedType={setSelectedType} 
-                    selectedType={selectedType} 
-                    searchQuery={searchQuery} 
-                    setSearchQuery={setSearchQuery} 
+                <ModalSheet
+                    activeBuild={activeBuild}
+                    setActiveBuild={setActiveBuild}
+                    priceRange={priceRange}
+                    setPriceRange={setPriceRange}
+                    setSelectedType={setSelectedType}
+                    selectedType={selectedType}
+                    searchQuery={searchQuery}
+                    setSearchQuery={setSearchQuery}
                     selectedCategory={selectedCategory}
                     hasSelectedCase={hasSelectedCase}
                     onChooseComponent={handleChooseComponent}
@@ -125,11 +126,12 @@ export const BuilderPage: React.FC = () => {
                             />
                             <directionalLight position={[-5, -5, -5]} intensity={1} />
 
-                            <SceneBuilder 
-                                components={builtComponents} 
+                            <SceneBuilder
+                                components={builtComponents}
                                 focusTarget={focusTarget}
                             />
 
+                            <OrbitControls />
                         </Canvas>
                     ) : (
                         <div className="flex items-center justify-center h-full">
