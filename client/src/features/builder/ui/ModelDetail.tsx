@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import { Canvas } from '@react-three/fiber';
 import * as Dialog from "@radix-ui/react-dialog";
 import { UPLOAD_URL } from "@/src/shared/config/URLS";
@@ -8,6 +8,7 @@ import { Modal, ModalContent } from "@/src/shared/ui/dialog";
 import { IModel } from "@/src/shared/config/api/model/model.model";
 import { Environment, OrbitControls, useGLTF } from '@react-three/drei';
 import { Cpu, HardDrive, Box, Fan, MemoryStick, CardSim, Power } from "lucide-react";
+import { EffectComposer, Bloom } from "@react-three/postprocessing";
 
 interface Props {
     model: IModel;
@@ -28,18 +29,36 @@ const typeIcons: Record<string, any> = {
 };
 
 function Model({ url }: { url: string }) {
-    const { scene } = useGLTF(url);
+    const { scene, materials } = useGLTF(url);
     const cloned = useMemo(() => scene.clone(), [scene]);
+
+    useEffect(() => {
+        Object.values(materials).forEach((mat: any) => {
+            if (mat.envMapIntensity !== undefined) mat.envMapIntensity = 1.8;
+        });
+    }, [materials]);
+
     return <primitive object={cloned} />;
 };
 
 function ModelViewer({ url }: { url: string }) {
     return (
         <div className="w-full h-64 bg-[#111] rounded-lg overflow-hidden">
-            <Canvas camera={{ position: [0, -5, 1] }}>
-                <Environment preset='city' />
-                <OrbitControls enableZoom={true} enablePan={true} enableRotate={true} />
+            <Canvas
+                camera={{ position: [0, 0, 3] }}
+                gl={{ toneMappingExposure: 1.5 }}
+            >
+                <ambientLight intensity={2.5} />
+                <directionalLight position={[10, 10, 5]} intensity={2.5} castShadow />
+                <directionalLight position={[-10, -5, -5]} intensity={1.2} />
+                <Environment preset="city" />
+                <OrbitControls enableZoom enablePan enableRotate />
+
                 <Model url={url} />
+
+                <EffectComposer>
+                    <Bloom intensity={0.6} luminanceThreshold={0.2} mipmapBlur />
+                </EffectComposer>
             </Canvas>
         </div>
     );
