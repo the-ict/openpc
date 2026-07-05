@@ -8,6 +8,7 @@ import ModalSheet from './modalsSheet';
 import { Loader2 } from 'lucide-react';
 import { IModel } from '@/src/shared/config/api/model/model.model';
 import { Environment, OrbitControls } from "@react-three/drei";
+import { Bloom, EffectComposer } from "@react-three/postprocessing";
 
 interface ComponentBuild {
     id: string;
@@ -116,15 +117,18 @@ export const BuilderPage: React.FC = () => {
                 />
                 <main className="flex-10 h-full relative bg-radial from-neutral-900/40 to-[#0A0A0A] w-full">
                     {hasSelectedCase ? (
-                        <Canvas camera={{ position: [0, 0, 5] }}>
-                            <Environment preset="city" />
+                        <Canvas camera={{ position: [0, 0, 5] }} gl={{ toneMappingExposure: 1.5 }}>
+                            <ambientLight intensity={1.5} />
+                            <directionalLight position={[5, 5, 5]} intensity={3} castShadow />
+                            <directionalLight position={[-5, -5, -5]} intensity={1} />
 
-                            <SceneBuilder
-                                components={builtComponents}
-                                focusTarget={focusTarget}
-                            />
+                            <SceneBuilder components={builtComponents} focusTarget={focusTarget} />
 
                             <OrbitControls />
+
+                            <EffectComposer>
+                                <Bloom intensity={0.6} luminanceThreshold={0.2} mipmapBlur />
+                            </EffectComposer>
                         </Canvas>
                     ) : (
                         <div className="flex items-center justify-center h-full">

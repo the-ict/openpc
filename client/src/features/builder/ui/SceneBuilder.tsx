@@ -1,7 +1,7 @@
 "use client";
 
 import { Group, Mesh } from 'three';
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect, useMemo } from 'react';
 import { useGLTF } from '@react-three/drei';
 import { UPLOAD_URL } from '@/src/shared/config/URLS';
 
@@ -29,31 +29,16 @@ const COMPONENT_POSITIONS: Record<string, { position: [number, number, number]; 
 };
 
 function ModelComponent({ component, position, rotation, scale }: { component: ComponentBuild; position: [number, number, number]; rotation: [number, number, number]; scale: [number, number, number] }) {
-  const { nodes, materials } = useGLTF(UPLOAD_URL + component.modelFile);
-  const groupRef = useRef<Group>(null);
+  const { scene, materials } = useGLTF(UPLOAD_URL + component.modelFile);
+  const cloned = useMemo(() => scene.clone(), [scene]);
 
   useEffect(() => {
-    if (groupRef.current) {
-      groupRef.current.position.set(...position);
-      groupRef.current.rotation.set(...rotation);
-      groupRef.current.scale.set(...scale);
-    }
-  }, [component, position, rotation, scale]);
+    Object.values(materials).forEach((mat: any) => {
+      if (mat.envMapIntensity !== undefined) mat.envMapIntensity = 1.8;
+    });
+  }, [materials]);
 
-  return (
-    <group ref={groupRef}>
-      <directionalLight position={[10, 10, 5]} intensity={1.5} />
-      {Array.from({ length: 203 }).map((_, i) => (
-        <mesh
-          key={i}
-          castShadow
-          receiveShadow
-          geometry={(nodes[`defaultMaterial${i === 0 ? '' : `_${i}`}`] as Mesh)?.geometry}
-          material={materials.texturedFacets}
-        />
-      ))}
-    </group>
-  );
+  return <primitive object={cloned} />;
 }
 
 export default function SceneBuilder({ components, focusTarget }: SceneBuilderProps) {
