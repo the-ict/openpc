@@ -2,9 +2,9 @@ import * as React from "react";
 import * as Dialog from "@radix-ui/react-dialog";
 import { Cross2Icon } from "@radix-ui/react-icons";
 
-const Modal = ({ children, props }: { children: React.ReactNode, props?: any }) => {
+const Modal = ({ children, open, onOpenChange, props }: { children: React.ReactNode, open?: boolean, onOpenChange?: (open: boolean) => void, props?: any }) => {
     return (
-        <Dialog.Root {...props}>
+        <Dialog.Root open={open} onOpenChange={onOpenChange} {...props}>
             {children}
         </Dialog.Root>
     )
@@ -28,8 +28,9 @@ const ModalPortal = ({ children, props }: { children: React.ReactNode, props?: a
 
 const ModalContent = ({ children, props }: { children: React.ReactNode, props?: any }) => {
     return (
-        <>
-            <Dialog.Content className="fixed left-1/2 top-1/2 z-50 w-[400px] max-h-[85vh] -translate-x-1/2 -translate-y-1/2 rounded-lg bg-[#111] border border-[#555] p-6 shadow-lg focus:outline-none" {...props}>
+        <Dialog.Portal>
+            <Dialog.Overlay className="fixed inset-0 z-50 bg-black/50 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0" />
+            <Dialog.Content className="fixed left-1/2 top-1/2 z-50 w-[400px] max-h-[85vh] -translate-x-1/2 -translate-y-1/2 rounded-lg bg-[#111] border border-[#555] p-6 shadow-lg focus:outline-none data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[state=closed]:slide-out-to-left-1/2 data-[state=closed]:slide-out-to-top-[48%] data-[state=open]:slide-in-from-left-1/2 data-[state=open]:slide-in-from-top-[48%]" {...props}>
                 {children}
                 <Dialog.Close asChild>
                     <button
@@ -40,7 +41,7 @@ const ModalContent = ({ children, props }: { children: React.ReactNode, props?: 
                     </button>
                 </Dialog.Close>
             </Dialog.Content>
-        </>
+        </Dialog.Portal>
     )
 };
 

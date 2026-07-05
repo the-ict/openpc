@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import * as Dialog from "@radix-ui/react-dialog";
 import { Modal, ModalTrigger, ModalContent } from "@/src/shared/ui/dialog";
 
@@ -11,6 +11,17 @@ interface NewSessionDialogProps {
 
 export default function NewSessionDialog({ onCreateSession, isCreating }: NewSessionDialogProps) {
     const [name, setName] = useState("");
+    const [open, setOpen] = useState(false);
+    const [wasCreating, setWasCreating] = useState(false);
+
+    useEffect(() => {
+        if (isCreating) {
+            setWasCreating(true);
+        } else if (wasCreating) {
+            setOpen(false);
+            setWasCreating(false);
+        }
+    }, [isCreating, wasCreating]);
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
@@ -21,7 +32,7 @@ export default function NewSessionDialog({ onCreateSession, isCreating }: NewSes
     };
 
     return (
-        <Modal>
+        <Modal open={open} onOpenChange={setOpen}>
             <ModalTrigger>
                 <button className="group cursor-pointer bg-linear-to-b from-[#111]/50 to-[#111]/30 border-2 border-dashed border-[#555] hover:border-[#C4D335]/50 rounded-2xl flex flex-col items-center justify-center p-8 text-center transition-all duration-300 min-h-62.5">
                     <div className="w-14 h-14 rounded-full bg-neutral-900 border border-[#555] flex items-center justify-center mb-4 group-hover:scale-110 group-hover:border-[#C4D335]/50 transition-all">
@@ -53,14 +64,13 @@ export default function NewSessionDialog({ onCreateSession, isCreating }: NewSes
                     </div>
 
                     <div className="flex gap-3 pt-2">
-                        <Dialog.Close asChild>
-                            <button
-                                type="button"
-                                className="flex-1 px-4 py-2.5 rounded-xl bg-neutral-800 text-neutral-300 hover:bg-neutral-700 transition-colors font-medium"
-                            >
-                                Bekor qilish
-                            </button>
-                        </Dialog.Close>
+                        <button
+                            type="button"
+                            onClick={() => setOpen(false)}
+                            className="flex-1 px-4 py-2.5 rounded-xl bg-neutral-800 text-neutral-300 hover:bg-neutral-700 transition-colors font-medium"
+                        >
+                            Bekor qilish
+                        </button>
                         <button
                             type="submit"
                             disabled={isCreating || !name.trim()}

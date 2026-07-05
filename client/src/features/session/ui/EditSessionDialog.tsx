@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import * as Dialog from "@radix-ui/react-dialog";
 import { Modal, ModalTrigger, ModalContent } from "@/src/shared/ui/dialog";
 import { ISession } from "@/src/shared/config/api/session/session.model";
@@ -13,8 +13,19 @@ interface Props {
 }
 
 export default function EditSessionDialog({ session, trigger }: Props) {
-    const [name, setName] = useState(session.name);
-    const { updateSession } = useSession();
+    const [name, setName] = useState<string>(session.name);
+    const [open, setOpen] = useState<boolean>(false);
+    const [wasUpdating, setWasUpdating] = useState<boolean>(false);
+    const { updateSession, isUpdatingSession } = useSession();
+
+    useEffect(() => {
+        if (isUpdatingSession) {
+            setWasUpdating(true);
+        } else if (wasUpdating) {
+            setOpen(false);
+            setWasUpdating(false);
+        }
+    }, [isUpdatingSession, wasUpdating]);
 
     const handleUpdateName = () => {
         if (name.trim() && name !== session.name) {
@@ -22,7 +33,7 @@ export default function EditSessionDialog({ session, trigger }: Props) {
         }
     };
     return (
-        <Modal>
+        <Modal open={open} onOpenChange={setOpen}>
             <ModalTrigger>
                 {trigger || (
                     <button className="w-full text-left px-3 py-2 text-sm rounded hover:bg-[#333] transition-colors flex items-center gap-2">
@@ -51,10 +62,10 @@ export default function EditSessionDialog({ session, trigger }: Props) {
                             <button
                                 type="button"
                                 onClick={handleUpdateName}
-                                disabled={name.length <= 0}
-                                className="w-full py-2.5 cursor-pointer rounded-xl bg-linear-to-r from-[#C4D335] to-[#E4E728] text-black font-semibold hover:opacity-90 transition-opacity text-sm"
+                                disabled={name.length <= 0 || isUpdatingSession}
+                                className="w-full py-2.5 cursor-pointer rounded-xl bg-linear-to-r from-[#C4D335] to-[#E4E728] text-black font-semibold hover:opacity-90 transition-opacity text-sm disabled:opacity-50"
                             >
-                                Saqlash
+                                {isUpdatingSession ? "Saqlanmoqda..." : "Saqlash"}
                             </button>
                     </div>
                 </div>

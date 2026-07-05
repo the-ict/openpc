@@ -23,12 +23,12 @@ export default function Session({ session }: Props) {
     };
 
     return (
-        <Link href={"/builder/" + session.id} key={session.id}>
-            <div
-                key={session.id}
-                className="group cursor-pointer bg-[#111]/30 rounded-2xl p-6 transition-all duration-300 flex flex-col justify-between hover:bg-[#111]"
-            >
-                <div>
+        <div
+            key={session.id}
+            className="group cursor-pointer bg-[#111]/30 rounded-2xl p-6 transition-all duration-300 flex flex-col justify-between hover:bg-[#111]"
+        >
+            <div>
+                <Link href={"/builder/" + session.id} key={session.id}>
                     <div className="flex items-start justify-between gap-4 mb-4">
                         <h3 className="font-semibold text-lg text-neutral-200 group-hover:text-white transition-colors">
                             {session.name}
@@ -37,61 +37,61 @@ export default function Session({ session }: Props) {
                             {session.status === 'Completed' ? 'Tugallangan' : 'Jarayonda'}
                         </span>
                     </div>
+                </Link>
 
-                    <div className="space-y-2 bg-neutral-900 border border-[#555] rounded-xl p-3.5 mb-6">
-                        {
-                            session.models.length > 0 ? (
-                                session.models.map((model: IModel
-                                ) => (
-                                    <div key={model.id} className="flex justify-between text-xs">
-                                        <span className="text-neutral-500">{model.name}</span>
-                                        <span className="text-neutral-300 font-medium truncate max-w-45">{model.price}</span>
-                                    </div>
-                                ))
-                            ) : (
-                                <p className="text-neutral-500 text-xs">Hozircha model qo&apos;shilmagan</p>
-                            )
-                        }
-                    </div>
-                </div>
-
-                <div>
-                    <div className="border-t border-[#555] pt-4 flex items-end justify-between">
-                        <div>
-                            <span className="text-[10px] text-neutral-500 block uppercase tracking-wider font-medium">Taxminiy Narxi</span>
-                            <span className="text-base font-bold font-mono text-[#E4E728]">{formatUZS(session.models.reduce((acc: number, model: IModel) => acc + Number(model.price), 0))}</span>
-                        </div>
-                        <DropdownMenu>
-                            <DropdownMenuTrigger>
-                                <EllipsisVertical className='w-4 h-4 text-neutral-500 hover:text-white transition-colors' />
-                            </DropdownMenuTrigger>
-                            <DropdownMenuContent>
-                                <DropdownMenuItem onClick={handleDelete} disabled={isDeletingSession}>
-                                    O&apos;chirish
-                                    <Delete className='w-4 h-4 text-red-400' />
-                                </DropdownMenuItem>
-                                <EditSessionDialog
-                                    session={session}
-                                    trigger={
-                                        <button className="w-full text-left px-3 py-2 text-sm rounded hover:bg-[#333] transition-colors flex items-center gap-2 justify-between cursor-pointer">
-                                            O&apos;zgartirish
-                                            <Edit className='w-4 h-4 text-blue-400' />
-                                        </button>
-                                    }
-                                />
-                                <DropdownMenuItem>
-                                    Ulashish
-                                    <Share className='w-4 h-4 text-green-400' />
-                                </DropdownMenuItem>
-                            </DropdownMenuContent>
-                        </DropdownMenu>
-                    </div>
-
-                    <div className="text-[11px] text-neutral-600 mt-3 font-mono text-right">
-                        Yangilandi: {session.updatedAt.toLocaleString()}
-                    </div>
+                <div className="space-y-2 bg-neutral-900 border border-[#555] rounded-xl p-3.5 mb-6">
+                    {
+                        session.models.length > 0 ? (
+                            session.models.map((model: IModel
+                            ) => (
+                                <div key={model.id} className="flex justify-between text-xs">
+                                    <span className="text-neutral-500">{model.name}</span>
+                                    <span className="text-neutral-300 font-medium truncate max-w-45">{model.price}</span>
+                                </div>
+                            ))
+                        ) : (
+                            <p className="text-neutral-500 text-xs">Hozircha model qo&apos;shilmagan</p>
+                        )
+                    }
                 </div>
             </div>
-        </Link>
+
+            <div>
+                <div className="border-t border-[#555] pt-4 flex items-end justify-between">
+                    <div>
+                        <span className="text-[10px] text-neutral-500 block uppercase tracking-wider font-medium">Taxminiy Narxi</span>
+                        <span className="text-base font-bold font-mono text-[#E4E728]">{formatUZS(session.models.reduce((acc: number, model: IModel) => acc + Number(model.price), 0))}</span>
+                    </div>
+                    <DropdownMenu>
+                        <DropdownMenuTrigger>
+                            <EllipsisVertical className='w-4 h-4 text-neutral-500 hover:text-white transition-colors' />
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent>
+                            <DropdownMenuItem onClick={handleDelete} disabled={isDeletingSession}>
+                                O&apos;chirish
+                                <Delete className='w-4 h-4 text-red-400' />
+                            </DropdownMenuItem>
+                            <EditSessionDialog
+                                session={session}
+                                trigger={
+                                    <button className="w-full text-left px-3 py-2 text-sm rounded hover:bg-[#333] transition-colors flex items-center gap-2 justify-between cursor-pointer">
+                                        O&apos;zgartirish
+                                        <Edit className='w-4 h-4 text-blue-400' />
+                                    </button>
+                                }
+                            />
+                            <DropdownMenuItem>
+                                Ulashish
+                                <Share className='w-4 h-4 text-green-400' />
+                            </DropdownMenuItem>
+                        </DropdownMenuContent>
+                    </DropdownMenu>
+                </div>
+
+                <div className="text-[11px] text-neutral-600 mt-3 font-mono text-right">
+                    Yangilandi: {session.updatedAt.toLocaleString()}
+                </div>
+            </div>
+        </div>
     )
 }
