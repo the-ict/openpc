@@ -9,17 +9,18 @@ export const AUTH_URLS = {
 } as const;
 
 export const MODEL_URLS = {
-  CREATE: "/api/models",
-  UPDATE: "/api/models/:id",
+    CREATE: "/api/models",
+    UPDATE: "/api/models",
+    GET_ALL: "/api/models",
 } as const;
 
 export const SESSION_URLS = {
-  CREATE: "/api/sessions",
-  UPDATE: "/api/sessions/:id",
-  ADD_MODEL: "/api/sessions/:id/models",
-  DELETE: "/api/sessions/:id",
-  GET: "/api/sessions/:id",
-  GET_ALL: "/api/sessions",
+    CREATE: "/api/sessions",
+    UPDATE: "/api/sessions",
+    ADD_MODEL: "/api/sessions/models",
+    DELETE: "/api/sessions",
+    GET: "/api/sessions",
+    GET_ALL: "/api/sessions",
 } as const;
 
 export const UPLOAD_URLS = {

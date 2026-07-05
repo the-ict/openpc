@@ -32,9 +32,9 @@ export default function AddModelDialog({ sessionId, onAddModel, isAdding }: AddM
                 </button>
             </ModalTrigger>
             <ModalContent>
-                <Dialog.Title className="sr-only">Model Qo'shish</Dialog.Title>
+                <Dialog.Title className="sr-only">Model Qo&apos;shish</Dialog.Title>
                 <form onSubmit={handleSubmit} className="space-y-4">
-                    <h2 className="text-xl font-bold text-white">Model Qo'shish</h2>
+                    <h2 className="text-xl font-bold text-white">Model Qo&apos;shish</h2>
                     <div>
                         <label className="block text-sm font-medium text-neutral-300 mb-2">Model ID</label>
                         <input
@@ -51,7 +51,7 @@ export default function AddModelDialog({ sessionId, onAddModel, isAdding }: AddM
                         disabled={isAdding || !modelId.trim()}
                         className="w-full bg-[#C4D335] text-black font-semibold py-2 rounded-full hover:bg-[#b3c22e] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                     >
-                        {isAdding ? "Qo'shilmoqda..." : "Qo'shish"}
+                        {isAdding ? "Qo&apos;shilmoqda..." : "Qo&apos;shish"}
                     </button>
                 </form>
             </ModalContent>

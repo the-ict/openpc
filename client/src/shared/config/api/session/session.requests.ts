@@ -1,6 +1,6 @@
 import http from "../../httpConfig";
 import { SESSION_URLS } from "../../URLS";
-import { AddModelToSessionRequest, AddModelToSessionResponse, CreateSessionRequest, CreateSessionResponse, DeleteSessionResponse, GetSessionResponse, GetSessionsResponse, UpdateSessionRequest, UpdateSessionResponse } from "./session.model";
+import { AddModelToSessionResponse, CreateSessionRequest, CreateSessionResponse, DeleteSessionResponse, GetSessionResponse, GetSessionsResponse, UpdateSessionRequest, UpdateSessionResponse } from "./session.model";
 
 export const create_session = async (data: CreateSessionRequest): Promise<CreateSessionResponse> => {
     const response = await http.post<CreateSessionResponse>(SESSION_URLS.CREATE, data);
@@ -23,7 +23,7 @@ export const get_sessions = async (): Promise<GetSessionsResponse> => {
 };
 
 export const add_model_to_session = async (sessionId: string, modelId: string): Promise<AddModelToSessionResponse> => {
-    const response = await http.post<AddModelToSessionResponse>(`${SESSION_URLS.ADD_MODEL}/${sessionId}/models`, { model_id: modelId });
+    const response = await http.post<AddModelToSessionResponse>(`${SESSION_URLS.ADD_MODEL}/${sessionId}`, { model_id: modelId });
     return response.data;
 };
 

@@ -12,7 +12,7 @@ export const DropdownMenu = ({ children }: { children: React.ReactNode }) => {
 
 export const DropdownMenuTrigger = ({ children }: { children: React.ReactNode }) => {
     return (
-        <RadixDropdownMenu.Trigger>
+        <RadixDropdownMenu.Trigger className="outline-none cursor-pointer">
             {children}
         </RadixDropdownMenu.Trigger>
     )
@@ -21,16 +21,16 @@ export const DropdownMenuTrigger = ({ children }: { children: React.ReactNode })
 export const DropdownMenuContent = ({ children }: { children: React.ReactNode }) => {
     return (
         <RadixDropdownMenu.Portal>
-            <RadixDropdownMenu.Content>
+            <RadixDropdownMenu.Content className="p-2 bg-[#111] text-white rounded-lg border border-[#555] min-w-[180px] z-50">
                 {children}
             </RadixDropdownMenu.Content>
         </RadixDropdownMenu.Portal>
     )
 };
 
-export const DropdownMenuItem = ({children}: {children: React.ReactNode}) => {
+export const DropdownMenuItem = ({children, className, ...props}: {children: React.ReactNode; className?: string} & React.ComponentProps<typeof RadixDropdownMenu.Item>) => {
     return (
-        <RadixDropdownMenu.Item>
+        <RadixDropdownMenu.Item {...props} className={`cursor-pointer flex items-center justify-between gap-3 px-3 py-2 text-sm rounded hover:bg-[#333] transition-colors outline-none ${className || ''}`}>
             {children}
         </RadixDropdownMenu.Item>
     )

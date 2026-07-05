@@ -1,26 +1,18 @@
 "use client";
 
-import { get_sessions, create_session } from "@/src/shared/config/api/session/session.requests";
+import { get_sessions, create_session, delete_session, update_session } from "@/src/shared/config/api/session/session.requests";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import user_store from "@/src/shared/store/user.store";
-import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
 export const useSession = () => {
-    const [loading, setLoading] = useState<boolean>(true);
     const { token } = user_store.getState();
     const queryClient = useQueryClient();
 
-    const { data: sessionsData, error: sessionsError } = useQuery({
+    const { data: sessionsData, error: sessionsError, isFetching } = useQuery({
         queryKey: ["sessions"],
         queryFn: get_sessions,
     });
-
-    useEffect(() => {
-        if (sessionsData !== undefined) {
-            setLoading(false);
-        }
-    }, [sessionsData]);
 
     const createSessionMutation = useMutation({
         mutationKey: ["create_session"],
@@ -34,12 +26,39 @@ export const useSession = () => {
         },
     });
 
+    const deleteSessionMutation = useMutation({
+        mutationKey: ["delete_session"],
+        mutationFn: (id: string) => delete_session(id),
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ["sessions"] });
+            toast.success("Sessiya o&apos;chirildi");
+        },
+        onError: () => {
+            toast.error("Sessiya o&apos;chirishda xatolik");
+        },
+    });
+
+    const updateSessionMutation = useMutation({
+        mutationKey: ["update_session"],
+        mutationFn: ({ id, data }: { id: string; data: { name: string } }) => update_session(id, data),
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ["sessions"] });
+            toast.success("Sessiya yangilandi");
+        },
+        onError: () => {
+            toast.error("Sessiya yangilashda xatolik");
+        },
+    });
     return {
         data: sessionsData,
         error: sessionsError,
-        loading,
+        loading: isFetching,
         token,
         createSession: createSessionMutation.mutate,
         isCreatingSession: createSessionMutation.isPending,
+        deleteSession: deleteSessionMutation.mutate,
+        isDeletingSession: deleteSessionMutation.isPending,
+        updateSession: updateSessionMutation.mutate,
+        isUpdatingSession: updateSessionMutation.isPending,
     };
 };

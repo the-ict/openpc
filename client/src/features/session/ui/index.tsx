@@ -7,10 +7,8 @@ import SessionSearch from './SessionSearch';
 import NewSessionDialog from './NewSessionDialog';
 import { ISession } from '@/src/shared/config/api/session/session.model';
 
-export default function index() {
+export default function Index() {
   const { data, error, loading, token, createSession, isCreatingSession} = useSession();
-
-  console.log('data: ', data);
 
   if (!loading && error && !token) {
     return null;
@@ -26,7 +24,7 @@ export default function index() {
               <p className="text-3xl font-bold mt-2 text-[#FFFFFF] font-mono">{data?.data.length || 0}</p>
             </div>
             <div className="bg-[#111] rounded-2xl p-6">
-              <span className="text-xs text-neutral-500 font-medium uppercase tracking-wider">O'rtacha Narx</span>
+              <span className="text-xs text-neutral-500 font-medium uppercase tracking-wider">O&apos;rtacha Narx</span>
               <p className="text-3xl font-bold mt-2 text-[#E4E728] font-mono">{formatUZS(Array.isArray(data?.data) ? data?.data.reduce((acc, session) => acc + session.models.reduce((mAcc, model) => mAcc + Number(model.price), 0), 0) / (data.data.length || 1) : 0)}</p>
             </div>
             <div className="bg-[#111]  rounded-2xl p-6 sm:col-span-2 lg:col-span-1">

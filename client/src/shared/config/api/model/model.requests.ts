@@ -1,15 +1,20 @@
 import http from "../../httpConfig";
 import { MODEL_URLS } from "../../URLS";
-import { CreateModelRequest, CreateModelResponse } from "./model.model";
+import { CreateModelRequest, CreateModelResponse, IModel } from "./model.model";
 
-export const create_model = async (data: CreateModelRequest): Promise<CreateModelResponse> => {
+export const create_model = async (data: CreateModelRequest) => {
     const response = await http.post(MODEL_URLS.CREATE, data);
     return response.data as CreateModelResponse;
 };
 
 export const update_model = async ({
     id, data
-}: { id: string, data: CreateModelRequest }): Promise<CreateModelResponse> => {
+}: { id: string, data: CreateModelRequest }) => {
     const response = await http.put(`${MODEL_URLS.UPDATE}/${id}`, data);
     return response.data as CreateModelResponse;
+};
+
+export const get_models = async () => {
+    const response = await http.get<{ data: IModel[] }>(MODEL_URLS.GET_ALL);
+    return response.data;
 };
