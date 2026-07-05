@@ -4,7 +4,6 @@ import { formatUZS } from '../lib/fnc';
 import { useSession } from '../lib/hooks';
 import SessionSearch from './SessionSearch';
 import NewSessionDialog from './NewSessionDialog';
-import AddModelDialog from './AddModelDialog';
 import { ISession } from '@/src/shared/config/api/session/session.model';
 import { IModel } from '@/src/shared/config/api/model/model.model';
 import { Share2 } from 'lucide-react';
@@ -84,7 +83,6 @@ export default function index() {
                 </div>
               </div>
             ))}
-
             <NewSessionDialog onCreateSession={createSession} isCreating={isCreatingSession} />
           </div>
         </main>
