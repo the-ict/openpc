@@ -74,7 +74,7 @@ export default function NewSessionDialog({ onCreateSession, isCreating }: NewSes
                         <button
                             type="submit"
                             disabled={isCreating || !name.trim()}
-                            className="flex-1 px-4 py-2.5 rounded-xl bg-gradient-to-r from-[#C4D335] to-[#E4E728] text-black font-semibold hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed"
+                            className="flex-1 px-4 py-2.5 rounded-xl bg-linear-to-r from-[#C4D335] to-[#E4E728] text-black font-semibold hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed"
                         >
                             {isCreating ? "Yaratilmoqda..." : "Yaratish"}
                         </button>

@@ -16,7 +16,7 @@ export default function ComponentCard({ item, onClick, onChoose }: ComponentCard
             className="bg-[#1a1a1a] hover:bg-[#222] cursor-pointer rounded-xl p-4 transition-all duration-200 border border-[#333] hover:border-[#555] group"
         >
             <div className="flex items-start gap-4">
-                <div className="relative w-24 h-24 flex-shrink-0 bg-[#111] rounded-lg overflow-hidden">
+                <div className="relative w-24 h-24 shrink-0 bg-[#111] rounded-lg overflow-hidden">
                     <img 
                         src={imageUrl} 
                         alt={item.name} 

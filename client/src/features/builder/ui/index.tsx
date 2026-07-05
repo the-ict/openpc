@@ -61,7 +61,7 @@ export const BuilderPage: React.FC = () => {
     return (
         <div className="flex h-screen w-screen bg-[#0A0A0A] text-[#FFFFFF] overflow-hidden font-sans select-none antialiased flex-col items-start">
             {isLoading && (
-                <div className="fixed inset-0 z-[100] bg-[#0A0A0A] flex items-center justify-center">
+                <div className="fixed inset-0 z-100 bg-[#0A0A0A] flex items-center justify-center">
                     <div className="flex flex-col items-center gap-4">
                         <Loader2 className="w-12 h-12 text-[#E4E728] animate-spin" />
                         <p className="text-neutral-400 text-sm">Loading builder...</p>

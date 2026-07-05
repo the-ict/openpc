@@ -21,7 +21,7 @@ export const DropdownMenuTrigger = ({ children }: { children: React.ReactNode })
 export const DropdownMenuContent = ({ children }: { children: React.ReactNode }) => {
     return (
         <RadixDropdownMenu.Portal>
-            <RadixDropdownMenu.Content className="p-2 bg-[#111] text-white rounded-lg border border-[#555] min-w-[180px] z-50">
+            <RadixDropdownMenu.Content className="p-2 bg-[#111] text-white rounded-lg border border-[#555] min-w-45 z-50">
                 {children}
             </RadixDropdownMenu.Content>
         </RadixDropdownMenu.Portal>
