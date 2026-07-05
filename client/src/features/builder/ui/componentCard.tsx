@@ -1,17 +1,17 @@
+import { IModel } from "@/src/shared/config/api/model/model.model";
+import { BASE_URL } from "@/src/shared/config/URLS";
+
 interface ComponentCardProps {
-    item: {
-        id: number;
-        name: string;
-        img: string;
-        price: number;
-    };
+    item: IModel;
 };
 
 export default function ComponentCard({ item }: ComponentCardProps) {
+    const imageUrl = item.image.startsWith('http') ? item.image : `${BASE_URL}${item.image}`;
+
     return (
         <div className="bg-[#333] cursor-pointer rounded-lg px-2 py-4 flex items-end gap-4 justify-between">
             <div className="flex items-start gap-3 h-full">
-                <img src={item.img} alt={item.name} className="h-full w-[50%] object-contain" />
+                <img src={imageUrl} alt={item.name} className="h-full w-[50%] object-contain" />
                 <div className="flex flex-col items-start gap-3">
                     <h3 className="font-bold text-white line-clamp-2">{item.name}</h3>
                     <p className="text-white">{item.price}$</p>

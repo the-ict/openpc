@@ -36,3 +36,40 @@ export const update_model = async (req: Request, res: Response, next: NextFuncti
         next(error);
     }
 };
+
+export const get_models = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const { search, type, minPrice, maxPrice } = req.query;
+
+        const where: any = {};
+
+        if (search) {
+            where.OR = [
+                { name: { contains: search as string, mode: 'insensitive' } },
+                { brand: { contains: search as string, mode: 'insensitive' } },
+            ];
+        }
+
+        if (type) {
+            where.type = type as string;
+        }
+
+        if (minPrice || maxPrice) {
+            where.price = {};
+            if (minPrice) {
+                where.price.gte = Number(minPrice);
+            }
+            if (maxPrice) {
+                where.price.lte = Number(maxPrice);
+            }
+        }
+
+        const models = await prisma.model.findMany({
+            where,
+        });
+
+        return res.status(200).json({ message: "Models fetched successfully", ok: true, data: models });
+    } catch (error) {
+        next(error);
+    }
+};

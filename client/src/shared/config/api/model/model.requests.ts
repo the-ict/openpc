@@ -14,7 +14,7 @@ export const update_model = async ({
     return response.data as CreateModelResponse;
 };
 
-export const get_models = async () => {
-    const response = await http.get<{ data: IModel[] }>(MODEL_URLS.GET_ALL);
+export const get_models = async (params?: { search?: string; type?: string; minPrice?: number; maxPrice?: number }) => {
+    const response = await http.get<{ data: IModel[] }>(MODEL_URLS.GET_ALL, { params });
     return response.data;
 };

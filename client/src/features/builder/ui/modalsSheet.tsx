@@ -16,7 +16,8 @@ import {
 import { IconMoneybagHeart } from "@tabler/icons-react";
 import { Gamepad2, Search } from "lucide-react";
 import ComponentCard from "./componentCard";
-import { cpuModels } from "../lib/data";
+import { useBuilder } from "../lib/hooks";
+import { MODEL_TYPES } from "@/src/shared/config/api/model/model.model";
 
 interface PropsModalSheet {
   activeBuild: Record<string, number>;
@@ -27,13 +28,50 @@ interface PropsModalSheet {
   setSearchQuery: (query: string) => void;
   setSelectedType: (type: string) => void;
   selectedType: string;
+  selectedCategory: string;
 };
 
-export default function ModalShet({}: PropsModalSheet) {
+export default function ModalShet({ 
+  searchQuery, 
+  setSearchQuery, 
+  priceRange, 
+  setPriceRange, 
+  selectedType, 
+  setSelectedType,
+  selectedCategory 
+}: PropsModalSheet) {
+  const categoryToModelType: Record<string, MODEL_TYPES> = {
+    'cpu': 'CPU',
+    'gpu': 'GPU',
+    'ram': 'RAM',
+    'storage': 'STORAGE',
+    'motherboard': 'MOTHER_BOARD',
+    'power supply': 'POWER_SUPPLY',
+    'case': 'CASE',
+    'cooling': 'COOLER',
+  };
+
+  const { data, loading } = useBuilder({
+    search: searchQuery,
+    type: selectedCategory === 'all' ? undefined : categoryToModelType[selectedCategory],
+    minPrice: priceRange[0],
+    maxPrice: priceRange[1],
+  });
+
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+  };
+
   return (
     <div className="flex-3 w-full h-full bg-[#222] px-8 py-5 space-y-7">
-      <form className="flex items-center gap-3 justify-between w-full bg-[#333] px-6 py-3 rounded-full">
-        <input type="text" className="h-full w-full bg-transparent outline-none border-none" placeholder="type of the thing you want!." />
+      <form onSubmit={handleSearch} className="flex items-center gap-3 justify-between w-full bg-[#333] px-6 py-3 rounded-full">
+        <input 
+          type="text" 
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
+          className="h-full w-full bg-transparent outline-none border-none" 
+          placeholder="type of the thing you want!." 
+        />
         <button type="submit" className="cursor-pointer"><Search /></button>
       </form>
       <div className="flex items-center gap-3 justify-between w-full">
@@ -48,8 +86,20 @@ export default function ModalShet({}: PropsModalSheet) {
               <PopoverTitle className="text-neutral-200">Change the price</PopoverTitle>
             </PopoverHeader>
             <div className="flex flex-col items-start justify-between gap-3">
-              <input type="text" placeholder="From" className="flex-1 bg-neutral-900 border border-neutral-800 rounded-lg px-3 py-2 text-sm text-neutral-200 placeholder-neutral-500 outline-none focus:border-neutral-700 w-full" />
-              <input type="text" placeholder="To" className="flex-1 bg-neutral-900 border border-neutral-800 rounded-lg px-3 py-2 text-sm text-neutral-200 placeholder-neutral-500 outline-none focus:border-neutral-700 w-full" />
+              <input 
+                type="number" 
+                placeholder="From" 
+                value={priceRange[0] || ''}
+                onChange={(e) => setPriceRange([Number(e.target.value) || 0, priceRange[1]])}
+                className="flex-1 bg-neutral-900 border border-neutral-800 rounded-lg px-3 py-2 text-sm text-neutral-200 placeholder-neutral-500 outline-none focus:border-neutral-700 w-full" 
+              />
+              <input 
+                type="number" 
+                placeholder="To" 
+                value={priceRange[1] || ''}
+                onChange={(e) => setPriceRange([priceRange[0], Number(e.target.value) || 5000])}
+                className="flex-1 bg-neutral-900 border border-neutral-800 rounded-lg px-3 py-2 text-sm text-neutral-200 placeholder-neutral-500 outline-none focus:border-neutral-700 w-full" 
+              />
             </div>
           </PopoverContent>
         </Popover>
@@ -63,12 +113,13 @@ export default function ModalShet({}: PropsModalSheet) {
             <PopoverHeader>
               <PopoverTitle className="text-neutral-200">Select the type you want?</PopoverTitle>
             </PopoverHeader>
-            <Select>
+            <Select value={selectedType} onValueChange={setSelectedType}>
               <SelectTrigger className="w-full bg-neutral-900 border border-neutral-800 text-neutral-200">
                 <SelectValue placeholder="Select type" />
               </SelectTrigger>
               <SelectContent className="bg-[#0A0A0A] border border-neutral-800 w-full">
                 <SelectGroup className="w-full">
+                  <SelectItem value="all" className="text-neutral-200 focus:bg-neutral-900">All</SelectItem>
                   <SelectItem value="gaming" className="text-neutral-200 focus:bg-neutral-900">Gaming</SelectItem>
                   <SelectItem value="budget" className="text-neutral-200 focus:bg-neutral-900">Budget</SelectItem>
                   <SelectItem value="work" className="text-neutral-200 focus:bg-neutral-900">Work</SelectItem>
@@ -80,11 +131,15 @@ export default function ModalShet({}: PropsModalSheet) {
         </Popover>
       </div>
       <div className="space-y-5">
-        {
-          cpuModels.map((cpu) => (
-            <ComponentCard key={cpu.id} item={cpu} />
+        {loading ? (
+          <p className="text-neutral-500 text-sm">Loading...</p>
+        ) : data?.data && data.data.length > 0 ? (
+          data.data.map((model) => (
+            <ComponentCard key={model.id} item={model} />
           ))
-        }
+        ) : (
+          <p className="text-neutral-500 text-sm">No models found</p>
+        )}
       </div>
     </div>
   );

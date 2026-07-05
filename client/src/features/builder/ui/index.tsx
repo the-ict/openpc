@@ -43,7 +43,7 @@ export const BuilderPage: React.FC = () => {
             </header>
 
             <aside className="flex gap-3 items-start h-full w-full">
-                <ModalSheet activeBuild={activeBuild} setActiveBuild={setActiveBuild} priceRange={priceRange} setPriceRange={setPriceRange} setSelectedType={setSelectedType} selectedType={selectedType} searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
+                <ModalSheet activeBuild={activeBuild} setActiveBuild={setActiveBuild} priceRange={priceRange} setPriceRange={setPriceRange} setSelectedType={setSelectedType} selectedType={selectedType} searchQuery={searchQuery} setSearchQuery={setSearchQuery} selectedCategory={selectedCategory} />
                 <main className="flex-10 h-full relative bg-radial from-neutral-900/40 to-[#0A0A0A] w-full">
                     <Canvas camera={{ position: [0, 0, 5] }}>
                         <ambientLight intensity={1.5} />
