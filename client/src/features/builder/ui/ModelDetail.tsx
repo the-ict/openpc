@@ -1,19 +1,19 @@
 "use client";
 
-import type { Mesh } from 'three';
+import { useMemo } from 'react';
 import { Canvas } from '@react-three/fiber';
 import * as Dialog from "@radix-ui/react-dialog";
 import { UPLOAD_URL } from "@/src/shared/config/URLS";
-import { OrbitControls, useGLTF } from '@react-three/drei';
 import { Modal, ModalContent } from "@/src/shared/ui/dialog";
 import { IModel } from "@/src/shared/config/api/model/model.model";
+import { Environment, OrbitControls, useGLTF } from '@react-three/drei';
 import { Cpu, HardDrive, Box, Fan, MemoryStick, CardSim, Power } from "lucide-react";
 
 interface Props {
     model: IModel;
     open: boolean;
     onClose: () => void;
-    add_to_build: (model : any) => void;
+    add_to_build: (model: any) => void;
 };
 
 const typeIcons: Record<string, any> = {
@@ -28,31 +28,16 @@ const typeIcons: Record<string, any> = {
 };
 
 function Model({ url }: { url: string }) {
-    const { nodes, materials } = useGLTF(url);
-
-    return (
-        <group>
-            {Array.from({ length: 203 }).map((_, i) => (
-                <mesh
-                    key={i}
-                    castShadow
-                    receiveShadow
-                    geometry={(nodes[`defaultMaterial${i === 0 ? '' : `_${i}`}`] as Mesh)?.geometry}
-                    material={materials.texturedFacets}
-                />
-            ))}
-        </group>
-    );
+    const { scene } = useGLTF(url);
+    const cloned = useMemo(() => scene.clone(), [scene]);
+    return <primitive object={cloned} />;
 };
 
 function ModelViewer({ url }: { url: string }) {
     return (
         <div className="w-full h-64 bg-[#111] rounded-lg overflow-hidden">
-            <Canvas camera={{ position: [0, 0, 3] }}>
-                <ambientLight intensity={1} />
-                <directionalLight position={[10, 10, 5]} intensity={1.5} castShadow />
-                <pointLight position={[5, 5, 5]} intensity={1} />
-                <spotLight position={[10, 10, 10]} angle={0.3} penumbra={1} intensity={1} castShadow />
+            <Canvas camera={{ position: [0, -5, 1] }}>
+                <Environment preset='city' />
                 <OrbitControls enableZoom={true} enablePan={true} enableRotate={true} />
                 <Model url={url} />
             </Canvas>
@@ -69,7 +54,7 @@ export default function ModelDetail({ model, open, onClose, add_to_build }: Prop
         <Modal open={open} onOpenChange={onClose}>
             <ModalContent className="w-[40vw] max-h-[90vh] overflow-y-auto">
                 <Dialog.Title className="sr-only">Model Details</Dialog.Title>
-                
+
                 <div className="space-y-6">
                     <div className="flex items-start justify-between">
                         <div className="flex items-center gap-3">
@@ -90,9 +75,9 @@ export default function ModelDetail({ model, open, onClose, add_to_build }: Prop
 
                     <div>
                         <h3 className="text-sm font-medium text-neutral-400 uppercase tracking-wider mb-3">Product Image</h3>
-                        <img 
-                            src={imageUrl} 
-                            alt={model.name} 
+                        <img
+                            src={imageUrl}
+                            alt={model.name}
                             className="w-full h-48 object-cover rounded-lg"
                             crossOrigin="anonymous"
                         />
@@ -118,7 +103,7 @@ export default function ModelDetail({ model, open, onClose, add_to_build }: Prop
                     </div>
 
                     <div className="flex gap-3 pt-4 border-t border-[#333]">
-                        <button 
+                        <button
                             onClick={onClose}
                             className="cursor-pointer flex-1 px-4 py-3 rounded-xl bg-neutral-800 text-neutral-300 hover:bg-neutral-700 transition-colors font-medium"
                         >

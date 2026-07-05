@@ -1,6 +1,5 @@
 "use client";
 
-import CameraController from "./CameraController";
 import SceneBuilder from "./SceneBuilder";
 import { Canvas } from '@react-three/fiber';
 import { requirements } from '../lib/data';
@@ -8,7 +7,7 @@ import React, { useState, useEffect } from 'react';
 import ModalSheet from './modalsSheet';
 import { Loader2 } from 'lucide-react';
 import { IModel } from '@/src/shared/config/api/model/model.model';
-import { OrbitControls } from "@react-three/drei";
+import { Environment, OrbitControls } from "@react-three/drei";
 
 interface ComponentBuild {
     id: string;
@@ -118,13 +117,7 @@ export const BuilderPage: React.FC = () => {
                 <main className="flex-10 h-full relative bg-radial from-neutral-900/40 to-[#0A0A0A] w-full">
                     {hasSelectedCase ? (
                         <Canvas camera={{ position: [0, 0, 5] }}>
-                            <ambientLight intensity={1.5} />
-                            <directionalLight
-                                position={[5, 5, 5]}
-                                intensity={3}
-                                castShadow
-                            />
-                            <directionalLight position={[-5, -5, -5]} intensity={1} />
+                            <Environment preset="city" />
 
                             <SceneBuilder
                                 components={builtComponents}
