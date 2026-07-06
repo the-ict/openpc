@@ -1,1 +1,1 @@
-1. Replace gtf with the model_file_code.
+1. Using bounding box #done (used at modedetail page), (now trying to use it at main builder page. used)

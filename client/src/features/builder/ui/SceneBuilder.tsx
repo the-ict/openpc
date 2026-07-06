@@ -1,7 +1,6 @@
 "use client";
 
-import { Group, Mesh } from 'three';
-import { useRef, useEffect, useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import { useGLTF } from '@react-three/drei';
 import { UPLOAD_URL } from '@/src/shared/config/URLS';
 
@@ -28,7 +27,7 @@ const COMPONENT_POSITIONS: Record<string, { position: [number, number, number]; 
   cooler: { position: [0, 1.0, 0], rotation: [0, 0, 0], scale: [0.4, 0.4, 0.4] },
 };
 
-function ModelComponent({ component, position, rotation, scale }: { component: ComponentBuild; position: [number, number, number]; rotation: [number, number, number]; scale: [number, number, number] }) {
+function ModelComponent({ component }: { component: ComponentBuild; position: [number, number, number]; rotation: [number, number, number]; scale: [number, number, number] }) {
   const { scene, materials } = useGLTF(UPLOAD_URL + component.modelFile);
   const cloned = useMemo(() => scene.clone(), [scene]);
 

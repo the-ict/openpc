@@ -7,8 +7,8 @@ export const isAuthenticated = (req: Request, res: Response, next: NextFunction)
 
         if (!token) {
             return res.status(401).json({ message: "Unauthorized", ok: false });
-
         };
+
         const decoded = jwt.verify(token, process.env.JWT_SECRET!) as { id: string };
 
         if (!decoded) {
@@ -16,7 +16,6 @@ export const isAuthenticated = (req: Request, res: Response, next: NextFunction)
         };
 
         req.user = decoded;
-        console.log("req_user: ", decoded);
         next();
     } catch (error) {
         next(error);

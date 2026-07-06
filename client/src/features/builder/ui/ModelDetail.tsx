@@ -6,9 +6,9 @@ import * as Dialog from "@radix-ui/react-dialog";
 import { UPLOAD_URL } from "@/src/shared/config/URLS";
 import { Modal, ModalContent } from "@/src/shared/ui/dialog";
 import { IModel } from "@/src/shared/config/api/model/model.model";
-import { Environment, OrbitControls, useGLTF } from '@react-three/drei';
-import { Cpu, HardDrive, Box, Fan, MemoryStick, CardSim, Power } from "lucide-react";
 import { EffectComposer, Bloom } from "@react-three/postprocessing";
+import { Environment, OrbitControls, useGLTF, Bounds } from '@react-three/drei';
+import { Cpu, HardDrive, Box, Fan, MemoryStick, CardSim, Power } from "lucide-react";
 
 interface Props {
     model: IModel;
@@ -43,9 +43,8 @@ function Model({ url }: { url: string }) {
 
 function ModelViewer({ url }: { url: string }) {
     return (
-        <div className="w-full h-64 bg-[#111] rounded-lg overflow-hidden">
+        <div className="w-full h-64 bg-[#fff] rounded-lg overflow-hidden">
             <Canvas
-                camera={{ position: [0, 0, 3] }}
                 gl={{ toneMappingExposure: 1.5 }}
             >
                 <ambientLight intensity={2.5} />
@@ -54,7 +53,9 @@ function ModelViewer({ url }: { url: string }) {
                 <Environment preset="city" />
                 <OrbitControls enableZoom enablePan enableRotate />
 
-                <Model url={url} />
+                <Bounds fit clip observe margin={1.2}>
+                    <Model url={url} />
+                </Bounds>
 
                 <EffectComposer>
                     <Bloom intensity={0.6} luminanceThreshold={0.2} mipmapBlur />

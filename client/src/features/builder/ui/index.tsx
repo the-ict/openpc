@@ -1,21 +1,21 @@
 "use client";
 
-import SceneBuilder from "./SceneBuilder";
-import { Canvas } from '@react-three/fiber';
-import { requirements } from '../lib/data';
-import React, { useState, useEffect } from 'react';
 import ModalSheet from './modalsSheet';
 import { Loader2 } from 'lucide-react';
-import { IModel } from '@/src/shared/config/api/model/model.model';
-import { Environment, OrbitControls } from "@react-three/drei";
+import SceneBuilder from "./SceneBuilder";
+import { requirements } from '../lib/data';
+import { Bounds } from "@react-three/drei";
+import { Canvas } from '@react-three/fiber';
+import React, { useState, useEffect } from 'react';
 import { Bloom, EffectComposer } from "@react-three/postprocessing";
+import { IModel } from '@/src/shared/config/api/model/model.model';
 
 interface ComponentBuild {
     id: string;
     type: string;
     modelFile: string;
     name: string;
-}
+};
 
 
 export const BuilderPage: React.FC = () => {
@@ -117,14 +117,14 @@ export const BuilderPage: React.FC = () => {
                 />
                 <main className="flex-10 h-full relative bg-radial from-neutral-900/40 to-[#0A0A0A] w-full">
                     {hasSelectedCase ? (
-                        <Canvas camera={{ position: [0, 0, 5] }} gl={{ toneMappingExposure: 1.5 }}>
+                        <Canvas gl={{ toneMappingExposure: 1.5 }}>
                             <ambientLight intensity={1.5} />
                             <directionalLight position={[5, 5, 5]} intensity={3} castShadow />
                             <directionalLight position={[-5, -5, -5]} intensity={1} />
 
-                            <SceneBuilder components={builtComponents} focusTarget={focusTarget} />
-
-                            <OrbitControls />
+                            <Bounds fit clip observe margin={1.2}>
+                                <SceneBuilder components={builtComponents} focusTarget={focusTarget} />
+                            </Bounds>
 
                             <EffectComposer>
                                 <Bloom intensity={0.6} luminanceThreshold={0.2} mipmapBlur />
