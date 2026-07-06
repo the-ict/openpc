@@ -106,8 +106,8 @@ export default function SceneBuilder({ components }: SceneBuilderProps) {
 
       {other_components.length > 0 && (
         other_components.map((component, index) => {
-          const socket = socket_points[component.type];
-          console.log("component type: ", component.type);
+          const socket = socket_points[component.type.toUpperCase() as keyof typeof socket_points];
+          console.log("component type: ", component.type.toUpperCase());
           console.log("socket of the component: ", socket);
 
           if (!socket) {
@@ -121,7 +121,7 @@ export default function SceneBuilder({ components }: SceneBuilderProps) {
               set_component_refs={set_component_refs}
               position={socket.position}
               rotation={socket.rotation}
-              scale={[1, 1, 1]}
+              scale={[0.1, 0.1, 0.1]}
             />
           )
         })
