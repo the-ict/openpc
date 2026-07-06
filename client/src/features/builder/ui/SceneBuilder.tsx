@@ -45,7 +45,7 @@ function ModelComponent({ component, set_component_refs, position, scale, rotati
       if (child.isMesh && child.material) {
         child.material = child.material.clone();
         if (child.material.envMapIntensity !== undefined) {
-          child.material.envMapIntensity = 1.8;
+          child.material.envMapIntensity = 0.01;
         }
       }
     });
@@ -107,6 +107,9 @@ export default function SceneBuilder({ components }: SceneBuilderProps) {
       {other_components.length > 0 && (
         other_components.map((component, index) => {
           const socket = socket_points[component.type];
+          console.log("component type: ", component.type);
+          console.log("socket of the component: ", socket);
+
           if (!socket) {
             console.warn(`Socket topilmadi: socket_${component.type}. Artist bu nomni case'ga qo'shganmi?`);
           };

@@ -1,13 +1,9 @@
 "use client";
 
-import { useEffect, useMemo, Suspense } from 'react';
-import { Canvas } from '@react-three/fiber';
 import * as Dialog from "@radix-ui/react-dialog";
 import { UPLOAD_URL } from "@/src/shared/config/URLS";
 import { Modal, ModalContent } from "@/src/shared/ui/dialog";
 import { IModel } from "@/src/shared/config/api/model/model.model";
-import { EffectComposer, Bloom } from "@react-three/postprocessing";
-import { Environment, OrbitControls, useGLTF, Bounds } from '@react-three/drei';
 import { Cpu, HardDrive, Box, Fan, MemoryStick, CardSim, Power } from "lucide-react";
 
 interface Props {
@@ -28,56 +24,8 @@ const typeIcons: Record<string, any> = {
     CASE: Box,
 };
 
-function Model({ url }: { url: string }) {
-    const { scene, materials } = useGLTF(url);
-
-    console.log("url: ", url);
-    const cloned = useMemo(() => scene.clone(), [scene]);
-
-    useEffect(() => {
-        Object.values(materials).forEach((mat: any) => {
-            if (mat.envMapIntensity !== undefined) mat.envMapIntensity = 1.8;
-        });
-    }, [materials]);
-
-    return <primitive object={cloned} />;
-};
-
-function ModelViewer({ url }: { url: string }) {
-    return (
-        <div className="w-full h-64 bg-[#fff] rounded-lg overflow-hidden">
-            <Canvas
-                gl={{ 
-                    toneMappingExposure: 1.5,
-                    antialias: true,
-                    alpha: true,
-                    preserveDrawingBuffer: true
-                }}
-                dpr={[1, 2]}
-            >
-                <ambientLight intensity={2.5} />
-                <directionalLight position={[10, 10, 5]} intensity={2.5} castShadow />
-                <directionalLight position={[-10, -5, -5]} intensity={1.2} />
-                <Environment preset="city" />
-                <OrbitControls enableZoom enablePan enableRotate />
-
-                <Suspense fallback={null}>
-                    <Bounds fit clip observe margin={1.2}>
-                        <Model url={url} />
-                    </Bounds>
-                </Suspense>
-
-                <EffectComposer>
-                    <Bloom intensity={0.6} luminanceThreshold={0.2} mipmapBlur />
-                </EffectComposer>
-            </Canvas>
-        </div>
-    );
-}
-
 export default function ModelDetail({ model, open, onClose, add_to_build }: Props) {
     const imageUrl = UPLOAD_URL + model.image;
-    const modelFileUrl = UPLOAD_URL + model.model_file;
     const TypeIcon = typeIcons[model.type] || Box;
 
     return (
@@ -98,10 +46,6 @@ export default function ModelDetail({ model, open, onClose, add_to_build }: Prop
                         </div>
                     </div>
 
-                    <div>
-                        <h3 className="text-sm font-medium text-neutral-400 uppercase tracking-wider mb-3">3D Preview</h3>
-                        <ModelViewer url={modelFileUrl} />
-                    </div>
 
                     <div>
                         <h3 className="text-sm font-medium text-neutral-400 uppercase tracking-wider mb-3">Product Image</h3>
