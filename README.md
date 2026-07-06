@@ -1,1 +1,2 @@
 1. Using bounding box #done (used at modedetail page), (now trying to use it at main builder page. used)
+2. Nested transform / World Position — sizning strukturangiz uchun kritik use this and make adding new component inside of something works #pending

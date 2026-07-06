@@ -35,6 +35,8 @@ function ModelComponent({ component }: { component: ComponentBuild; position: [n
     Object.values(materials).forEach((mat: any) => {
       if (mat.envMapIntensity !== undefined) mat.envMapIntensity = 1.8;
     });
+
+    cloned.rotation.x = 0.5;
   }, [materials]);
 
   return <primitive object={cloned} />;

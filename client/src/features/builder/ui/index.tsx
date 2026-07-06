@@ -2,8 +2,8 @@
 
 import ModalSheet from './modalsSheet';
 import { Loader2 } from 'lucide-react';
-import SceneBuilder from "./SceneBuilder";
 import { requirements } from '../lib/data';
+import SceneBuilder from "./SceneBuilder";
 import { Bounds } from "@react-three/drei";
 import { Canvas } from '@react-three/fiber';
 import React, { useState, useEffect } from 'react';
@@ -19,15 +19,15 @@ interface ComponentBuild {
 
 
 export const BuilderPage: React.FC = () => {
-    const [selectedCategory, setSelectedCategory] = useState<string>('case');
+    const [builtComponents, setBuiltComponents] = useState<ComponentBuild[]>([]);
     const [activeBuild, setActiveBuild] = useState<Record<string, number>>({});
+    const [selectedCategory, setSelectedCategory] = useState<string>('case');
     const [priceRange, setPriceRange] = useState<[number, number]>([0, 5000]);
     const [selectedType, setSelectedType] = useState<string>('all');
     const [focusTarget, setFocusTarget] = useState<string>("case");
     const [hasSelectedCase, setHasSelectedCase] = useState(false);
     const [searchQuery, setSearchQuery] = useState<string>('');
     const [isLoading, setIsLoading] = useState(true);
-    const [builtComponents, setBuiltComponents] = useState<ComponentBuild[]>([]);
 
     useEffect(() => {
         const timer = setTimeout(() => {
@@ -122,7 +122,7 @@ export const BuilderPage: React.FC = () => {
                             <directionalLight position={[5, 5, 5]} intensity={3} castShadow />
                             <directionalLight position={[-5, -5, -5]} intensity={1} />
 
-                            <Bounds fit clip observe margin={1.2}>
+                            <Bounds fit clip observe margin={1.5}>
                                 <SceneBuilder components={builtComponents} focusTarget={focusTarget} />
                             </Bounds>
 
