@@ -2,13 +2,13 @@
 
 import ModalSheet from './modalsSheet';
 import { Loader2 } from 'lucide-react';
-import { requirements } from '../lib/data';
 import SceneBuilder from "./SceneBuilder";
-import { Bounds } from "@react-three/drei";
+import { requirements } from '../lib/data';
 import { Canvas } from '@react-three/fiber';
+import CMControls from './CameraController';    
 import React, { useState, useEffect } from 'react';
 import { Bloom, EffectComposer } from "@react-three/postprocessing";
-import { IModel } from '@/src/shared/config/api/model/model.model';
+import { IModel, MODEL_TYPES } from '@/src/shared/config/api/model/model.model';
 
 interface ComponentBuild {
     id: string;
@@ -17,14 +17,13 @@ interface ComponentBuild {
     name: string;
 };
 
-
 export const BuilderPage: React.FC = () => {
     const [builtComponents, setBuiltComponents] = useState<ComponentBuild[]>([]);
     const [activeBuild, setActiveBuild] = useState<Record<string, number>>({});
     const [selectedCategory, setSelectedCategory] = useState<string>('case');
     const [priceRange, setPriceRange] = useState<[number, number]>([0, 5000]);
     const [selectedType, setSelectedType] = useState<string>('all');
-    const [focusTarget, setFocusTarget] = useState<string>("case");
+    const [focusTarget, setFocusTarget] = useState<MODEL_TYPES>("CASE");
     const [hasSelectedCase, setHasSelectedCase] = useState(false);
     const [searchQuery, setSearchQuery] = useState<string>('');
     const [isLoading, setIsLoading] = useState(true);
@@ -83,7 +82,7 @@ export const BuilderPage: React.FC = () => {
                                 onClick={() => {
                                     if (isDisabled) return;
                                     setSelectedCategory(req.name.toLowerCase());
-                                    setFocusTarget(req.name);
+                                    setFocusTarget(req.type);
                                 }}
                                 disabled={isDisabled}
                                 className={`shrink-0 flex items-center gap-2 px-4 py-2.5 rounded-xl border text-xs font-medium transition-all duration-200 cursor-pointer ${isDisabled
@@ -115,17 +114,26 @@ export const BuilderPage: React.FC = () => {
                     hasSelectedCase={hasSelectedCase}
                     onChooseComponent={handleChooseComponent}
                 />
-                <main className="flex-10 h-full relative bg-radial from-neutral-900/40 to-[#0A0A0A] w-full">
+
+                <main className="flex-10 h-full relative bg-[#1a1a1a] w-full">
                     {hasSelectedCase ? (
-                        <Canvas gl={{ toneMappingExposure: 1.5 }}>
+                        <Canvas 
+                            gl={{ 
+                                toneMappingExposure: 1.5,
+                                antialias: true,
+                                alpha: true,
+                                preserveDrawingBuffer: true,
+                                powerPreference: "high-performance"
+                            }}
+                            dpr={[1, 2]}
+                        >
                             <ambientLight intensity={1.5} />
                             <directionalLight position={[5, 5, 5]} intensity={3} castShadow />
                             <directionalLight position={[-5, -5, -5]} intensity={1} />
 
-                            <Bounds fit clip observe margin={1.5}>
-                                <SceneBuilder components={builtComponents} focusTarget={focusTarget} />
-                            </Bounds>
+                            <SceneBuilder components={builtComponents} />
 
+                            <CMControls />
                             <EffectComposer>
                                 <Bloom intensity={0.6} luminanceThreshold={0.2} mipmapBlur />
                             </EffectComposer>

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo } from 'react';
+import { useEffect, useMemo, Suspense } from 'react';
 import { Canvas } from '@react-three/fiber';
 import * as Dialog from "@radix-ui/react-dialog";
 import { UPLOAD_URL } from "@/src/shared/config/URLS";
@@ -30,6 +30,8 @@ const typeIcons: Record<string, any> = {
 
 function Model({ url }: { url: string }) {
     const { scene, materials } = useGLTF(url);
+
+    console.log("url: ", url);
     const cloned = useMemo(() => scene.clone(), [scene]);
 
     useEffect(() => {
@@ -45,7 +47,13 @@ function ModelViewer({ url }: { url: string }) {
     return (
         <div className="w-full h-64 bg-[#fff] rounded-lg overflow-hidden">
             <Canvas
-                gl={{ toneMappingExposure: 1.5 }}
+                gl={{ 
+                    toneMappingExposure: 1.5,
+                    antialias: true,
+                    alpha: true,
+                    preserveDrawingBuffer: true
+                }}
+                dpr={[1, 2]}
             >
                 <ambientLight intensity={2.5} />
                 <directionalLight position={[10, 10, 5]} intensity={2.5} castShadow />
@@ -53,9 +61,11 @@ function ModelViewer({ url }: { url: string }) {
                 <Environment preset="city" />
                 <OrbitControls enableZoom enablePan enableRotate />
 
-                <Bounds fit clip observe margin={1.2}>
-                    <Model url={url} />
-                </Bounds>
+                <Suspense fallback={null}>
+                    <Bounds fit clip observe margin={1.2}>
+                        <Model url={url} />
+                    </Bounds>
+                </Suspense>
 
                 <EffectComposer>
                     <Bloom intensity={0.6} luminanceThreshold={0.2} mipmapBlur />

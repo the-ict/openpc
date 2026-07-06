@@ -13,19 +13,19 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
+import { MODEL_TYPES } from "@/src/shared/config/api/model/model.model";
 import { IconMoneybagHeart } from "@tabler/icons-react";
 import { Gamepad2, Search } from "lucide-react";
 import ComponentCard from "./componentCard";
 import { useBuilder } from "../lib/hooks";
-import { MODEL_TYPES } from "@/src/shared/config/api/model/model.model";
 import ModelDetail from "./ModelDetail";
 import { useState } from "react";
 
 interface PropsModalSheet {
   activeBuild: Record<string, number>;
-  setActiveBuild: (props:Record<string, number>) => void;
+  setActiveBuild: (props: Record<string, number>) => void;
   setPriceRange: (priceRange: [number, number]) => void;
-  priceRange: [number,number];
+  priceRange: [number, number];
   searchQuery: string;
   setSearchQuery: (query: string) => void;
   setSelectedType: (type: string) => void;
@@ -35,12 +35,12 @@ interface PropsModalSheet {
   onChooseComponent?: (model: any) => void;
 };
 
-export default function ModalShet({ 
-  searchQuery, 
-  setSearchQuery, 
-  priceRange, 
-  setPriceRange, 
-  selectedType, 
+export default function ModalShet({
+  searchQuery,
+  setSearchQuery,
+  priceRange,
+  setPriceRange,
+  selectedType,
   setSelectedType,
   selectedCategory,
   hasSelectedCase,
@@ -86,12 +86,12 @@ export default function ModalShet({
       )}
 
       <form onSubmit={handleSearch} className={`flex items-center gap-3 justify-between w-full bg-[#333] px-6 py-3 rounded-full ${!hasSelectedCase ? 'opacity-50 pointer-events-none' : ''}`}>
-        <input 
-          type="text" 
+        <input
+          type="text"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          className="h-full w-full bg-transparent outline-none border-none" 
-          placeholder="type of the thing you want!." 
+          className="h-full w-full bg-transparent outline-none border-none"
+          placeholder="type of the thing you want!."
         />
         <button type="submit" className="cursor-pointer"><Search /></button>
       </form>
@@ -107,19 +107,19 @@ export default function ModalShet({
               <PopoverTitle className="text-neutral-200">Change the price</PopoverTitle>
             </PopoverHeader>
             <div className="flex flex-col items-start justify-between gap-3">
-              <input 
-                type="number" 
-                placeholder="From" 
+              <input
+                type="number"
+                placeholder="From"
                 value={priceRange[0] || ''}
                 onChange={(e) => setPriceRange([Number(e.target.value) || 0, priceRange[1]])}
-                className="flex-1 bg-neutral-900 border border-neutral-800 rounded-lg px-3 py-2 text-sm text-neutral-200 placeholder-neutral-500 outline-none focus:border-neutral-700 w-full" 
+                className="flex-1 bg-neutral-900 border border-neutral-800 rounded-lg px-3 py-2 text-sm text-neutral-200 placeholder-neutral-500 outline-none focus:border-neutral-700 w-full"
               />
-              <input 
-                type="number" 
-                placeholder="To" 
+              <input
+                type="number"
+                placeholder="To"
                 value={priceRange[1] || ''}
                 onChange={(e) => setPriceRange([priceRange[0], Number(e.target.value) || 5000])}
-                className="flex-1 bg-neutral-900 border border-neutral-800 rounded-lg px-3 py-2 text-sm text-neutral-200 placeholder-neutral-500 outline-none focus:border-neutral-700 w-full" 
+                className="flex-1 bg-neutral-900 border border-neutral-800 rounded-lg px-3 py-2 text-sm text-neutral-200 placeholder-neutral-500 outline-none focus:border-neutral-700 w-full"
               />
             </div>
           </PopoverContent>
@@ -156,9 +156,9 @@ export default function ModalShet({
           <p className="text-neutral-500 text-sm">Loading...</p>
         ) : data?.data && data.data.length > 0 ? (
           data.data.map((model) => (
-            <ComponentCard 
-              key={model.id} 
-              item={model} 
+            <ComponentCard
+              key={model.id}
+              item={model}
               onClick={() => handleModelClick(model)}
               onChoose={onChooseComponent}
             />
@@ -169,10 +169,10 @@ export default function ModalShet({
       </div>
 
       {selectedModel && (
-        <ModelDetail 
-          model={selectedModel} 
-          open={isModelDetailOpen} 
-          onClose={() => setIsModelDetailOpen(false)} 
+        <ModelDetail
+          model={selectedModel}
+          open={isModelDetailOpen}
+          onClose={() => setIsModelDetailOpen(false)}
           add_to_build={onChooseComponent!}
         />
       )}
