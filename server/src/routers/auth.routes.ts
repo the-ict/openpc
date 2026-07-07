@@ -86,7 +86,11 @@ router.get('/google',
 router.get('/google/callback',
     passport.authenticate('google', { failureRedirect: '/login' }),
     function (req, res) {
-        res.redirect('http://localhost:3000/session');
+        const user = req.user as any;
+        const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET || "", { expiresIn: "1d" });
+        const refresh_token = jwt.sign({ id: user.id }, process.env.JWT_SECRET || "", { expiresIn: "30d" });
+
+        res.redirect(`http://localhost:3000/auth/google/callback?token=${token}&refresh_token=${refresh_token}`);
     });
 
 
