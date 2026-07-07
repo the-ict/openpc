@@ -1,16 +1,23 @@
 import { MODEL_TYPES } from "@/src/shared/config/api/model/model.model";
 import { CameraControls } from "@react-three/drei";
 import { useThree } from "@react-three/fiber";
-import { useEffect, useRef } from "react";
+import React, { useEffect, useRef } from "react";
+import * as THREE from "three";
 
 interface CameraControllerProps {
     focusTarget?: MODEL_TYPES;
-    socketPoints?: Record<string, { position: [number, number, number]; rotation: [number, number, number] }>;
+    componentRefs: Record<string, React.RefObject<THREE.Group | null>>;
 };
 
-export default function CMControls({ focusTarget, socketPoints }: CameraControllerProps) {
+export default function CMControls({ focusTarget, componentRefs }: CameraControllerProps) {
     const ref = useRef<CameraControls | null>(null);
     const { scene } = useThree();
+    const componentRefsRef = useRef(componentRefs);
+
+    // Update the ref when componentRefs changes
+    useEffect(() => {
+        componentRefsRef.current = componentRefs;
+    }, [componentRefs]);
 
     useEffect(() => {
         if (ref.current && focusTarget !== "CASE") {
@@ -44,32 +51,54 @@ export default function CMControls({ focusTarget, socketPoints }: CameraControll
     }, [focusTarget]);
 
     useEffect(() => {
-        console.log("CameraController - focusTarget:", focusTarget);
-        console.log("CameraController - socketPoints:", socketPoints);
-
-        if (ref.current && focusTarget && socketPoints && focusTarget !== "CASE") {
-            const targetSocket = socketPoints[focusTarget];
-            console.log("CameraController - targetSocket:", targetSocket);
-
-            if (targetSocket) {
-                const [x, y, z] = targetSocket.position;
-                console.log("CameraController - Moving to position:", [x + 5, y + 5, z + 5], "looking at:", [x, y, z]);
-                
-                ref.current.setLookAt(x + 2.5, y + 2.5, z + 2.5, x, y, z, true);
+        if (ref.current && scene) {
+            if (focusTarget === "CASE") {
+                ref.current.fitToBox(scene, true);
             } else {
-                console.log("CameraController - No socket found for:", focusTarget.toLowerCase());
-                console.log("Available socket keys:", Object.keys(socketPoints));
+                const targetObj = componentRefsRef.current[focusTarget as MODEL_TYPES]?.current
+                console.log("components: ", componentRefsRef.current);
+                console.log("this is target OBJ: ", targetObj);
+
+                if (!targetObj) {
+                    console.log("we do not have target object");
+                    return;
+                };
+
+                const targetPosition = new THREE.Vector3();
+                targetObj.getWorldPosition(targetPosition);
+
+                ref.current.setLookAt(
+                    targetPosition.x + 2,
+                    targetPosition.y + 2,
+                    targetPosition.z + 2,
+                    targetPosition.x,
+                    targetPosition.y,
+                    targetPosition.z,
+                    true
+                );
             }
         }
-    }, [focusTarget, socketPoints]);
+    }, [scene, focusTarget]);
 
     useEffect(() => {
-        if (ref.current && scene) {
-            setTimeout(() => {
-                ref.current?.fitToBox(scene, true);
-            }, 500);
+        if (ref.current && scene && focusTarget !== "CASE") {
+            const targetObj = componentRefs[focusTarget as MODEL_TYPES]?.current;
+            if (targetObj) {
+                const targetPosition = new THREE.Vector3();
+                targetObj.getWorldPosition(targetPosition);
+
+                ref.current.setLookAt(
+                    targetPosition.x + 2,
+                    targetPosition.y + 2,
+                    targetPosition.z + 2,
+                    targetPosition.x,
+                    targetPosition.y,
+                    targetPosition.z,
+                    true
+                );
+            }
         }
-    }, [scene]);
+    }, [componentRefs, focusTarget, scene]);
 
     return (
         <CameraControls ref={ref} />

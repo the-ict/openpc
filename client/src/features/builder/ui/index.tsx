@@ -1,9 +1,9 @@
 "use client";
 
+import { Group } from 'three';
 import ModalSheet from './modalsSheet';
 import { Loader2 } from 'lucide-react';
 import SceneBuilder from "./SceneBuilder";
-import type { Socket } from '../lib/hooks';
 import { requirements } from '../lib/data';
 import { Canvas } from '@react-three/fiber';
 import CMControls from './CameraController';    
@@ -11,16 +11,16 @@ import React, { useState, useEffect } from 'react';
 import { Bloom, EffectComposer } from "@react-three/postprocessing";
 import { IModel, MODEL_TYPES } from '@/src/shared/config/api/model/model.model';
 
-interface ComponentBuild {
+export interface ComponentBuild {
     id: string;
-    type: string;
+    type: MODEL_TYPES;
     modelFile: string;
     name: string;
 };
 
 export const BuilderPage: React.FC = () => {
+    const [componentRefs, setComponentRefs] = useState<Record<string, React.RefObject<Group | null>>>({});
     const [builtComponents, setBuiltComponents] = useState<ComponentBuild[]>([]);
-    const [socketPoints, setSocketPoints] = useState<Record<string, Socket>>({});
     const [activeBuild, setActiveBuild] = useState<Record<string, number>>({});
     const [selectedCategory, setSelectedCategory] = useState<string>('case');
     const [priceRange, setPriceRange] = useState<[number, number]>([0, 5000]);
@@ -31,8 +31,8 @@ export const BuilderPage: React.FC = () => {
     const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
-        console.log("socket Points: ", socketPoints);
-    }, [socketPoints])
+        console.log("componentRefs: ", componentRefs);
+    }, [componentRefs]);
 
     useEffect(() => {
         const timer = setTimeout(() => {
@@ -42,13 +42,13 @@ export const BuilderPage: React.FC = () => {
     }, []);
 
     useEffect(() => {
-        setHasSelectedCase(!!activeBuild['case']);
+        setHasSelectedCase(!!activeBuild['CASE']);
     }, [activeBuild]);
 
     const handleChooseComponent = (model: IModel) => {
         const componentData: ComponentBuild = {
             id: model.id,
-            type: model.type.toLowerCase(),
+            type: model.type,
             modelFile: model.model_file,
             name: model.name,
         };
@@ -60,7 +60,7 @@ export const BuilderPage: React.FC = () => {
 
         setActiveBuild(prev => ({
             ...prev,
-            [model.type.toLowerCase()]: 1
+            [model.type]: 1
         }));
     };
 
@@ -137,9 +137,9 @@ export const BuilderPage: React.FC = () => {
                             <directionalLight position={[5, 5, 5]} intensity={3} castShadow />
                             <directionalLight position={[-5, -5, -5]} intensity={1} />
 
-                            <SceneBuilder components={builtComponents} setSocketPoints={setSocketPoints} />
+                            <SceneBuilder components={builtComponents} setComponentRef={setComponentRefs} />
 
-                            <CMControls focusTarget={focusTarget} socketPoints={socketPoints} />
+                            <CMControls focusTarget={focusTarget} componentRefs={componentRefs}/>
                             <EffectComposer>
                                 <Bloom intensity={0.6} luminanceThreshold={0.2} mipmapBlur />
                             </EffectComposer>
