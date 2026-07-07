@@ -3,14 +3,13 @@
 import ModalSheet from './modalsSheet';
 import { Loader2 } from 'lucide-react';
 import SceneBuilder from "./SceneBuilder";
+import type { Socket } from '../lib/hooks';
 import { requirements } from '../lib/data';
 import { Canvas } from '@react-three/fiber';
 import CMControls from './CameraController';    
 import React, { useState, useEffect } from 'react';
 import { Bloom, EffectComposer } from "@react-three/postprocessing";
 import { IModel, MODEL_TYPES } from '@/src/shared/config/api/model/model.model';
-import { useCaseSockets, Socket } from '../lib/hooks';
-import { UPLOAD_URL } from '@/src/shared/config/URLS';
 
 interface ComponentBuild {
     id: string;
