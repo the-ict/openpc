@@ -9,6 +9,8 @@ import CMControls from './CameraController';
 import React, { useState, useEffect } from 'react';
 import { Bloom, EffectComposer } from "@react-three/postprocessing";
 import { IModel, MODEL_TYPES } from '@/src/shared/config/api/model/model.model';
+import { useCaseSockets, Socket } from '../lib/hooks';
+import { UPLOAD_URL } from '@/src/shared/config/URLS';
 
 interface ComponentBuild {
     id: string;
@@ -19,6 +21,7 @@ interface ComponentBuild {
 
 export const BuilderPage: React.FC = () => {
     const [builtComponents, setBuiltComponents] = useState<ComponentBuild[]>([]);
+    const [socketPoints, setSocketPoints] = useState<Record<string, Socket>>({});
     const [activeBuild, setActiveBuild] = useState<Record<string, number>>({});
     const [selectedCategory, setSelectedCategory] = useState<string>('case');
     const [priceRange, setPriceRange] = useState<[number, number]>([0, 5000]);
@@ -27,6 +30,10 @@ export const BuilderPage: React.FC = () => {
     const [hasSelectedCase, setHasSelectedCase] = useState(false);
     const [searchQuery, setSearchQuery] = useState<string>('');
     const [isLoading, setIsLoading] = useState(true);
+
+    useEffect(() => {
+        console.log("socket Points: ", socketPoints);
+    }, [socketPoints])
 
     useEffect(() => {
         const timer = setTimeout(() => {
@@ -131,9 +138,9 @@ export const BuilderPage: React.FC = () => {
                             <directionalLight position={[5, 5, 5]} intensity={3} castShadow />
                             <directionalLight position={[-5, -5, -5]} intensity={1} />
 
-                            <SceneBuilder components={builtComponents} />
+                            <SceneBuilder components={builtComponents} setSocketPoints={setSocketPoints} />
 
-                            <CMControls />
+                            <CMControls focusTarget={focusTarget} socketPoints={socketPoints} />
                             <EffectComposer>
                                 <Bloom intensity={0.6} luminanceThreshold={0.2} mipmapBlur />
                             </EffectComposer>

@@ -15,6 +15,7 @@ interface ComponentBuild {
 
 interface SceneBuilderProps {
   components: ComponentBuild[];
+  setSocketPoints: React.Dispatch<React.SetStateAction<Record<string, any>>>;
 };
 
 interface ModelComponentProps {
@@ -35,7 +36,6 @@ function ModelComponent({ component, set_component_refs, position, scale, rotati
   useEffect(() => {
     if (ref.current) {
       set_component_refs(prev => [...prev, ref]);
-      console.log("ref setted up");
     };
   }, [ref.current]);
 
@@ -73,33 +73,24 @@ function renderCaseModel(url: string) {
   return <primitive object={cloned} />;
 };
 
-export default function SceneBuilder({ components }: SceneBuilderProps) {
+export default function SceneBuilder({ components, setSocketPoints }: SceneBuilderProps) {
   const [component_refs, set_component_refs] = useState<React.RefObject<Group | null>[]>([]);
-  console.log("components: ", components);
   const case_component = components.find(c => c.type.toLowerCase() === "case");
   
-  console.log("case_component:", case_component);
-  console.log("case_component?.modelFile:", case_component?.modelFile);
-  console.log("UPLOAD_URL:", UPLOAD_URL);
-  
   const caseUrl = case_component?.modelFile ? UPLOAD_URL + case_component.modelFile : "";
-  console.log("Final case URL:", caseUrl);
   
   const socket_points = useCaseSockets(caseUrl);
   const other_components = components.filter(c => c.type.toLowerCase() !== "case");
 
-  console.log("socket_points: ", socket_points);
-
   useEffect(() => {
-    console.log("component_refs: ", component_refs);
-  }, [component_refs]);
+    setSocketPoints(socket_points);
+  }, [socket_points]);
 
   const case_group_ref = useRef<Group | null>(null);
 
   if (!case_component) {
     return null;
   };
-
   return (
     <group ref={case_group_ref}>
       {renderCaseModel(UPLOAD_URL + case_component.modelFile)}
@@ -107,8 +98,6 @@ export default function SceneBuilder({ components }: SceneBuilderProps) {
       {other_components.length > 0 && (
         other_components.map((component, index) => {
           const socket = socket_points[component.type.toUpperCase() as keyof typeof socket_points];
-          console.log("component type: ", component.type.toUpperCase());
-          console.log("socket of the component: ", socket);
 
           if (!socket) {
             console.warn(`Socket topilmadi: socket_${component.type}. Artist bu nomni case'ga qo'shganmi?`);

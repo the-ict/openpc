@@ -20,7 +20,7 @@ export const useBuilder = (params?: { search?: string; type?: string; minPrice?:
 };
 
 
-interface Socket {
+export interface Socket {
     position: [number,number,number];
     rotation:[number, number,number];
 };
