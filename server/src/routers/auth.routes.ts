@@ -13,6 +13,42 @@ router.post("/login", validate(login_schema), login);
 
 router.post("/register", validate(register_schema), register);
 
+router.post("/refresh", async(req: Request, res: Response, next: NextFunction) => {
+    try {
+        const { refresh_token } = req.body;
+
+        if (!refresh_token) {
+            return res.status(400).json({
+                message: "Refresh token is required",
+                ok: false,
+            });
+        }
+
+        const decoded = jwt.verify(refresh_token, process.env.JWT_SECRET || "") as { id: string };
+        const user = await prisma.user.findUnique({
+            where: { id: decoded.id },
+        });
+
+        if (!user) {
+            return res.status(404).json({
+                message: "User not found",
+                ok: false,
+            });
+        }
+
+        const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET || "", { expiresIn: "1d" });
+        const new_refresh_token = jwt.sign({ id: user.id }, process.env.JWT_SECRET || "", { expiresIn: "30d" });
+
+        return res.status(200).json({
+            message: "Token refreshed successfully",
+            data: { token, refresh_token: new_refresh_token },
+            ok: true,
+        });
+    } catch (error) {
+        next(error);
+    }
+});
+
 router.get("/me", async(req: Request, res: Response, next: NextFunction) => {
     try {
         const user = req.user;

@@ -7,6 +7,7 @@ export const AUTH_URLS = {
   GOOGLE: "/api/auth/google",
   GOOGLE_CALLBACK: "/api/auth/google/callback",
   ME: "/api/auth/me",
+  REFRESH: "/api/auth/refresh",
 } as const;
 
 export const MODEL_URLS = {
