@@ -14,7 +14,6 @@ export default function CMControls({ focusTarget, componentRefs }: CameraControl
     const { scene } = useThree();
     const componentRefsRef = useRef(componentRefs);
 
-    // Update the ref when componentRefs changes
     useEffect(() => {
         componentRefsRef.current = componentRefs;
     }, [componentRefs]);

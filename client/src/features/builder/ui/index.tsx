@@ -6,10 +6,14 @@ import { Loader2 } from 'lucide-react';
 import SceneBuilder from "./SceneBuilder";
 import { requirements } from '../lib/data';
 import { Canvas } from '@react-three/fiber';
-import CMControls from './CameraController';    
+import CMControls from './CameraController';
 import React, { useState, useEffect } from 'react';
 import { Bloom, EffectComposer } from "@react-three/postprocessing";
 import { IModel, MODEL_TYPES } from '@/src/shared/config/api/model/model.model';
+import { useAddModelToSession } from '../lib/hooks';
+import { useParams } from 'next/navigation';
+import { toast } from 'sonner';
+import { useGetSession } from '../../session/lib/hooks';
 
 export interface ComponentBuild {
     id: string;
@@ -20,19 +24,24 @@ export interface ComponentBuild {
 
 export const BuilderPage: React.FC = () => {
     const [componentRefs, setComponentRefs] = useState<Record<string, React.RefObject<Group | null>>>({});
+    const [selectedCategory, setSelectedCategory] = useState<MODEL_TYPES>('CASE');
     const [builtComponents, setBuiltComponents] = useState<ComponentBuild[]>([]);
     const [activeBuild, setActiveBuild] = useState<Record<string, number>>({});
-    const [selectedCategory, setSelectedCategory] = useState<string>('case');
     const [priceRange, setPriceRange] = useState<[number, number]>([0, 5000]);
-    const [selectedType, setSelectedType] = useState<string>('all');
     const [focusTarget, setFocusTarget] = useState<MODEL_TYPES>("CASE");
+    const [selectedType, setSelectedType] = useState<string>('all');
     const [hasSelectedCase, setHasSelectedCase] = useState(false);
     const [searchQuery, setSearchQuery] = useState<string>('');
     const [isLoading, setIsLoading] = useState(true);
 
-    useEffect(() => {
-        console.log("componentRefs: ", componentRefs);
-    }, [componentRefs]);
+    const params = useParams();
+
+    const {data: sessionData} = useGetSession(params.id as string);
+
+    const {
+        mutateAsync: addModelToSessionMutation,
+        isPending: addModelToSessionPending
+    } = useAddModelToSession();
 
     useEffect(() => {
         const timer = setTimeout(() => {
@@ -42,26 +51,55 @@ export const BuilderPage: React.FC = () => {
     }, []);
 
     useEffect(() => {
+        if (sessionData?.models) {
+            const components: ComponentBuild[] = sessionData.models.map((model: any) => ({
+                id: model.id,
+                type: model.type,
+                modelFile: model.model_file,
+                name: model.name,
+            }));
+
+            const activeBuildState: Record<string, number> = {};
+            sessionData.models.forEach((model: any) => {
+                activeBuildState[model.type] = 1;
+            });
+
+            setBuiltComponents(components);
+            setActiveBuild(activeBuildState);
+        }
+    }, [sessionData]);
+
+    useEffect(() => {
         setHasSelectedCase(!!activeBuild['CASE']);
     }, [activeBuild]);
 
-    const handleChooseComponent = (model: IModel) => {
-        const componentData: ComponentBuild = {
-            id: model.id,
-            type: model.type,
-            modelFile: model.model_file,
-            name: model.name,
+    const handleChooseComponent = async (model: IModel) => {
+        try {
+            if (!params.id) {
+                throw new Error("There is no params");
+            };
+
+            const componentData: ComponentBuild = {
+                id: model.id,
+                type: model.type,
+                modelFile: model.model_file,
+                name: model.name,
+            };
+
+            setBuiltComponents(prev => {
+                const filtered = prev.filter(c => c.type !== componentData.type);
+                return [...filtered, componentData];
+            });
+
+            setActiveBuild(prev => ({
+                ...prev,
+                [model.type]: 1
+            }));
+
+            await addModelToSessionMutation({ session_id: params.id as string, model_id: model.id });
+        } catch (error) {
+            console.log("error: ", error);
         };
-
-        setBuiltComponents(prev => {
-            const filtered = prev.filter(c => c.type !== componentData.type);
-            return [...filtered, componentData];
-        });
-
-        setActiveBuild(prev => ({
-            ...prev,
-            [model.type]: 1
-        }));
     };
 
     return (
@@ -78,8 +116,8 @@ export const BuilderPage: React.FC = () => {
             <header className="border-b border-[#555] bg-[#0A0A0A]/80 backdrop-blur-md sticky top-0 z-50 px-8 py-4 flex items-center justify-between w-full">
                 <div className="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1">
                     {requirements.map((req, idx) => {
-                        const isSelected = selectedCategory === req.name.toLowerCase();
-                        const isCase = req.name.toLowerCase() === 'case';
+                        const isSelected = selectedCategory === req.type
+                        const isCase = req.type === 'CASE';
                         const isDisabled = !hasSelectedCase && !isCase;
 
                         return (
@@ -87,7 +125,7 @@ export const BuilderPage: React.FC = () => {
                                 key={idx}
                                 onClick={() => {
                                     if (isDisabled) return;
-                                    setSelectedCategory(req.name.toLowerCase());
+                                    setSelectedCategory(req.type);
                                     setFocusTarget(req.type);
                                 }}
                                 disabled={isDisabled}
@@ -123,8 +161,8 @@ export const BuilderPage: React.FC = () => {
 
                 <main className="flex-10 h-full relative bg-[#1a1a1a] w-full">
                     {hasSelectedCase ? (
-                        <Canvas 
-                            gl={{ 
+                        <Canvas
+                            gl={{
                                 toneMappingExposure: 1.5,
                                 antialias: true,
                                 alpha: true,
@@ -139,7 +177,7 @@ export const BuilderPage: React.FC = () => {
 
                             <SceneBuilder components={builtComponents} setComponentRef={setComponentRefs} />
 
-                            <CMControls focusTarget={focusTarget} componentRefs={componentRefs}/>
+                            <CMControls focusTarget={focusTarget} componentRefs={componentRefs} />
                             <EffectComposer>
                                 <Bloom intensity={0.6} luminanceThreshold={0.2} mipmapBlur />
                             </EffectComposer>

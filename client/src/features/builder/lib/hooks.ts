@@ -3,8 +3,9 @@
 import * as THREE from "three";
 import { useMemo } from "react";
 import { useGLTF } from "@react-three/drei";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { get_models } from "@/src/shared/config/api/model/model.requests";
+import { add_model_to_session } from "@/src/shared/config/api/session/session.requests";
 
 export const useBuilder = (params?: { search?: string; type?: string; minPrice?: number; maxPrice?: number }) => {
     const { data: modelsData, error: modelsError, isFetching } = useQuery({
@@ -21,22 +22,22 @@ export const useBuilder = (params?: { search?: string; type?: string; minPrice?:
 
 
 export interface Socket {
-    position: [number,number,number];
-    rotation:[number, number,number];
+    position: [number, number, number];
+    rotation: [number, number, number];
 };
 
-export const useCaseSockets = (caseUrl: string):Record<string, Socket> => {
+export const useCaseSockets = (caseUrl: string): Record<string, Socket> => {
     const { scene } = useGLTF(caseUrl);
 
     return useMemo(() => {
         const sockets: Record<string, Socket> = {};
-        scene.updateWorldMatrix(true,true);
-        
+        scene.updateWorldMatrix(true, true);
+
         scene.traverse((child) => {
             if (child instanceof THREE.Mesh) {
                 const key = child.name.replace("socket_", "");
                 console.log("this is child: ", child);
-                
+
                 const worldPos = new THREE.Vector3();
                 child.getWorldPosition(worldPos);
 
@@ -53,7 +54,15 @@ export const useCaseSockets = (caseUrl: string):Record<string, Socket> => {
                 };
             }
         });
-        
+
         return sockets;
     }, [scene])
-}
+};
+
+
+export const useAddModelToSession = () => {
+    return useMutation({
+        mutationKey: ["add-model-to-session"],
+        mutationFn: ({ session_id, model_id }: { session_id: string, model_id: string }) => add_model_to_session(session_id, model_id),
+    });
+};

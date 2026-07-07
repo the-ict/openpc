@@ -49,20 +49,9 @@ export default function ModalShet({
   const [selectedModel, setSelectedModel] = useState<any>(null);
   const [isModelDetailOpen, setIsModelDetailOpen] = useState(false);
 
-  const categoryToModelType: Record<string, MODEL_TYPES> = {
-    'cpu': 'CPU',
-    'gpu': 'GPU',
-    'ram': 'RAM',
-    'storage': 'STORAGE',
-    'motherboard': 'MOTHER_BOARD',
-    'power supply': 'POWER_SUPPLY',
-    'case': 'CASE',
-    'cooling': 'COOLER',
-  };
-
   const { data, loading } = useBuilder({
     search: searchQuery,
-    type: selectedCategory === 'all' ? undefined : categoryToModelType[selectedCategory],
+    type: selectedCategory === 'all' ? undefined : selectedCategory,
     minPrice: priceRange[0],
     maxPrice: priceRange[1],
   });

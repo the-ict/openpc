@@ -1,6 +1,6 @@
 "use client";
 
-import { get_sessions, create_session, delete_session, update_session } from "@/src/shared/config/api/session/session.requests";
+import { get_sessions, create_session, delete_session, update_session, get_session } from "@/src/shared/config/api/session/session.requests";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import user_store from "@/src/shared/store/user.store";
 import { toast } from "sonner";
@@ -61,4 +61,12 @@ export const useSession = () => {
         updateSession: updateSessionMutation.mutate,
         isUpdatingSession: updateSessionMutation.isPending,
     };
+};
+
+export const useGetSession = (id: string) => {
+    return useQuery({
+        queryKey: ["get-session", id],
+        queryFn: () => get_session(id),
+        select: (data) => data.data,
+    })
 };

@@ -18,7 +18,7 @@ export const MODEL_URLS = {
 export const SESSION_URLS = {
     CREATE: "/api/sessions",
     UPDATE: "/api/sessions",
-    ADD_MODEL: "/api/sessions/models",
+    ADD_MODEL: (session_id: string) => `/api/sessions/${session_id}/models`,
     DELETE: "/api/sessions",
     GET: "/api/sessions",
     GET_ALL: "/api/sessions",

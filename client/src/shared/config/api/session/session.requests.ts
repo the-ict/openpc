@@ -23,7 +23,7 @@ export const get_sessions = async (): Promise<GetSessionsResponse> => {
 };
 
 export const add_model_to_session = async (sessionId: string, modelId: string): Promise<AddModelToSessionResponse> => {
-    const response = await http.post<AddModelToSessionResponse>(`${SESSION_URLS.ADD_MODEL}/${sessionId}`, { model_id: modelId });
+    const response = await http.post<AddModelToSessionResponse>(SESSION_URLS.ADD_MODEL(sessionId), { model_id: modelId });
     return response.data;
 };
 
