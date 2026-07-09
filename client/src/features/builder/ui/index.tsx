@@ -1,7 +1,6 @@
 "use client";
 
 import { Group } from 'three';
-import { toast } from 'sonner';
 import ModalSheet from './modalsSheet';
 import { Loader2 } from 'lucide-react';
 import SceneBuilder from "./SceneBuilder";

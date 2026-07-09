@@ -1,11 +1,11 @@
 "use client";
 
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef } from 'react';
 import { UPLOAD_URL } from '@/src/shared/config/URLS';
 import { useCaseSockets } from '../lib/hooks';
 import { useGLTF } from '@react-three/drei';
-import { Group } from 'three';
 import { ComponentBuild } from '.';
+import { Group } from 'three';
 
 
 interface SceneBuilderProps {
@@ -18,12 +18,10 @@ interface ModelComponentProps {
   set_component_refs: React.Dispatch<React.SetStateAction<Record<string, React.RefObject<Group | null>>>>;
   position: [number, number, number];
   rotation: [number, number, number];
-  scale: [number, number, number];
-}
+};
 
-function ModelComponent({ component, set_component_refs, position, scale, rotation }: ModelComponentProps) {
+function ModelComponent({ component, set_component_refs, position, rotation }: ModelComponentProps) {
   const modelUrl = UPLOAD_URL + component.modelFile;
-  console.log("Loading model from:", modelUrl);
   
   const { scene } = useGLTF(modelUrl);
   const ref = useRef<Group | null>(null);
@@ -48,16 +46,13 @@ function ModelComponent({ component, set_component_refs, position, scale, rotati
   }, [scene]);
 
   return (
-    <group ref={ref} position={position} scale={scale} rotation={rotation}>
+    <group ref={ref} position={position} scale={[0.1,0.1,0.1]} rotation={rotation}>
       <primitive object={cloned} />
     </group>
   );
 };
 
 function renderCaseModel(url: string) {
-  console.log("Loading case model from:", url);
-  console.log("Full URL check:", UPLOAD_URL, url);
-  
   const { scene } = useGLTF(url);
 
   const cloned = useMemo(() => {
@@ -88,7 +83,10 @@ export default function SceneBuilder({ components, setComponentRef }: SceneBuild
 
       {other_components.length > 0 && (
         other_components.map((component, index) => {
-          const socket = socket_points[component.type.toUpperCase() as keyof typeof socket_points];
+          const socket = socket_points[component.type];
+
+          console.log("component: ", component);
+          console.log("socket: ", socket);
 
           if (!socket) {
             console.warn(`Socket topilmadi: socket_${component.type}. Artist bu nomni case'ga qo'shganmi?`);
@@ -101,7 +99,6 @@ export default function SceneBuilder({ components, setComponentRef }: SceneBuild
               set_component_refs={setComponentRef}
               position={socket.position}
               rotation={socket.rotation}
-              scale={[0.1, 0.1, 0.1]}
             />
           )
         })
