@@ -1,8 +1,8 @@
-import { MODEL_TYPES } from "@/src/shared/config/api/model/model.model";
-import { CameraControls } from "@react-three/drei";
+import * as THREE from "three";
 import { useThree } from "@react-three/fiber";
 import React, { useEffect, useRef } from "react";
-import * as THREE from "three";
+import { CameraControls } from "@react-three/drei";
+import { MODEL_TYPES } from "@/src/shared/config/api/model/model.model";
 
 interface CameraControllerProps {
     focusTarget?: MODEL_TYPES;
@@ -102,4 +102,4 @@ export default function CMControls({ focusTarget, componentRefs }: CameraControl
     return (
         <CameraControls ref={ref} />
     );
-}
+};
