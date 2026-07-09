@@ -27,8 +27,6 @@ function ModelComponent({ component, set_component_refs, position, rotation }: M
   const { scene } = useGLTF(modelUrl);
   const ref = useRef<Group | null>(null);
 
-  console.log("model component scene scale: ", scene.scale);
-
   useEffect(() => {
     if (ref.current) {
       set_component_refs(prev => ({ ...prev, [component.type]: ref }));
@@ -36,9 +34,10 @@ function ModelComponent({ component, set_component_refs, position, rotation }: M
   }, [ref, component.type, set_component_refs]);
 
   useEffect(() => {
-    scene.traverse((obj) => {
-      console.log(obj.name, obj.type, obj.scale);
-    });
+    const box = new THREE.Box3().setFromObject(scene);
+    console.log("bbox size:", box.getSize(new THREE.Vector3()));
+    console.log("bbox center:", box.getCenter(new THREE.Vector3()));
+    console.log("root position/scale/rotation:", scene.position, scene.scale, scene.rotation);
   }, [scene]);
 
   const cloned = useMemo(() => {
@@ -52,6 +51,12 @@ function ModelComponent({ component, set_component_refs, position, rotation }: M
         }
       }
     });
+
+    const box = new THREE.Box3().setFromObject(clone);
+    const center = box.getCenter(new THREE.Vector3());
+
+    clone.position.sub(center);
+
     return clone;
   }, [scene]);
 
