@@ -34,25 +34,24 @@ export const useCaseSockets = (caseUrl: string): Record<string, Socket> => {
         scene.updateWorldMatrix(true, true);
 
         scene.traverse((child) => {
-            if (child instanceof THREE.Mesh) {
-                const key = child.name.replace("socket_", "");
-                console.log("this is child: ", child);
+            if (!child.name.startsWith("socket_")) return;
+            
+            const key = child.name.replace("socket_", "");
 
-                const worldPos = new THREE.Vector3();
-                child.getWorldPosition(worldPos);
+            const worldPos = new THREE.Vector3();
+            child.getWorldPosition(worldPos);
 
-                const localPos = scene.worldToLocal(worldPos.clone());
+            const localPos = scene.worldToLocal(worldPos.clone());
 
-                const worldQuat = new THREE.Quaternion();
-                child.getWorldQuaternion(worldQuat);
+            const worldQuat = new THREE.Quaternion();
+            child.getWorldQuaternion(worldQuat);
 
-                const euler = new THREE.Euler().setFromQuaternion(worldQuat);
+            const euler = new THREE.Euler().setFromQuaternion(worldQuat);
 
-                sockets[key] = {
-                    position: [localPos.x, localPos.y, localPos.z],
-                    rotation: [euler.x, euler.y, euler.z],
-                };
-            }
+            sockets[key] = {
+                position: [localPos.x, localPos.y, localPos.z],
+                rotation: [euler.x, euler.y, euler.z],
+            };
         });
 
         return sockets;

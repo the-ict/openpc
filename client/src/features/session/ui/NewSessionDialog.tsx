@@ -67,14 +67,14 @@ export default function NewSessionDialog({ onCreateSession, isCreating }: NewSes
                         <button
                             type="button"
                             onClick={() => setOpen(false)}
-                            className="flex-1 px-4 py-2.5 rounded-xl bg-neutral-800 text-neutral-300 hover:bg-neutral-700 transition-colors font-medium"
+                            className="flex-1 px-4 py-2.5 cursor-pointer rounded-xl bg-neutral-800 text-neutral-300 hover:bg-neutral-700 transition-colors font-medium"
                         >
                             Bekor qilish
                         </button>
                         <button
                             type="submit"
                             disabled={isCreating || !name.trim()}
-                            className="flex-1 px-4 py-2.5 rounded-xl bg-linear-to-r from-[#C4D335] to-[#E4E728] text-black font-semibold hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed"
+                            className="flex-1 cursor-pointer px-4 py-2.5 rounded-xl bg-linear-to-r from-[#C4D335] to-[#E4E728] text-black font-semibold hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed"
                         >
                             {isCreating ? "Yaratilmoqda..." : "Yaratish"}
                         </button>

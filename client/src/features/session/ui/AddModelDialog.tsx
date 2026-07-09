@@ -49,7 +49,7 @@ export default function AddModelDialog({ sessionId, onAddModel, isAdding }: AddM
                     <button
                         type="submit"
                         disabled={isAdding || !modelId.trim()}
-                        className="w-full bg-[#C4D335] text-black font-semibold py-2 rounded-full hover:bg-[#b3c22e] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="w-full cursor-pointer bg-[#C4D335] text-black font-semibold py-2 rounded-full hover:bg-[#b3c22e] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                         {isAdding ? "Qo&apos;shilmoqda..." : "Qo&apos;shish"}
                     </button>
