@@ -50,7 +50,6 @@ export const useCaseSockets = (caseUrl: string): Record<string, Socket> => {
 
                 const worldScale = new THREE.Vector3();
                 child.getWorldScale(worldScale);
-                const targetSize = worldScale.clone().multiplyScalar(BLENDER_DEFAULT_CUBE_SIZE);
 
                 sockets[key] = {
                     position: [localPos.x, localPos.y, localPos.z],
