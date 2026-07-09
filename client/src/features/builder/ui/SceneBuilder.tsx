@@ -52,11 +52,6 @@ function ModelComponent({ component, set_component_refs, position, rotation }: M
       }
     });
 
-    const box = new THREE.Box3().setFromObject(clone);
-    const center = box.getCenter(new THREE.Vector3());
-
-    clone.position.sub(center);
-
     return clone;
   }, [scene]);
 
@@ -102,6 +97,7 @@ export default function SceneBuilder({ components, setComponentRef }: SceneBuild
 
           if (!socket) {
             console.warn(`Socket topilmadi: socket_${component.type}. Artist bu nomni case'ga qo'shganmi?`);
+            return null;
           };
 
           return (

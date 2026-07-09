@@ -31,7 +31,7 @@ export default function ModelDetail({ model, open, onClose, add_to_build }: Prop
     return (
         <Modal open={open} onOpenChange={onClose}>
             <ModalContent className="w-[40vw] max-h-[90vh] overflow-y-auto">
-                <Dialog.Title className="sr-only">Model Details</Dialog.Title>
+                <Dialog.Title className="sr-only">Model ma'lumotlari</Dialog.Title>
 
                 <div className="space-y-6">
                     <div className="flex items-start justify-between">
@@ -48,7 +48,7 @@ export default function ModelDetail({ model, open, onClose, add_to_build }: Prop
 
 
                     <div>
-                        <h3 className="text-sm font-medium text-neutral-400 uppercase tracking-wider mb-3">Product Image</h3>
+                        <h3 className="text-sm font-medium text-neutral-400 uppercase tracking-wider mb-3">Mahsulot tasviri</h3>
                         <img
                             src={imageUrl}
                             alt={model.name}
@@ -59,15 +59,15 @@ export default function ModelDetail({ model, open, onClose, add_to_build }: Prop
 
                     <div className="grid grid-cols-2 gap-4">
                         <div className="bg-[#111] rounded-lg p-4 border border-[#333]">
-                            <p className="text-neutral-400 text-xs uppercase tracking-wider mb-1">Price</p>
+                            <p className="text-neutral-400 text-xs uppercase tracking-wider mb-1">Narxi</p>
                             <p className="text-2xl font-bold text-[#E4E728]">${model.price}</p>
                         </div>
                         <div className="bg-[#111] rounded-lg p-4 border border-[#333]">
-                            <p className="text-neutral-400 text-xs uppercase tracking-wider mb-1">Type</p>
+                            <p className="text-neutral-400 text-xs uppercase tracking-wider mb-1">Turi</p>
                             <p className="text-lg font-semibold text-white">{model.type}</p>
                         </div>
                         <div className="bg-[#111] rounded-lg p-4 border border-[#333]">
-                            <p className="text-neutral-400 text-xs uppercase tracking-wider mb-1">Brand</p>
+                            <p className="text-neutral-400 text-xs uppercase tracking-wider mb-1">Brend</p>
                             <p className="text-lg font-semibold text-white">{model.brand}</p>
                         </div>
                         <div className="bg-[#111] rounded-lg p-4 border border-[#333]">
@@ -81,13 +81,13 @@ export default function ModelDetail({ model, open, onClose, add_to_build }: Prop
                             onClick={onClose}
                             className="cursor-pointer flex-1 px-4 py-3 rounded-xl bg-neutral-800 text-neutral-300 hover:bg-neutral-700 transition-colors font-medium"
                         >
-                            Close
+                            Yopish
                         </button>
                         <button onClick={() => {
                             add_to_build(model)
                             onClose();
                         }} className="flex-1 px-4 py-3 rounded-xl bg-linear-to-r from-[#C4D335] to-[#E4E728] text-black font-semibold hover:opacity-90 transition-opacity cursor-pointer">
-                            Add to Build
+                            Yig'ilmaga qo'shish
                         </button>
                     </div>
                 </div>

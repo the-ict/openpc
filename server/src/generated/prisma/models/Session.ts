@@ -319,11 +319,6 @@ export type SessionOrderByRelationAggregateInput = {
   _count?: Prisma.SortOrder
 }
 
-export type SessionNullableScalarRelationFilter = {
-  is?: Prisma.SessionWhereInput | null
-  isNot?: Prisma.SessionWhereInput | null
-}
-
 export type SessionCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   name?: Prisma.SortOrder
@@ -393,20 +388,42 @@ export type SessionUncheckedUpdateManyWithoutUserNestedInput = {
   deleteMany?: Prisma.SessionScalarWhereInput | Prisma.SessionScalarWhereInput[]
 }
 
-export type SessionCreateNestedOneWithoutModelsInput = {
-  create?: Prisma.XOR<Prisma.SessionCreateWithoutModelsInput, Prisma.SessionUncheckedCreateWithoutModelsInput>
-  connectOrCreate?: Prisma.SessionCreateOrConnectWithoutModelsInput
-  connect?: Prisma.SessionWhereUniqueInput
+export type SessionCreateNestedManyWithoutModelsInput = {
+  create?: Prisma.XOR<Prisma.SessionCreateWithoutModelsInput, Prisma.SessionUncheckedCreateWithoutModelsInput> | Prisma.SessionCreateWithoutModelsInput[] | Prisma.SessionUncheckedCreateWithoutModelsInput[]
+  connectOrCreate?: Prisma.SessionCreateOrConnectWithoutModelsInput | Prisma.SessionCreateOrConnectWithoutModelsInput[]
+  connect?: Prisma.SessionWhereUniqueInput | Prisma.SessionWhereUniqueInput[]
 }
 
-export type SessionUpdateOneWithoutModelsNestedInput = {
-  create?: Prisma.XOR<Prisma.SessionCreateWithoutModelsInput, Prisma.SessionUncheckedCreateWithoutModelsInput>
-  connectOrCreate?: Prisma.SessionCreateOrConnectWithoutModelsInput
-  upsert?: Prisma.SessionUpsertWithoutModelsInput
-  disconnect?: Prisma.SessionWhereInput | boolean
-  delete?: Prisma.SessionWhereInput | boolean
-  connect?: Prisma.SessionWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.SessionUpdateToOneWithWhereWithoutModelsInput, Prisma.SessionUpdateWithoutModelsInput>, Prisma.SessionUncheckedUpdateWithoutModelsInput>
+export type SessionUncheckedCreateNestedManyWithoutModelsInput = {
+  create?: Prisma.XOR<Prisma.SessionCreateWithoutModelsInput, Prisma.SessionUncheckedCreateWithoutModelsInput> | Prisma.SessionCreateWithoutModelsInput[] | Prisma.SessionUncheckedCreateWithoutModelsInput[]
+  connectOrCreate?: Prisma.SessionCreateOrConnectWithoutModelsInput | Prisma.SessionCreateOrConnectWithoutModelsInput[]
+  connect?: Prisma.SessionWhereUniqueInput | Prisma.SessionWhereUniqueInput[]
+}
+
+export type SessionUpdateManyWithoutModelsNestedInput = {
+  create?: Prisma.XOR<Prisma.SessionCreateWithoutModelsInput, Prisma.SessionUncheckedCreateWithoutModelsInput> | Prisma.SessionCreateWithoutModelsInput[] | Prisma.SessionUncheckedCreateWithoutModelsInput[]
+  connectOrCreate?: Prisma.SessionCreateOrConnectWithoutModelsInput | Prisma.SessionCreateOrConnectWithoutModelsInput[]
+  upsert?: Prisma.SessionUpsertWithWhereUniqueWithoutModelsInput | Prisma.SessionUpsertWithWhereUniqueWithoutModelsInput[]
+  set?: Prisma.SessionWhereUniqueInput | Prisma.SessionWhereUniqueInput[]
+  disconnect?: Prisma.SessionWhereUniqueInput | Prisma.SessionWhereUniqueInput[]
+  delete?: Prisma.SessionWhereUniqueInput | Prisma.SessionWhereUniqueInput[]
+  connect?: Prisma.SessionWhereUniqueInput | Prisma.SessionWhereUniqueInput[]
+  update?: Prisma.SessionUpdateWithWhereUniqueWithoutModelsInput | Prisma.SessionUpdateWithWhereUniqueWithoutModelsInput[]
+  updateMany?: Prisma.SessionUpdateManyWithWhereWithoutModelsInput | Prisma.SessionUpdateManyWithWhereWithoutModelsInput[]
+  deleteMany?: Prisma.SessionScalarWhereInput | Prisma.SessionScalarWhereInput[]
+}
+
+export type SessionUncheckedUpdateManyWithoutModelsNestedInput = {
+  create?: Prisma.XOR<Prisma.SessionCreateWithoutModelsInput, Prisma.SessionUncheckedCreateWithoutModelsInput> | Prisma.SessionCreateWithoutModelsInput[] | Prisma.SessionUncheckedCreateWithoutModelsInput[]
+  connectOrCreate?: Prisma.SessionCreateOrConnectWithoutModelsInput | Prisma.SessionCreateOrConnectWithoutModelsInput[]
+  upsert?: Prisma.SessionUpsertWithWhereUniqueWithoutModelsInput | Prisma.SessionUpsertWithWhereUniqueWithoutModelsInput[]
+  set?: Prisma.SessionWhereUniqueInput | Prisma.SessionWhereUniqueInput[]
+  disconnect?: Prisma.SessionWhereUniqueInput | Prisma.SessionWhereUniqueInput[]
+  delete?: Prisma.SessionWhereUniqueInput | Prisma.SessionWhereUniqueInput[]
+  connect?: Prisma.SessionWhereUniqueInput | Prisma.SessionWhereUniqueInput[]
+  update?: Prisma.SessionUpdateWithWhereUniqueWithoutModelsInput | Prisma.SessionUpdateWithWhereUniqueWithoutModelsInput[]
+  updateMany?: Prisma.SessionUpdateManyWithWhereWithoutModelsInput | Prisma.SessionUpdateManyWithWhereWithoutModelsInput[]
+  deleteMany?: Prisma.SessionScalarWhereInput | Prisma.SessionScalarWhereInput[]
 }
 
 export type SessionCreateWithoutUserInput = {
@@ -488,33 +505,20 @@ export type SessionCreateOrConnectWithoutModelsInput = {
   create: Prisma.XOR<Prisma.SessionCreateWithoutModelsInput, Prisma.SessionUncheckedCreateWithoutModelsInput>
 }
 
-export type SessionUpsertWithoutModelsInput = {
+export type SessionUpsertWithWhereUniqueWithoutModelsInput = {
+  where: Prisma.SessionWhereUniqueInput
   update: Prisma.XOR<Prisma.SessionUpdateWithoutModelsInput, Prisma.SessionUncheckedUpdateWithoutModelsInput>
   create: Prisma.XOR<Prisma.SessionCreateWithoutModelsInput, Prisma.SessionUncheckedCreateWithoutModelsInput>
-  where?: Prisma.SessionWhereInput
 }
 
-export type SessionUpdateToOneWithWhereWithoutModelsInput = {
-  where?: Prisma.SessionWhereInput
+export type SessionUpdateWithWhereUniqueWithoutModelsInput = {
+  where: Prisma.SessionWhereUniqueInput
   data: Prisma.XOR<Prisma.SessionUpdateWithoutModelsInput, Prisma.SessionUncheckedUpdateWithoutModelsInput>
 }
 
-export type SessionUpdateWithoutModelsInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.StringFieldUpdateOperationsInput | string
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  user?: Prisma.UserUpdateOneRequiredWithoutSessionsNestedInput
-}
-
-export type SessionUncheckedUpdateWithoutModelsInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  status?: Prisma.StringFieldUpdateOperationsInput | string
-  user_id?: Prisma.StringFieldUpdateOperationsInput | string
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+export type SessionUpdateManyWithWhereWithoutModelsInput = {
+  where: Prisma.SessionScalarWhereInput
+  data: Prisma.XOR<Prisma.SessionUpdateManyMutationInput, Prisma.SessionUncheckedUpdateManyWithoutModelsInput>
 }
 
 export type SessionCreateManyUserInput = {
@@ -547,6 +551,33 @@ export type SessionUncheckedUpdateManyWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   name?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type SessionUpdateWithoutModelsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  user?: Prisma.UserUpdateOneRequiredWithoutSessionsNestedInput
+}
+
+export type SessionUncheckedUpdateWithoutModelsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  user_id?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type SessionUncheckedUpdateManyWithoutModelsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  status?: Prisma.StringFieldUpdateOperationsInput | string
+  user_id?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }

@@ -69,8 +69,8 @@ export default function ModalShet({
     <div className="flex-3 w-full h-full bg-[#222] px-8 py-5 space-y-7">
       {!hasSelectedCase && (
         <div className="bg-[#111] border border-[#333] rounded-lg p-6 text-center">
-          <p className="text-neutral-400 text-sm mb-2">Select a case first</p>
-          <p className="text-neutral-500 text-xs">Choose a case from the Case category to start building your PC</p>
+          <p className="text-neutral-400 text-sm mb-2">Avval korpusni tanlang</p>
+          <p className="text-neutral-500 text-xs">Kompyuterni yig'ishni boshlash uchun Korpus bo'limidan korpus tanlang</p>
         </div>
       )}
 
@@ -80,7 +80,7 @@ export default function ModalShet({
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           className="h-full w-full bg-transparent outline-none border-none"
-          placeholder="type of the thing you want!."
+          placeholder="Qidirilayotgan komponent nomi..."
         />
         <button type="submit" className="cursor-pointer"><Search /></button>
       </form>
@@ -88,24 +88,24 @@ export default function ModalShet({
         <Popover>
           <PopoverTrigger asChild>
             <button className="flex-1 flex font-bold items-center gap-3 bg-[#333] px-4 py-2 cursor-pointer rounded-full">
-              <IconMoneybagHeart /> Price
+              <IconMoneybagHeart /> Narxi
             </button>
           </PopoverTrigger>
           <PopoverContent className="bg-[#0A0A0A] border border-neutral-800 text-white">
             <PopoverHeader>
-              <PopoverTitle className="text-neutral-200">Change the price</PopoverTitle>
+              <PopoverTitle className="text-neutral-200">Narxni o'zgartirish</PopoverTitle>
             </PopoverHeader>
             <div className="flex flex-col items-start justify-between gap-3">
               <input
                 type="number"
-                placeholder="From"
+                placeholder="Dan"
                 value={priceRange[0] || ''}
                 onChange={(e) => setPriceRange([Number(e.target.value) || 0, priceRange[1]])}
                 className="flex-1 bg-neutral-900 border border-neutral-800 rounded-lg px-3 py-2 text-sm text-neutral-200 placeholder-neutral-500 outline-none focus:border-neutral-700 w-full"
               />
               <input
                 type="number"
-                placeholder="To"
+                placeholder="Gacha"
                 value={priceRange[1] || ''}
                 onChange={(e) => setPriceRange([priceRange[0], Number(e.target.value) || 5000])}
                 className="flex-1 bg-neutral-900 border border-neutral-800 rounded-lg px-3 py-2 text-sm text-neutral-200 placeholder-neutral-500 outline-none focus:border-neutral-700 w-full"
@@ -116,24 +116,24 @@ export default function ModalShet({
         <Popover>
           <PopoverTrigger asChild>
             <button className="flex-1 flex font-bold items-center gap-3 bg-[#333] px-4 py-2 cursor-pointer rounded-full">
-              <Gamepad2 /> Type
+              <Gamepad2 /> Turi
             </button>
           </PopoverTrigger>
           <PopoverContent className="bg-[#0A0A0A] border border-neutral-800 text-white">
             <PopoverHeader>
-              <PopoverTitle className="text-neutral-200">Select the type you want?</PopoverTitle>
+              <PopoverTitle className="text-neutral-200">Kerakli turni tanlang</PopoverTitle>
             </PopoverHeader>
             <Select value={selectedType} onValueChange={setSelectedType}>
               <SelectTrigger className="w-full bg-neutral-900 border border-neutral-800 text-neutral-200">
-                <SelectValue placeholder="Select type" />
+                <SelectValue placeholder="Turni tanlang" />
               </SelectTrigger>
               <SelectContent className="bg-[#0A0A0A] border border-neutral-800 w-full">
                 <SelectGroup className="w-full">
-                  <SelectItem value="all" className="text-neutral-200 focus:bg-neutral-900">All</SelectItem>
-                  <SelectItem value="gaming" className="text-neutral-200 focus:bg-neutral-900">Gaming</SelectItem>
-                  <SelectItem value="budget" className="text-neutral-200 focus:bg-neutral-900">Budget</SelectItem>
-                  <SelectItem value="work" className="text-neutral-200 focus:bg-neutral-900">Work</SelectItem>
-                  <SelectItem value="creative" className="text-neutral-200 focus:bg-neutral-900">Creative</SelectItem>
+                  <SelectItem value="all" className="text-neutral-200 focus:bg-neutral-900">Barchasi</SelectItem>
+                  <SelectItem value="gaming" className="text-neutral-200 focus:bg-neutral-900">O'yin uchun</SelectItem>
+                  <SelectItem value="budget" className="text-neutral-200 focus:bg-neutral-900">Hamyonbop</SelectItem>
+                  <SelectItem value="work" className="text-neutral-200 focus:bg-neutral-900">Ish uchun</SelectItem>
+                  <SelectItem value="creative" className="text-neutral-200 focus:bg-neutral-900">Ijodiy</SelectItem>
                 </SelectGroup>
               </SelectContent>
             </Select>
@@ -142,7 +142,7 @@ export default function ModalShet({
       </div>
       <div className="space-y-5">
         {loading ? (
-          <p className="text-neutral-500 text-sm">Loading...</p>
+          <p className="text-neutral-500 text-sm">Yuklanmoqda...</p>
         ) : data?.data && data.data.length > 0 ? (
           data.data.map((model) => (
             <ComponentCard
@@ -153,7 +153,7 @@ export default function ModalShet({
             />
           ))
         ) : (
-          <p className="text-neutral-500 text-sm">No models found</p>
+          <p className="text-neutral-500 text-sm">Modellar topilmadi</p>
         )}
       </div>
 

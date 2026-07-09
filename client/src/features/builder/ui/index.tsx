@@ -107,7 +107,7 @@ export const BuilderPage: React.FC = () => {
                 <div className="fixed inset-0 z-100 bg-[#0A0A0A] flex items-center justify-center">
                     <div className="flex flex-col items-center gap-4">
                         <Loader2 className="w-12 h-12 text-[#E4E728] animate-spin" />
-                        <p className="text-neutral-400 text-sm">Loading builder...</p>
+                        <p className="text-neutral-400 text-sm">Builder yuklanmoqda...</p>
                     </div>
                 </div>
             )}
@@ -184,8 +184,8 @@ export const BuilderPage: React.FC = () => {
                     ) : (
                         <div className="flex items-center justify-center h-full">
                             <div className="text-center">
-                                <p className="text-neutral-400 text-lg mb-2">Select a case first</p>
-                                <p className="text-neutral-500 text-sm">Choose a case from the panel to start building</p>
+                                <p className="text-neutral-400 text-lg mb-2">Avval korpusni tanlang</p>
+                                <p className="text-neutral-500 text-sm">Kompyuterni yig'ishni boshlash uchun paneldan korpus tanlang</p>
                             </div>
                         </div>
                     )}

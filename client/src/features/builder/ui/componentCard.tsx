@@ -44,7 +44,7 @@ export default function ComponentCard({ item, onClick, onChoose }: ComponentCard
                             }}
                             className="px-3 cursor-pointer py-1.5 bg-[#E4E728] hover:bg-[#C4D335] text-black text-xs font-semibold rounded-lg transition-colors"
                         >
-                            Choose
+                            Tanlash
                         </button>
                     </div>
                 </div>

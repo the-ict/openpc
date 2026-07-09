@@ -1,7 +1,7 @@
 "use client";
 
 import Session from './Session';
-import { formatUZS } from '../lib/fnc';
+import { formatUSD } from '../lib/fnc';
 import { useSession } from '../lib/hooks';
 import SessionSearch from './SessionSearch';
 import NewSessionDialog from './NewSessionDialog';
@@ -25,7 +25,7 @@ export default function Index() {
             </div>
             <div className="bg-[#111] rounded-2xl p-6">
               <span className="text-xs text-neutral-500 font-medium uppercase tracking-wider">O&apos;rtacha Narx</span>
-              <p className="text-3xl font-bold mt-2 text-[#E4E728] font-mono">{formatUZS(Array.isArray(data?.data) ? data?.data.reduce((acc, session) => acc + session.models.reduce((mAcc, model) => mAcc + Number(model.price), 0), 0) / (data.data.length || 1) : 0)}</p>
+              <p className="text-3xl font-bold mt-2 text-[#E4E728] font-mono">{formatUSD(Array.isArray(data?.data) ? data?.data.reduce((acc, session) => acc + session.models.reduce((mAcc, model) => mAcc + Number(model.price), 0), 0) / (data.data.length || 1) : 0)}</p>
             </div>
             <div className="bg-[#111]  rounded-2xl p-6 sm:col-span-2 lg:col-span-1">
               <span className="text-xs text-neutral-500 font-medium uppercase tracking-wider">Faol loyihalar</span>

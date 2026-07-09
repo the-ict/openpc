@@ -1,6 +1,6 @@
 "use client";
 
-import { formatUZS } from '../lib/fnc';
+import { formatUSD } from '../lib/fnc';
 import { IModel } from '@/src/shared/config/api/model/model.model';
 import { Delete, Edit, EllipsisVertical, Share } from 'lucide-react';
 import { ISession } from '@/src/shared/config/api/session/session.model'
@@ -46,7 +46,7 @@ export default function Session({ session }: Props) {
                             ) => (
                                 <div key={model.id} className="flex justify-between text-xs">
                                     <span className="text-neutral-500">{model.name}</span>
-                                    <span className="text-neutral-300 font-medium truncate max-w-45">{model.price}</span>
+                                    <span className="text-neutral-300 font-medium truncate max-w-45">{formatUSD(Number(model.price))}</span>
                                 </div>
                             ))
                         ) : (
@@ -60,7 +60,7 @@ export default function Session({ session }: Props) {
                 <div className="border-t border-[#555] pt-4 flex items-end justify-between">
                     <div>
                         <span className="text-[10px] text-neutral-500 block uppercase tracking-wider font-medium">Taxminiy Narxi</span>
-                        <span className="text-base font-bold font-mono text-[#E4E728]">{formatUZS(session.models.reduce((acc: number, model: IModel) => acc + Number(model.price), 0))}</span>
+                        <span className="text-base font-bold font-mono text-[#E4E728]">{formatUSD(session.models.reduce((acc: number, model: IModel) => acc + Number(model.price), 0))}</span>
                     </div>
                     <DropdownMenu>
                         <DropdownMenuTrigger>

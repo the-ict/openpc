@@ -34,18 +34,47 @@ export const create_session = async (req: Request, res: Response, next: NextFunc
 export const add_model_to_session = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const { model_id } = req.body;
-        console.log("model_if:", model_id);
+        console.log("model_id:", model_id);
+
+        const modelToAdd = await prisma.model.findUnique({
+            where: { id: model_id },
+        });
+
+        if (!modelToAdd) {
+            return res.status(404).json({ message: "Model not found", ok: false });
+        }
+
+        const session = await prisma.session.findUnique({
+            where: { id: req.params.id as string },
+            include: { models: true },
+        });
+
+        if (!session) {
+            return res.status(404).json({ message: "Session not found", ok: false });
+        }
+
+        const existingModelOfSameType = session.models.find(
+            (m) => m.type === modelToAdd.type
+        );
+
+        const modelsUpdatePayload: any = {
+            connect: {
+                id: model_id,
+            },
+        };
+
+        if (existingModelOfSameType) {
+            modelsUpdatePayload.disconnect = {
+                id: existingModelOfSameType.id,
+            };
+        }
 
         const updated_session = await prisma.session.update({
             where: {
                 id: req.params.id as string,
             },
             data: {
-                models: {
-                    connect: {
-                        id: model_id,
-                    },
-                },
+                models: modelsUpdatePayload,
             },
             include: {
                 models: true,

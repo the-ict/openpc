@@ -690,8 +690,7 @@ export const ModelScalarFieldEnum = {
   image: 'image',
   model_file: 'model_file',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt',
-  session_id: 'session_id'
+  updatedAt: 'updatedAt'
 } as const
 
 export type ModelScalarFieldEnum = (typeof ModelScalarFieldEnum)[keyof typeof ModelScalarFieldEnum]
