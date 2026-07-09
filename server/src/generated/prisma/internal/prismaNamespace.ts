@@ -386,7 +386,6 @@ type FieldRefInputType<Model, FieldType> = Model extends never ? never : FieldRe
 export const ModelName = {
   User: 'User',
   Model: 'Model',
-  Cordinations: 'Cordinations',
   Session: 'Session'
 } as const
 
@@ -403,7 +402,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "model" | "cordinations" | "session"
+    modelProps: "user" | "model" | "session"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -555,80 +554,6 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
-    Cordinations: {
-      payload: Prisma.$CordinationsPayload<ExtArgs>
-      fields: Prisma.CordinationsFieldRefs
-      operations: {
-        findUnique: {
-          args: Prisma.CordinationsFindUniqueArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$CordinationsPayload> | null
-        }
-        findUniqueOrThrow: {
-          args: Prisma.CordinationsFindUniqueOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$CordinationsPayload>
-        }
-        findFirst: {
-          args: Prisma.CordinationsFindFirstArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$CordinationsPayload> | null
-        }
-        findFirstOrThrow: {
-          args: Prisma.CordinationsFindFirstOrThrowArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$CordinationsPayload>
-        }
-        findMany: {
-          args: Prisma.CordinationsFindManyArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$CordinationsPayload>[]
-        }
-        create: {
-          args: Prisma.CordinationsCreateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$CordinationsPayload>
-        }
-        createMany: {
-          args: Prisma.CordinationsCreateManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        createManyAndReturn: {
-          args: Prisma.CordinationsCreateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$CordinationsPayload>[]
-        }
-        delete: {
-          args: Prisma.CordinationsDeleteArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$CordinationsPayload>
-        }
-        update: {
-          args: Prisma.CordinationsUpdateArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$CordinationsPayload>
-        }
-        deleteMany: {
-          args: Prisma.CordinationsDeleteManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        updateMany: {
-          args: Prisma.CordinationsUpdateManyArgs<ExtArgs>
-          result: BatchPayload
-        }
-        updateManyAndReturn: {
-          args: Prisma.CordinationsUpdateManyAndReturnArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$CordinationsPayload>[]
-        }
-        upsert: {
-          args: Prisma.CordinationsUpsertArgs<ExtArgs>
-          result: runtime.Types.Utils.PayloadToResult<Prisma.$CordinationsPayload>
-        }
-        aggregate: {
-          args: Prisma.CordinationsAggregateArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.AggregateCordinations>
-        }
-        groupBy: {
-          args: Prisma.CordinationsGroupByArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.CordinationsGroupByOutputType>[]
-        }
-        count: {
-          args: Prisma.CordinationsCountArgs<ExtArgs>
-          result: runtime.Types.Utils.Optional<Prisma.CordinationsCountAggregateOutputType> | number
-        }
-      }
-    }
     Session: {
       payload: Prisma.$SessionPayload<ExtArgs>
       fields: Prisma.SessionFieldRefs
@@ -764,44 +689,12 @@ export const ModelScalarFieldEnum = {
   price: 'price',
   image: 'image',
   model_file: 'model_file',
-  model_code_file: 'model_code_file',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   session_id: 'session_id'
 } as const
 
 export type ModelScalarFieldEnum = (typeof ModelScalarFieldEnum)[keyof typeof ModelScalarFieldEnum]
-
-
-export const CordinationsScalarFieldEnum = {
-  id: 'id',
-  cpu_cordination_x: 'cpu_cordination_x',
-  cpu_cordination_y: 'cpu_cordination_y',
-  cpu_cordination_z: 'cpu_cordination_z',
-  gpu_cordination_x: 'gpu_cordination_x',
-  gpu_cordination_y: 'gpu_cordination_y',
-  gpu_cordination_z: 'gpu_cordination_z',
-  mother_board_cordination_x: 'mother_board_cordination_x',
-  mother_board_cordination_y: 'mother_board_cordination_y',
-  mother_board_cordination_z: 'mother_board_cordination_z',
-  ram_cordination_x: 'ram_cordination_x',
-  ram_cordination_y: 'ram_cordination_y',
-  ram_cordination_z: 'ram_cordination_z',
-  storage_cordination_x: 'storage_cordination_x',
-  storage_cordination_y: 'storage_cordination_y',
-  storage_cordination_z: 'storage_cordination_z',
-  power_supply_cordination_x: 'power_supply_cordination_x',
-  power_supply_cordination_y: 'power_supply_cordination_y',
-  power_supply_cordination_z: 'power_supply_cordination_z',
-  cooler_cordination_x: 'cooler_cordination_x',
-  cooler_cordination_y: 'cooler_cordination_y',
-  cooler_cordination_z: 'cooler_cordination_z',
-  case_model_id: 'case_model_id',
-  createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
-} as const
-
-export type CordinationsScalarFieldEnum = (typeof CordinationsScalarFieldEnum)[keyof typeof CordinationsScalarFieldEnum]
 
 
 export const SessionScalarFieldEnum = {
@@ -1027,7 +920,6 @@ export type PrismaClientOptions = ({
 export type GlobalOmitConfig = {
   user?: Prisma.UserOmit
   model?: Prisma.ModelOmit
-  cordinations?: Prisma.CordinationsOmit
   session?: Prisma.SessionOmit
 }
 

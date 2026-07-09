@@ -28,3 +28,5 @@ export interface RegisterRequest {
 };
 
 export type RegisterResponse = Response<LoginData>;
+
+export type MeResponse = Response<LoginData>;

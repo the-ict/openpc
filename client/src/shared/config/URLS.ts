@@ -14,6 +14,7 @@ export const MODEL_URLS = {
     CREATE: "/api/models",
     UPDATE: "/api/models",
     GET_ALL: "/api/models",
+    UPLOAD_FILE: "/api/upload"
 } as const;
 
 export const SESSION_URLS = {

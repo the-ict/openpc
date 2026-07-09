@@ -18,3 +18,16 @@ export const get_models = async (params?: { search?: string; type?: string; minP
     const response = await http.get<{ data: IModel[] }>(MODEL_URLS.GET_ALL, { params });
     return response.data;
 };
+
+export const upload_model = async (file: File) => {
+    const formData = new FormData();
+    formData.append("file", file);
+
+    const response = await http.post(MODEL_URLS.UPLOAD_FILE, formData, {
+        headers: {
+            "Content-Type": "multipart/form-data",
+        },
+    });
+
+    return response.data;
+};

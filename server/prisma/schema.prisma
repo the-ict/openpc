@@ -27,41 +27,10 @@ model Model {
   price           Float
   image           String
   model_file      String
-  model_code_file String
   createdAt       DateTime      @default(now())
   updatedAt       DateTime      @updatedAt
-  cordinations    Cordinations?
   sessions        Session?      @relation(fields: [session_id], references: [id])
   session_id      String?
-}
-
-model Cordinations {
-  id                         String   @id @default(uuid())
-  cpu_cordination_x          String
-  cpu_cordination_y          String
-  cpu_cordination_z          String
-  gpu_cordination_x          String
-  gpu_cordination_y          String
-  gpu_cordination_z          String
-  mother_board_cordination_x String
-  mother_board_cordination_y String
-  mother_board_cordination_z String
-  ram_cordination_x          String
-  ram_cordination_y          String
-  ram_cordination_z          String
-  storage_cordination_x      String
-  storage_cordination_y      String
-  storage_cordination_z      String
-  power_supply_cordination_x String
-  power_supply_cordination_y String
-  power_supply_cordination_z String
-  cooler_cordination_x       String
-  cooler_cordination_y       String
-  cooler_cordination_z       String
-  case_model_id              String   @unique
-  case_model                 Model    @relation(fields: [case_model_id], references: [id])
-  createdAt                  DateTime @default(now())
-  updatedAt                  DateTime @updatedAt
 }
 
 model Session {

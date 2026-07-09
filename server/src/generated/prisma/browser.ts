@@ -28,11 +28,6 @@ export type User = Prisma.UserModel
  */
 export type Model = Prisma.ModelModel
 /**
- * Model Cordinations
- * 
- */
-export type Cordinations = Prisma.CordinationsModel
-/**
  * Model Session
  * 
  */

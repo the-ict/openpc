@@ -42,7 +42,6 @@ export type ModelMinAggregateOutputType = {
   price: number | null
   image: string | null
   model_file: string | null
-  model_code_file: string | null
   createdAt: Date | null
   updatedAt: Date | null
   session_id: string | null
@@ -56,7 +55,6 @@ export type ModelMaxAggregateOutputType = {
   price: number | null
   image: string | null
   model_file: string | null
-  model_code_file: string | null
   createdAt: Date | null
   updatedAt: Date | null
   session_id: string | null
@@ -70,7 +68,6 @@ export type ModelCountAggregateOutputType = {
   price: number
   image: number
   model_file: number
-  model_code_file: number
   createdAt: number
   updatedAt: number
   session_id: number
@@ -94,7 +91,6 @@ export type ModelMinAggregateInputType = {
   price?: true
   image?: true
   model_file?: true
-  model_code_file?: true
   createdAt?: true
   updatedAt?: true
   session_id?: true
@@ -108,7 +104,6 @@ export type ModelMaxAggregateInputType = {
   price?: true
   image?: true
   model_file?: true
-  model_code_file?: true
   createdAt?: true
   updatedAt?: true
   session_id?: true
@@ -122,7 +117,6 @@ export type ModelCountAggregateInputType = {
   price?: true
   image?: true
   model_file?: true
-  model_code_file?: true
   createdAt?: true
   updatedAt?: true
   session_id?: true
@@ -223,7 +217,6 @@ export type ModelGroupByOutputType = {
   price: number
   image: string
   model_file: string
-  model_code_file: string
   createdAt: Date
   updatedAt: Date
   session_id: string | null
@@ -260,11 +253,9 @@ export type ModelWhereInput = {
   price?: Prisma.FloatFilter<"Model"> | number
   image?: Prisma.StringFilter<"Model"> | string
   model_file?: Prisma.StringFilter<"Model"> | string
-  model_code_file?: Prisma.StringFilter<"Model"> | string
   createdAt?: Prisma.DateTimeFilter<"Model"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Model"> | Date | string
   session_id?: Prisma.StringNullableFilter<"Model"> | string | null
-  cordinations?: Prisma.XOR<Prisma.CordinationsNullableScalarRelationFilter, Prisma.CordinationsWhereInput> | null
   sessions?: Prisma.XOR<Prisma.SessionNullableScalarRelationFilter, Prisma.SessionWhereInput> | null
 }
 
@@ -276,11 +267,9 @@ export type ModelOrderByWithRelationInput = {
   price?: Prisma.SortOrder
   image?: Prisma.SortOrder
   model_file?: Prisma.SortOrder
-  model_code_file?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   session_id?: Prisma.SortOrderInput | Prisma.SortOrder
-  cordinations?: Prisma.CordinationsOrderByWithRelationInput
   sessions?: Prisma.SessionOrderByWithRelationInput
 }
 
@@ -295,11 +284,9 @@ export type ModelWhereUniqueInput = Prisma.AtLeast<{
   price?: Prisma.FloatFilter<"Model"> | number
   image?: Prisma.StringFilter<"Model"> | string
   model_file?: Prisma.StringFilter<"Model"> | string
-  model_code_file?: Prisma.StringFilter<"Model"> | string
   createdAt?: Prisma.DateTimeFilter<"Model"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Model"> | Date | string
   session_id?: Prisma.StringNullableFilter<"Model"> | string | null
-  cordinations?: Prisma.XOR<Prisma.CordinationsNullableScalarRelationFilter, Prisma.CordinationsWhereInput> | null
   sessions?: Prisma.XOR<Prisma.SessionNullableScalarRelationFilter, Prisma.SessionWhereInput> | null
 }, "id">
 
@@ -311,7 +298,6 @@ export type ModelOrderByWithAggregationInput = {
   price?: Prisma.SortOrder
   image?: Prisma.SortOrder
   model_file?: Prisma.SortOrder
-  model_code_file?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   session_id?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -333,7 +319,6 @@ export type ModelScalarWhereWithAggregatesInput = {
   price?: Prisma.FloatWithAggregatesFilter<"Model"> | number
   image?: Prisma.StringWithAggregatesFilter<"Model"> | string
   model_file?: Prisma.StringWithAggregatesFilter<"Model"> | string
-  model_code_file?: Prisma.StringWithAggregatesFilter<"Model"> | string
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Model"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Model"> | Date | string
   session_id?: Prisma.StringNullableWithAggregatesFilter<"Model"> | string | null
@@ -347,10 +332,8 @@ export type ModelCreateInput = {
   price: number
   image: string
   model_file: string
-  model_code_file: string
   createdAt?: Date | string
   updatedAt?: Date | string
-  cordinations?: Prisma.CordinationsCreateNestedOneWithoutCase_modelInput
   sessions?: Prisma.SessionCreateNestedOneWithoutModelsInput
 }
 
@@ -362,11 +345,9 @@ export type ModelUncheckedCreateInput = {
   price: number
   image: string
   model_file: string
-  model_code_file: string
   createdAt?: Date | string
   updatedAt?: Date | string
   session_id?: string | null
-  cordinations?: Prisma.CordinationsUncheckedCreateNestedOneWithoutCase_modelInput
 }
 
 export type ModelUpdateInput = {
@@ -377,10 +358,8 @@ export type ModelUpdateInput = {
   price?: Prisma.FloatFieldUpdateOperationsInput | number
   image?: Prisma.StringFieldUpdateOperationsInput | string
   model_file?: Prisma.StringFieldUpdateOperationsInput | string
-  model_code_file?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  cordinations?: Prisma.CordinationsUpdateOneWithoutCase_modelNestedInput
   sessions?: Prisma.SessionUpdateOneWithoutModelsNestedInput
 }
 
@@ -392,11 +371,9 @@ export type ModelUncheckedUpdateInput = {
   price?: Prisma.FloatFieldUpdateOperationsInput | number
   image?: Prisma.StringFieldUpdateOperationsInput | string
   model_file?: Prisma.StringFieldUpdateOperationsInput | string
-  model_code_file?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   session_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-  cordinations?: Prisma.CordinationsUncheckedUpdateOneWithoutCase_modelNestedInput
 }
 
 export type ModelCreateManyInput = {
@@ -407,7 +384,6 @@ export type ModelCreateManyInput = {
   price: number
   image: string
   model_file: string
-  model_code_file: string
   createdAt?: Date | string
   updatedAt?: Date | string
   session_id?: string | null
@@ -421,7 +397,6 @@ export type ModelUpdateManyMutationInput = {
   price?: Prisma.FloatFieldUpdateOperationsInput | number
   image?: Prisma.StringFieldUpdateOperationsInput | string
   model_file?: Prisma.StringFieldUpdateOperationsInput | string
-  model_code_file?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -434,7 +409,6 @@ export type ModelUncheckedUpdateManyInput = {
   price?: Prisma.FloatFieldUpdateOperationsInput | number
   image?: Prisma.StringFieldUpdateOperationsInput | string
   model_file?: Prisma.StringFieldUpdateOperationsInput | string
-  model_code_file?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   session_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -448,7 +422,6 @@ export type ModelCountOrderByAggregateInput = {
   price?: Prisma.SortOrder
   image?: Prisma.SortOrder
   model_file?: Prisma.SortOrder
-  model_code_file?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   session_id?: Prisma.SortOrder
@@ -466,7 +439,6 @@ export type ModelMaxOrderByAggregateInput = {
   price?: Prisma.SortOrder
   image?: Prisma.SortOrder
   model_file?: Prisma.SortOrder
-  model_code_file?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   session_id?: Prisma.SortOrder
@@ -480,7 +452,6 @@ export type ModelMinOrderByAggregateInput = {
   price?: Prisma.SortOrder
   image?: Prisma.SortOrder
   model_file?: Prisma.SortOrder
-  model_code_file?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   session_id?: Prisma.SortOrder
@@ -488,11 +459,6 @@ export type ModelMinOrderByAggregateInput = {
 
 export type ModelSumOrderByAggregateInput = {
   price?: Prisma.SortOrder
-}
-
-export type ModelScalarRelationFilter = {
-  is?: Prisma.ModelWhereInput
-  isNot?: Prisma.ModelWhereInput
 }
 
 export type ModelListRelationFilter = {
@@ -515,20 +481,6 @@ export type FloatFieldUpdateOperationsInput = {
   decrement?: number
   multiply?: number
   divide?: number
-}
-
-export type ModelCreateNestedOneWithoutCordinationsInput = {
-  create?: Prisma.XOR<Prisma.ModelCreateWithoutCordinationsInput, Prisma.ModelUncheckedCreateWithoutCordinationsInput>
-  connectOrCreate?: Prisma.ModelCreateOrConnectWithoutCordinationsInput
-  connect?: Prisma.ModelWhereUniqueInput
-}
-
-export type ModelUpdateOneRequiredWithoutCordinationsNestedInput = {
-  create?: Prisma.XOR<Prisma.ModelCreateWithoutCordinationsInput, Prisma.ModelUncheckedCreateWithoutCordinationsInput>
-  connectOrCreate?: Prisma.ModelCreateOrConnectWithoutCordinationsInput
-  upsert?: Prisma.ModelUpsertWithoutCordinationsInput
-  connect?: Prisma.ModelWhereUniqueInput
-  update?: Prisma.XOR<Prisma.XOR<Prisma.ModelUpdateToOneWithWhereWithoutCordinationsInput, Prisma.ModelUpdateWithoutCordinationsInput>, Prisma.ModelUncheckedUpdateWithoutCordinationsInput>
 }
 
 export type ModelCreateNestedManyWithoutSessionsInput = {
@@ -573,78 +525,6 @@ export type ModelUncheckedUpdateManyWithoutSessionsNestedInput = {
   deleteMany?: Prisma.ModelScalarWhereInput | Prisma.ModelScalarWhereInput[]
 }
 
-export type ModelCreateWithoutCordinationsInput = {
-  id?: string
-  name: string
-  type: $Enums.MODEL_TYPES
-  brand: string
-  price: number
-  image: string
-  model_file: string
-  model_code_file: string
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  sessions?: Prisma.SessionCreateNestedOneWithoutModelsInput
-}
-
-export type ModelUncheckedCreateWithoutCordinationsInput = {
-  id?: string
-  name: string
-  type: $Enums.MODEL_TYPES
-  brand: string
-  price: number
-  image: string
-  model_file: string
-  model_code_file: string
-  createdAt?: Date | string
-  updatedAt?: Date | string
-  session_id?: string | null
-}
-
-export type ModelCreateOrConnectWithoutCordinationsInput = {
-  where: Prisma.ModelWhereUniqueInput
-  create: Prisma.XOR<Prisma.ModelCreateWithoutCordinationsInput, Prisma.ModelUncheckedCreateWithoutCordinationsInput>
-}
-
-export type ModelUpsertWithoutCordinationsInput = {
-  update: Prisma.XOR<Prisma.ModelUpdateWithoutCordinationsInput, Prisma.ModelUncheckedUpdateWithoutCordinationsInput>
-  create: Prisma.XOR<Prisma.ModelCreateWithoutCordinationsInput, Prisma.ModelUncheckedCreateWithoutCordinationsInput>
-  where?: Prisma.ModelWhereInput
-}
-
-export type ModelUpdateToOneWithWhereWithoutCordinationsInput = {
-  where?: Prisma.ModelWhereInput
-  data: Prisma.XOR<Prisma.ModelUpdateWithoutCordinationsInput, Prisma.ModelUncheckedUpdateWithoutCordinationsInput>
-}
-
-export type ModelUpdateWithoutCordinationsInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  type?: Prisma.EnumMODEL_TYPESFieldUpdateOperationsInput | $Enums.MODEL_TYPES
-  brand?: Prisma.StringFieldUpdateOperationsInput | string
-  price?: Prisma.FloatFieldUpdateOperationsInput | number
-  image?: Prisma.StringFieldUpdateOperationsInput | string
-  model_file?: Prisma.StringFieldUpdateOperationsInput | string
-  model_code_file?: Prisma.StringFieldUpdateOperationsInput | string
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  sessions?: Prisma.SessionUpdateOneWithoutModelsNestedInput
-}
-
-export type ModelUncheckedUpdateWithoutCordinationsInput = {
-  id?: Prisma.StringFieldUpdateOperationsInput | string
-  name?: Prisma.StringFieldUpdateOperationsInput | string
-  type?: Prisma.EnumMODEL_TYPESFieldUpdateOperationsInput | $Enums.MODEL_TYPES
-  brand?: Prisma.StringFieldUpdateOperationsInput | string
-  price?: Prisma.FloatFieldUpdateOperationsInput | number
-  image?: Prisma.StringFieldUpdateOperationsInput | string
-  model_file?: Prisma.StringFieldUpdateOperationsInput | string
-  model_code_file?: Prisma.StringFieldUpdateOperationsInput | string
-  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  session_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
-}
-
 export type ModelCreateWithoutSessionsInput = {
   id?: string
   name: string
@@ -653,10 +533,8 @@ export type ModelCreateWithoutSessionsInput = {
   price: number
   image: string
   model_file: string
-  model_code_file: string
   createdAt?: Date | string
   updatedAt?: Date | string
-  cordinations?: Prisma.CordinationsCreateNestedOneWithoutCase_modelInput
 }
 
 export type ModelUncheckedCreateWithoutSessionsInput = {
@@ -667,10 +545,8 @@ export type ModelUncheckedCreateWithoutSessionsInput = {
   price: number
   image: string
   model_file: string
-  model_code_file: string
   createdAt?: Date | string
   updatedAt?: Date | string
-  cordinations?: Prisma.CordinationsUncheckedCreateNestedOneWithoutCase_modelInput
 }
 
 export type ModelCreateOrConnectWithoutSessionsInput = {
@@ -710,7 +586,6 @@ export type ModelScalarWhereInput = {
   price?: Prisma.FloatFilter<"Model"> | number
   image?: Prisma.StringFilter<"Model"> | string
   model_file?: Prisma.StringFilter<"Model"> | string
-  model_code_file?: Prisma.StringFilter<"Model"> | string
   createdAt?: Prisma.DateTimeFilter<"Model"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Model"> | Date | string
   session_id?: Prisma.StringNullableFilter<"Model"> | string | null
@@ -724,7 +599,6 @@ export type ModelCreateManySessionsInput = {
   price: number
   image: string
   model_file: string
-  model_code_file: string
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -737,10 +611,8 @@ export type ModelUpdateWithoutSessionsInput = {
   price?: Prisma.FloatFieldUpdateOperationsInput | number
   image?: Prisma.StringFieldUpdateOperationsInput | string
   model_file?: Prisma.StringFieldUpdateOperationsInput | string
-  model_code_file?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  cordinations?: Prisma.CordinationsUpdateOneWithoutCase_modelNestedInput
 }
 
 export type ModelUncheckedUpdateWithoutSessionsInput = {
@@ -751,10 +623,8 @@ export type ModelUncheckedUpdateWithoutSessionsInput = {
   price?: Prisma.FloatFieldUpdateOperationsInput | number
   image?: Prisma.StringFieldUpdateOperationsInput | string
   model_file?: Prisma.StringFieldUpdateOperationsInput | string
-  model_code_file?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  cordinations?: Prisma.CordinationsUncheckedUpdateOneWithoutCase_modelNestedInput
 }
 
 export type ModelUncheckedUpdateManyWithoutSessionsInput = {
@@ -765,7 +635,6 @@ export type ModelUncheckedUpdateManyWithoutSessionsInput = {
   price?: Prisma.FloatFieldUpdateOperationsInput | number
   image?: Prisma.StringFieldUpdateOperationsInput | string
   model_file?: Prisma.StringFieldUpdateOperationsInput | string
-  model_code_file?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -780,11 +649,9 @@ export type ModelSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   price?: boolean
   image?: boolean
   model_file?: boolean
-  model_code_file?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   session_id?: boolean
-  cordinations?: boolean | Prisma.Model$cordinationsArgs<ExtArgs>
   sessions?: boolean | Prisma.Model$sessionsArgs<ExtArgs>
 }, ExtArgs["result"]["model"]>
 
@@ -796,7 +663,6 @@ export type ModelSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   price?: boolean
   image?: boolean
   model_file?: boolean
-  model_code_file?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   session_id?: boolean
@@ -811,7 +677,6 @@ export type ModelSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   price?: boolean
   image?: boolean
   model_file?: boolean
-  model_code_file?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   session_id?: boolean
@@ -826,15 +691,13 @@ export type ModelSelectScalar = {
   price?: boolean
   image?: boolean
   model_file?: boolean
-  model_code_file?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   session_id?: boolean
 }
 
-export type ModelOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "type" | "brand" | "price" | "image" | "model_file" | "model_code_file" | "createdAt" | "updatedAt" | "session_id", ExtArgs["result"]["model"]>
+export type ModelOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "type" | "brand" | "price" | "image" | "model_file" | "createdAt" | "updatedAt" | "session_id", ExtArgs["result"]["model"]>
 export type ModelInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  cordinations?: boolean | Prisma.Model$cordinationsArgs<ExtArgs>
   sessions?: boolean | Prisma.Model$sessionsArgs<ExtArgs>
 }
 export type ModelIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -847,7 +710,6 @@ export type ModelIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extens
 export type $ModelPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Model"
   objects: {
-    cordinations: Prisma.$CordinationsPayload<ExtArgs> | null
     sessions: Prisma.$SessionPayload<ExtArgs> | null
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
@@ -858,7 +720,6 @@ export type $ModelPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
     price: number
     image: string
     model_file: string
-    model_code_file: string
     createdAt: Date
     updatedAt: Date
     session_id: string | null
@@ -1256,7 +1117,6 @@ readonly fields: ModelFieldRefs;
  */
 export interface Prisma__ModelClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
-  cordinations<T extends Prisma.Model$cordinationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Model$cordinationsArgs<ExtArgs>>): Prisma.Prisma__CordinationsClient<runtime.Types.Result.GetResult<Prisma.$CordinationsPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   sessions<T extends Prisma.Model$sessionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Model$sessionsArgs<ExtArgs>>): Prisma.Prisma__SessionClient<runtime.Types.Result.GetResult<Prisma.$SessionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -1294,7 +1154,6 @@ export interface ModelFieldRefs {
   readonly price: Prisma.FieldRef<"Model", 'Float'>
   readonly image: Prisma.FieldRef<"Model", 'String'>
   readonly model_file: Prisma.FieldRef<"Model", 'String'>
-  readonly model_code_file: Prisma.FieldRef<"Model", 'String'>
   readonly createdAt: Prisma.FieldRef<"Model", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Model", 'DateTime'>
   readonly session_id: Prisma.FieldRef<"Model", 'String'>
@@ -1696,25 +1555,6 @@ export type ModelDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Interna
    * Limit how many Models to delete.
    */
   limit?: number
-}
-
-/**
- * Model.cordinations
- */
-export type Model$cordinationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the Cordinations
-   */
-  select?: Prisma.CordinationsSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the Cordinations
-   */
-  omit?: Prisma.CordinationsOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.CordinationsInclude<ExtArgs> | null
-  where?: Prisma.CordinationsWhereInput
 }
 
 /**
