@@ -6,6 +6,7 @@ import { useCaseSockets } from '../lib/hooks';
 import { useGLTF } from '@react-three/drei';
 import { ComponentBuild } from '.';
 import { Group } from 'three';
+import * as THREE from "three";
 
 
 interface SceneBuilderProps {
@@ -22,18 +23,27 @@ interface ModelComponentProps {
 
 function ModelComponent({ component, set_component_refs, position, rotation }: ModelComponentProps) {
   const modelUrl = UPLOAD_URL + component.modelFile;
-  
+
   const { scene } = useGLTF(modelUrl);
   const ref = useRef<Group | null>(null);
 
+  console.log("model component scene scale: ", scene.scale);
+
   useEffect(() => {
     if (ref.current) {
-      set_component_refs(prev => ({...prev, [component.type]: ref}));
+      set_component_refs(prev => ({ ...prev, [component.type]: ref }));
     };
   }, [ref, component.type, set_component_refs]);
 
+  useEffect(() => {
+    scene.traverse((obj) => {
+      console.log(obj.name, obj.type, obj.scale);
+    });
+  }, [scene]);
+
   const cloned = useMemo(() => {
     const clone = scene.clone();
+
     clone.traverse((child: any) => {
       if (child.isMesh && child.material) {
         child.material = child.material.clone();
@@ -46,7 +56,7 @@ function ModelComponent({ component, set_component_refs, position, rotation }: M
   }, [scene]);
 
   return (
-    <group ref={ref} position={position} scale={[0.1,0.1,0.1]} rotation={rotation}>
+    <group ref={ref} position={position} rotation={rotation}>
       <primitive object={cloned} />
     </group>
   );
@@ -65,9 +75,9 @@ function renderCaseModel(url: string) {
 
 export default function SceneBuilder({ components, setComponentRef }: SceneBuilderProps) {
   const case_component = components.find(c => c.type === "CASE");
-  
+
   const caseUrl = case_component?.modelFile ? UPLOAD_URL + case_component.modelFile : "";
-  
+
   const socket_points = useCaseSockets(caseUrl);
   const other_components = components.filter(c => c.type !== "CASE");
 
@@ -84,9 +94,6 @@ export default function SceneBuilder({ components, setComponentRef }: SceneBuild
       {other_components.length > 0 && (
         other_components.map((component, index) => {
           const socket = socket_points[component.type];
-
-          console.log("component: ", component);
-          console.log("socket: ", socket);
 
           if (!socket) {
             console.warn(`Socket topilmadi: socket_${component.type}. Artist bu nomni case'ga qo'shganmi?`);

@@ -33,7 +33,6 @@ export default function CMControls({ focusTarget, componentRefs }: CameraControl
                 wheel: 0,
             };
         } else if (ref.current && focusTarget === "CASE") {
-            console.log("FOCUS TARGET HAS CHANGED & we'got CASE", focusTarget);
             ref.current.minPolarAngle = 0.1;
             ref.current.maxPolarAngle = Math.PI - 0.1;
             ref.current.minAzimuthAngle = -Infinity;
@@ -55,11 +54,8 @@ export default function CMControls({ focusTarget, componentRefs }: CameraControl
                 ref.current.fitToBox(scene, true);
             } else {
                 const targetObj = componentRefsRef.current[focusTarget as MODEL_TYPES]?.current
-                console.log("components: ", componentRefsRef.current);
-                console.log("this is target OBJ: ", targetObj);
 
                 if (!targetObj) {
-                    console.log("we do not have target object");
                     return;
                 };
 
