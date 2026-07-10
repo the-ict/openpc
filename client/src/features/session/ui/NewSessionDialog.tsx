@@ -34,7 +34,7 @@ export default function NewSessionDialog({ onCreateSession, isCreating }: NewSes
     return (
         <Modal open={open} onOpenChange={setOpen}>
             <ModalTrigger>
-                <button className="group cursor-pointer bg-linear-to-b from-[#111]/50 to-[#111]/30 border-2 border-dashed border-[#555] hover:border-[#C4D335]/50 rounded-2xl flex flex-col items-center justify-center p-8 text-center transition-all duration-300 min-h-62.5">
+                <button className="group cursor-pointer bg-linear-to-b from-[#111]/50 to-[#111]/30 border-2 border-dashed border-[#555] hover:border-[#C4D335]/50 rounded-xl sm:rounded-2xl flex flex-col items-center justify-center p-6 sm:p-8 text-center transition-all duration-300 min-h-40 sm:min-h-62.5">
                     <div className="w-14 h-14 rounded-full bg-neutral-900 border border-[#555] flex items-center justify-center mb-4 group-hover:scale-110 group-hover:border-[#C4D335]/50 transition-all">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-neutral-400 group-hover:text-[#C4D335] transition-colors">
                             <path d="M5 12h14" />

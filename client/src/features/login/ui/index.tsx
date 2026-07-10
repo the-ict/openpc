@@ -37,7 +37,7 @@ export default function LoginPage() {
           Hisobingizga kiring va kompyuter yig'ishni boshlang
         </p>
 
-        <div className="w-full bg-[#D9D9D9] text-black rounded-2xl p-8">
+        <div className="w-full bg-[#D9D9D9] text-black rounded-2xl p-5 sm:p-8">
           <div className="flex flex-col gap-6">
             <button onClick={() => window.location.replace("http://localhost:3001/api/auth/google")} disabled={login_loading} className="w-full cursor-pointer bg-white border-2 border-gray-300 text-gray-700 font-semibold px-8 py-3 rounded-full hover:bg-gray-50 transition-colors duration-200 text-base flex items-center justify-center gap-3">
               <svg className="w-5 h-5" viewBox="0 0 24 24">

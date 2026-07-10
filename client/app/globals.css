@@ -122,6 +122,25 @@ body {
   .grid-2 {
     @apply grid grid-cols-2;
   }
+
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+@custom-media --xs (min-width: 475px);
+
+@layer base {
+  .\32xl\:text-xs {
+    @media (min-width: 1536px) {
+      font-size: 0.75rem;
+    }
+  }
 }
 
 .highlighted-text {

@@ -133,14 +133,14 @@ export default function Welcome() {
                     </div>
                 </div>
 
-                <div className='relative showcase w-full max-w-3xl aspect-square bg-[#D9D9D9] border-2 border-[#3B82F6] flex items-center justify-center p-6 mx-auto'>
-                    <div className='absolute -left-10 top-12 w-24 h-12 bg-[#D4E34A]' />
+                <div className='relative showcase w-full max-w-3xl aspect-square bg-[#D9D9D9] border-2 border-[#3B82F6] flex items-center justify-center p-4 sm:p-6 mx-auto'>
+                    <div className='hidden sm:block absolute -left-10 top-12 w-24 h-12 bg-[#D4E34A]' />
 
-                    <h2 className='text-black text-4xl md:text-5xl font-black uppercase tracking-wider text-center z-10 select-none'>
+                    <h2 className='text-black text-2xl sm:text-4xl md:text-5xl font-black uppercase tracking-wider text-center z-10 select-none'>
                         Platform<br />Show Case
                     </h2>
 
-                    <div className='absolute -right-10 bottom-12 w-24 h-12 bg-[#E50000]' />
+                    <div className='hidden sm:block absolute -right-10 bottom-12 w-24 h-12 bg-[#E50000]' />
                 </div>
             </section>
 
@@ -155,11 +155,11 @@ export default function Welcome() {
                         Ipsum has been the industry's standard dum my text.
                     </p>
 
-                    <div className='cards w-full min-h-screen gap-5 flex-center flex-col relative'>
-                        <div className='card1 card bg-red-500 h-187.5 w-full flex rounded-2xl content-center text-[30px] sticky top-20'></div>
-                        <div className='card2 card bg-blue-500 h-187.5 w-full flex rounded-2xl content-center text-[30px] sticky top-20'></div>
-                        <div className='card3 card bg-green-500 h-187.5 w-full flex rounded-2xl content-center text-[30px] sticky top-20'></div>
-                        <div className='card4 card bg-yellow-500 h-187.5 w-full flex rounded-2xl content-center text-[30px] sticky top-20'></div>
+                    <div className='cards w-full min-h-screen gap-4 sm:gap-5 flex-center flex-col relative'>
+                        <div className='card1 card bg-red-500 h-80 sm:h-187.5 w-full flex rounded-xl sm:rounded-2xl content-center text-xl sm:text-[30px] sticky top-20'></div>
+                        <div className='card2 card bg-blue-500 h-80 sm:h-187.5 w-full flex rounded-xl sm:rounded-2xl content-center text-xl sm:text-[30px] sticky top-20'></div>
+                        <div className='card3 card bg-green-500 h-80 sm:h-187.5 w-full flex rounded-xl sm:rounded-2xl content-center text-xl sm:text-[30px] sticky top-20'></div>
+                        <div className='card4 card bg-yellow-500 h-80 sm:h-187.5 w-full flex rounded-xl sm:rounded-2xl content-center text-xl sm:text-[30px] sticky top-20'></div>
                     </div>
                 </section>
 
@@ -174,8 +174,8 @@ export default function Welcome() {
 
                     <div className='flex flex-col gap-3 w-full'>
                         {socialLinks.map((link) => (
-                            <div key={link.name} className='w-full cursor-pointer bg-[#D9D9D9] text-black font-bold py-4 px-6 text-sm tracking-wider transition-colors duration-200 hover:bg-gray-300 flex items-center'>
-                                <img src={link.icon.src} alt={link.name} className='w-6 h-6 mr-2' />
+                            <div key={link.name} className='w-full cursor-pointer bg-[#D9D9D9] text-black font-bold py-3 sm:py-4 px-4 sm:px-6 text-xs sm:text-sm tracking-wider transition-colors duration-200 hover:bg-gray-300 flex items-center'>
+                                <img src={link.icon.src} alt={link.name} className='w-5 h-5 sm:w-6 sm:h-6 mr-2' />
                                 <a
                                     key={link.name}
                                     href={link.url}

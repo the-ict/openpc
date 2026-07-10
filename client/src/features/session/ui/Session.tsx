@@ -25,7 +25,7 @@ export default function Session({ session }: Props) {
     return (
         <div
             key={session.id}
-            className="group cursor-pointer bg-[#111]/30 rounded-2xl p-6 transition-all duration-300 flex flex-col justify-between hover:bg-[#111]"
+            className="group cursor-pointer bg-[#111]/30 rounded-xl sm:rounded-2xl p-4 sm:p-6 transition-all duration-300 flex flex-col justify-between hover:bg-[#111]"
         >
             <div>
                 <Link href={"/builder/" + session.id} key={session.id}>

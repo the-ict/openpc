@@ -66,7 +66,7 @@ export default function ModalShet({
   };
 
   return (
-    <div className="flex-3 w-full h-full bg-[#222] px-8 py-5 space-y-7">
+    <div className="w-full h-full bg-[#222] px-4 sm:px-8 py-4 sm:py-5 space-y-5 sm:space-y-7 min-w-0">
       {!hasSelectedCase && (
         <div className="bg-[#111] border border-[#333] rounded-lg p-6 text-center">
           <p className="text-neutral-400 text-sm mb-2">Avval korpusni tanlang</p>

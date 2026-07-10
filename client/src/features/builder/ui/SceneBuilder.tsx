@@ -2,7 +2,7 @@
 
 import React, { useEffect, useMemo, useRef } from 'react';
 import { UPLOAD_URL } from '@/src/shared/config/URLS';
-import { useCaseSockets } from '../lib/hooks';
+import { Socket, useCaseSockets } from '../lib/hooks';
 import { useGLTF } from '@react-three/drei';
 import { ComponentBuild } from '.';
 import { Group } from 'three';

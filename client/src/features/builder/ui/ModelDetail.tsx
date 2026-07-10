@@ -30,7 +30,7 @@ export default function ModelDetail({ model, open, onClose, add_to_build }: Prop
 
     return (
         <Modal open={open} onOpenChange={onClose}>
-            <ModalContent className="w-[40vw] max-h-[90vh] overflow-y-auto">
+            <ModalContent className="w-[90vw] sm:w-[60vw] lg:w-[40vw] max-h-[90vh] overflow-y-auto">
                 <Dialog.Title className="sr-only">Model ma'lumotlari</Dialog.Title>
 
                 <div className="space-y-6">
@@ -57,7 +57,7 @@ export default function ModelDetail({ model, open, onClose, add_to_build }: Prop
                         />
                     </div>
 
-                    <div className="grid grid-cols-2 gap-4">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                         <div className="bg-[#111] rounded-lg p-4 border border-[#333]">
                             <p className="text-neutral-400 text-xs uppercase tracking-wider mb-1">Narxi</p>
                             <p className="text-2xl font-bold text-[#E4E728]">${model.price}</p>

@@ -9,7 +9,7 @@ import { Canvas } from '@react-three/fiber';
 import CMControls from './CameraController';
 import { useParams } from 'next/navigation';
 import React, { useState, useEffect } from 'react';
-import { useAddModelToSession } from '../lib/hooks';
+import { type Socket, useAddModelToSession } from '../lib/hooks';
 import { useGetSession } from '../../session/lib/hooks';
 import { Bloom, EffectComposer } from "@react-three/postprocessing";
 import { IModel, MODEL_TYPES } from '@/src/shared/config/api/model/model.model';
@@ -26,6 +26,7 @@ export const BuilderPage: React.FC = () => {
     const [selectedCategory, setSelectedCategory] = useState<MODEL_TYPES>('CASE');
     const [builtComponents, setBuiltComponents] = useState<ComponentBuild[]>([]);
     const [activeBuild, setActiveBuild] = useState<Record<string, number>>({});
+    const [glassSocket, setGlassSocket] = useState<any>(null);
     const [priceRange, setPriceRange] = useState<[number, number]>([0, 5000]);
     const [focusTarget, setFocusTarget] = useState<MODEL_TYPES>("CASE");
     const [selectedType, setSelectedType] = useState<string>('all');
@@ -35,7 +36,7 @@ export const BuilderPage: React.FC = () => {
 
     const params = useParams();
 
-    const {data: sessionData} = useGetSession(params.id as string);
+    const { data: sessionData } = useGetSession(params.id as string);
 
     const {
         mutateAsync: addModelToSessionMutation,
@@ -101,8 +102,10 @@ export const BuilderPage: React.FC = () => {
         };
     };
 
+    const [sidebarOpen, setSidebarOpen] = useState(false);
+
     return (
-        <div className="flex h-screen w-screen bg-[#0A0A0A] text-[#FFFFFF] overflow-hidden font-sans select-none antialiased flex-col items-start">
+        <div className="flex flex-col h-screen w-screen bg-[#0A0A0A] text-[#FFFFFF] overflow-hidden font-sans select-none antialiased">
             {isLoading && (
                 <div className="fixed inset-0 z-100 bg-[#0A0A0A] flex items-center justify-center">
                     <div className="flex flex-col items-center gap-4">
@@ -112,8 +115,17 @@ export const BuilderPage: React.FC = () => {
                 </div>
             )}
 
-            <header className="border-b border-[#555] bg-[#0A0A0A]/80 backdrop-blur-md sticky top-0 z-50 px-8 py-4 flex items-center justify-between w-full">
-                <div className="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1">
+            <header className="border-b border-[#555] bg-[#0A0A0A]/80 backdrop-blur-md sticky top-0 z-50 px-3 sm:px-8 py-3 sm:py-4 flex items-center justify-between w-full">
+                <button
+                    className="sm:hidden cursor-pointer p-2 text-white mr-2"
+                    onClick={() => setSidebarOpen(!sidebarOpen)}
+                    aria-label="Sidebar"
+                >
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M3 6h18" /><path d="M3 12h18" /><path d="M3 18h18" />
+                    </svg>
+                </button>
+                <div className="flex items-center gap-2 overflow-x-auto no-scrollbar pb-1 flex-1">
                     {requirements.map((req, idx) => {
                         const isSelected = selectedCategory === req.type
                         const isCase = req.type === 'CASE';
@@ -128,7 +140,7 @@ export const BuilderPage: React.FC = () => {
                                     setFocusTarget(req.type);
                                 }}
                                 disabled={isDisabled}
-                                className={`shrink-0 flex items-center gap-2 px-4 py-2.5 rounded-xl border text-xs font-medium transition-all duration-200 cursor-pointer ${isDisabled
+                                className={`shrink-0 flex items-center gap-1 sm:gap-2 px-2.5 sm:px-4 py-2 sm:py-2.5 rounded-lg sm:rounded-xl border text-[10px] sm:text-xs font-medium transition-all duration-200 cursor-pointer ${isDisabled
                                     ? 'bg-neutral-900/30 text-neutral-600 border-neutral-800 cursor-not-allowed opacity-50'
                                     : isSelected
                                         ? 'bg-neutral-900 text-[#E4E728] border-neutral-800'
@@ -136,29 +148,36 @@ export const BuilderPage: React.FC = () => {
                                     }`}
                             >
                                 {req.icon}
-                                <span>{req.name}</span>
+                                <span className="hidden xs:inline">{req.name}</span>
                             </button>
                         );
                     })}
                 </div>
             </header>
 
-            <aside className="flex gap-3 items-start h-full w-full">
-                <ModalSheet
-                    activeBuild={activeBuild}
-                    setActiveBuild={setActiveBuild}
-                    priceRange={priceRange}
-                    setPriceRange={setPriceRange}
-                    setSelectedType={setSelectedType}
-                    selectedType={selectedType}
-                    searchQuery={searchQuery}
-                    setSearchQuery={setSearchQuery}
-                    selectedCategory={selectedCategory}
-                    hasSelectedCase={hasSelectedCase}
-                    onChooseComponent={handleChooseComponent}
-                />
+            <aside className="flex flex-1 gap-0 sm:gap-3 items-start w-full overflow-hidden">
+                <div className={`${sidebarOpen ? 'block' : 'hidden'} sm:block sm:flex-[3] w-full sm:w-auto h-full overflow-y-auto`}>
+                    <div className="sm:hidden fixed inset-0 z-40 bg-black/50" onClick={() => setSidebarOpen(false)} />
+                    <div className={`${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} sm:translate-x-0 fixed sm:relative left-0 top-0 h-full z-50 sm:z-auto transition-transform duration-300 sm:transition-none`}>
+                        <div className="h-full overflow-y-auto w-[85vw] sm:w-auto">
+                            <ModalSheet
+                                activeBuild={activeBuild}
+                                setActiveBuild={setActiveBuild}
+                                priceRange={priceRange}
+                                setPriceRange={setPriceRange}
+                                setSelectedType={setSelectedType}
+                                selectedType={selectedType}
+                                searchQuery={searchQuery}
+                                setSearchQuery={setSearchQuery}
+                                selectedCategory={selectedCategory}
+                                hasSelectedCase={hasSelectedCase}
+                                onChooseComponent={handleChooseComponent}
+                            />
+                        </div>
+                    </div>
+                </div>
 
-                <main className="flex-10 h-full relative bg-[#1a1a1a] w-full">
+                <main className="flex-1 sm:flex-[10] h-full relative bg-[#1a1a1a] w-full">
                     {hasSelectedCase ? (
                         <Canvas
                             gl={{
@@ -182,10 +201,10 @@ export const BuilderPage: React.FC = () => {
                             </EffectComposer>
                         </Canvas>
                     ) : (
-                        <div className="flex items-center justify-center h-full">
+                        <div className="flex items-center justify-center h-full px-4">
                             <div className="text-center">
-                                <p className="text-neutral-400 text-lg mb-2">Avval korpusni tanlang</p>
-                                <p className="text-neutral-500 text-sm">Kompyuterni yig'ishni boshlash uchun paneldan korpus tanlang</p>
+                                <p className="text-neutral-400 text-base sm:text-lg mb-2">Avval korpusni tanlang</p>
+                                <p className="text-neutral-500 text-xs sm:text-sm">Kompyuterni yig'ishni boshlash uchun paneldan korpus tanlang</p>
                             </div>
                         </div>
                     )}

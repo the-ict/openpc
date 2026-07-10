@@ -1,7 +1,7 @@
 "use client";
 
 import * as THREE from "three";
-import { useMemo } from "react";
+import React, { useMemo } from "react";
 import { useGLTF } from "@react-three/drei";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { get_models } from "@/src/shared/config/api/model/model.requests";
@@ -25,9 +25,6 @@ export interface Socket {
     position: [number, number, number];
     rotation: [number, number, number];
 };
-
-const BLENDER_DEFAULT_CUBE_SIZE = 2;
-
 
 export const useCaseSockets = (caseUrl: string): Record<string, Socket> => {
     const { scene } = useGLTF(caseUrl);
