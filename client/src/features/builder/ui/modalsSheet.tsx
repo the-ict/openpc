@@ -5,17 +5,9 @@ import {
   PopoverTitle,
   PopoverTrigger,
 } from "@/components/ui/popover"
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select"
 import { MODEL_TYPES } from "@/src/shared/config/api/model/model.model";
 import { IconMoneybagHeart } from "@tabler/icons-react";
-import { Gamepad2, Search } from "lucide-react";
+import { Search } from "lucide-react";
 import ComponentCard from "./componentCard";
 import { useBuilder } from "../lib/hooks";
 import ModelDetail from "./ModelDetail";
@@ -28,8 +20,6 @@ interface PropsModalSheet {
   priceRange: [number, number];
   searchQuery: string;
   setSearchQuery: (query: string) => void;
-  setSelectedType: (type: string) => void;
-  selectedType: string;
   selectedCategory: string;
   hasSelectedCase: boolean;
   onChooseComponent?: (model: any) => void;
@@ -40,8 +30,6 @@ export default function ModalShet({
   setSearchQuery,
   priceRange,
   setPriceRange,
-  selectedType,
-  setSelectedType,
   selectedCategory,
   hasSelectedCase,
   onChooseComponent
@@ -66,7 +54,7 @@ export default function ModalShet({
   };
 
   return (
-    <div className="w-full h-full bg-[#222] px-4 sm:px-8 py-4 sm:py-5 space-y-5 sm:space-y-7 min-w-0">
+    <div className="w-full h-full bg-[#222] px-4 lg:px-8 py-4 lg:py-5 space-y-5 lg:space-y-7 min-w-0">
       {!hasSelectedCase && (
         <div className="bg-[#111] border border-[#333] rounded-lg p-6 text-center">
           <p className="text-neutral-400 text-sm mb-2">Avval korpusni tanlang</p>
@@ -84,7 +72,7 @@ export default function ModalShet({
         />
         <button type="submit" className="cursor-pointer"><Search /></button>
       </form>
-      <div className="flex items-center gap-3 justify-between w-full">
+      <div className="flex items-center gap-3 w-full">
         <Popover>
           <PopoverTrigger asChild>
             <button className="flex-1 flex font-bold items-center gap-3 bg-[#333] px-4 py-2 cursor-pointer rounded-full">
@@ -111,32 +99,6 @@ export default function ModalShet({
                 className="flex-1 bg-neutral-900 border border-neutral-800 rounded-lg px-3 py-2 text-sm text-neutral-200 placeholder-neutral-500 outline-none focus:border-neutral-700 w-full"
               />
             </div>
-          </PopoverContent>
-        </Popover>
-        <Popover>
-          <PopoverTrigger asChild>
-            <button className="flex-1 flex font-bold items-center gap-3 bg-[#333] px-4 py-2 cursor-pointer rounded-full">
-              <Gamepad2 /> Turi
-            </button>
-          </PopoverTrigger>
-          <PopoverContent className="bg-[#0A0A0A] border border-neutral-800 text-white">
-            <PopoverHeader>
-              <PopoverTitle className="text-neutral-200">Kerakli turni tanlang</PopoverTitle>
-            </PopoverHeader>
-            <Select value={selectedType} onValueChange={setSelectedType}>
-              <SelectTrigger className="w-full bg-neutral-900 border border-neutral-800 text-neutral-200">
-                <SelectValue placeholder="Turni tanlang" />
-              </SelectTrigger>
-              <SelectContent className="bg-[#0A0A0A] border border-neutral-800 w-full">
-                <SelectGroup className="w-full">
-                  <SelectItem value="all" className="text-neutral-200 focus:bg-neutral-900">Barchasi</SelectItem>
-                  <SelectItem value="gaming" className="text-neutral-200 focus:bg-neutral-900">O'yin uchun</SelectItem>
-                  <SelectItem value="budget" className="text-neutral-200 focus:bg-neutral-900">Hamyonbop</SelectItem>
-                  <SelectItem value="work" className="text-neutral-200 focus:bg-neutral-900">Ish uchun</SelectItem>
-                  <SelectItem value="creative" className="text-neutral-200 focus:bg-neutral-900">Ijodiy</SelectItem>
-                </SelectGroup>
-              </SelectContent>
-            </Select>
           </PopoverContent>
         </Popover>
       </div>

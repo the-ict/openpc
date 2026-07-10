@@ -117,7 +117,7 @@ export const BuilderPage: React.FC = () => {
 
             <header className="border-b border-[#555] bg-[#0A0A0A]/80 backdrop-blur-md sticky top-0 z-50 px-3 sm:px-8 py-3 sm:py-4 flex items-center justify-between w-full">
                 <button
-                    className="sm:hidden cursor-pointer p-2 text-white mr-2"
+                    className="lg:hidden cursor-pointer p-2 text-white mr-2"
                     onClick={() => setSidebarOpen(!sidebarOpen)}
                     aria-label="Sidebar"
                 >
@@ -140,7 +140,7 @@ export const BuilderPage: React.FC = () => {
                                     setFocusTarget(req.type);
                                 }}
                                 disabled={isDisabled}
-                                className={`shrink-0 flex items-center gap-1 sm:gap-2 px-2.5 sm:px-4 py-2 sm:py-2.5 rounded-lg sm:rounded-xl border text-[10px] sm:text-xs font-medium transition-all duration-200 cursor-pointer ${isDisabled
+                                className={`shrink-0 flex items-center gap-1 lg:gap-2 px-2.5 lg:px-4 py-2 lg:py-2.5 rounded-lg lg:rounded-xl border text-[10px] lg:text-xs font-medium transition-all duration-200 cursor-pointer ${isDisabled
                                     ? 'bg-neutral-900/30 text-neutral-600 border-neutral-800 cursor-not-allowed opacity-50'
                                     : isSelected
                                         ? 'bg-neutral-900 text-[#E4E728] border-neutral-800'
@@ -148,25 +148,23 @@ export const BuilderPage: React.FC = () => {
                                     }`}
                             >
                                 {req.icon}
-                                <span className="hidden xs:inline">{req.name}</span>
+                                <span>{req.name}</span>
                             </button>
                         );
                     })}
                 </div>
             </header>
 
-            <aside className="flex flex-1 gap-0 sm:gap-3 items-start w-full overflow-hidden">
-                <div className={`${sidebarOpen ? 'block' : 'hidden'} sm:block sm:flex-[3] w-full sm:w-auto h-full overflow-y-auto`}>
-                    <div className="sm:hidden fixed inset-0 z-40 bg-black/50" onClick={() => setSidebarOpen(false)} />
-                    <div className={`${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} sm:translate-x-0 fixed sm:relative left-0 top-0 h-full z-50 sm:z-auto transition-transform duration-300 sm:transition-none`}>
-                        <div className="h-full overflow-y-auto w-[85vw] sm:w-auto">
+            <aside className="flex flex-1 gap-0 lg:gap-3 items-start w-full overflow-hidden">
+                <div className={`${sidebarOpen ? 'block' : 'hidden'} lg:block lg:flex-[3] w-full lg:w-auto h-full overflow-y-auto`}>
+                    <div className="lg:hidden fixed inset-0 z-40 bg-black/50" onClick={() => setSidebarOpen(false)} />
+                    <div className={`${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} lg:translate-x-0 fixed lg:relative left-0 top-0 h-full z-50 lg:z-auto transition-transform duration-300 lg:transition-none`}>
+                        <div className="h-full overflow-y-auto w-[85vw] lg:w-auto">
                             <ModalSheet
                                 activeBuild={activeBuild}
                                 setActiveBuild={setActiveBuild}
                                 priceRange={priceRange}
                                 setPriceRange={setPriceRange}
-                                setSelectedType={setSelectedType}
-                                selectedType={selectedType}
                                 searchQuery={searchQuery}
                                 setSearchQuery={setSearchQuery}
                                 selectedCategory={selectedCategory}
@@ -177,7 +175,7 @@ export const BuilderPage: React.FC = () => {
                     </div>
                 </div>
 
-                <main className="flex-1 sm:flex-[10] h-full relative bg-[#1a1a1a] w-full">
+                <main className="flex-1 lg:flex-[10] h-full relative bg-[#1a1a1a] w-full">
                     {hasSelectedCase ? (
                         <Canvas
                             gl={{

@@ -34,14 +34,14 @@ export default function Navbar() {
       </div>
 
       <button
-        className="sm:hidden cursor-pointer p-2 text-white"
+        className="lg:hidden cursor-pointer p-2 text-white"
         onClick={() => setMenuOpen(!menuOpen)}
         aria-label="Menu"
       >
         {menuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
       </button>
 
-      <ul className="hidden sm:flex-center gap-8 lg:gap-12.5">
+      <ul className="hidden lg:flex-center gap-8 lg:gap-12.5">
         <li className="cursor-pointer">
           <a href="#home">Bosh sahifa</a>
         </li>
@@ -53,7 +53,7 @@ export default function Navbar() {
         </li>
       </ul>
 
-      <div className="hidden sm:block">
+      <div className="hidden lg:block">
         {
           mounted && token.length > 0
             ? (
@@ -73,7 +73,7 @@ export default function Navbar() {
       </div>
 
       {menuOpen && (
-        <div className="absolute top-full left-0 right-0 bg-[#0A0A0A] border-t border-neutral-800 z-50 sm:hidden">
+        <div className="absolute top-full left-0 right-0 bg-[#0A0A0A] border-t border-neutral-800 z-50 lg:hidden">
           <div className="flex flex-col items-center gap-4 py-6 px-4">
             <ul className="flex flex-col items-center gap-4">
               <li className="cursor-pointer" onClick={() => setMenuOpen(false)}>
