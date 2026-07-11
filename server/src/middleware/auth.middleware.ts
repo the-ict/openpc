@@ -17,7 +17,11 @@ export const isAuthenticated = (req: Request, res: Response, next: NextFunction)
 
         req.user = decoded;
         next();
-    } catch (error) {
+    } catch (error: any) {
+        console.log("error message: ", error);
+        if (error.message.includes("jwt")) {
+            return res.status(401).json({ message: "Invalid or expired token", ok: false });
+        };
         next(error);
     }
 }

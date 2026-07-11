@@ -41,7 +41,7 @@ export default function Navbar() {
         {menuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
       </button>
 
-      <ul className="hidden lg:flex-center gap-8 lg:gap-12.5">
+      <ul className="max-lg:hidden lg:flex lg:items-center gap-8 lg:gap-12.5">
         <li className="cursor-pointer">
           <a href="#home">Bosh sahifa</a>
         </li>

@@ -7,6 +7,11 @@ const http = axios.create({
     withCredentials: true,
 })
 
+const httpRefresh = axios.create({
+    baseURL: BASE_URL,
+    withCredentials: true,
+})
+
 let isRefreshing = false;
 let failedQueue: any[] = [];
 
@@ -34,6 +39,10 @@ http.interceptors.response.use((response) => {
 }, async (error) => {
     const originalRequest = error.config;
 
+    if (originalRequest.url === AUTH_URLS.REFRESH) {
+        return Promise.reject(error);
+    }
+
     if (error.response?.status === 401 && !originalRequest._retry) {
         if (isRefreshing) {
             return new Promise((resolve, reject) => {
@@ -54,11 +63,12 @@ http.interceptors.response.use((response) => {
         if (!refreshToken) {
             user_store.getState().setToken("");
             window.location.href = "/login";
+            isRefreshing = false;
             return Promise.reject(error);
         }
 
         try {
-            const response = await http.post(AUTH_URLS.REFRESH, { refresh_token: refreshToken });
+            const response = await httpRefresh.post(AUTH_URLS.REFRESH, { refresh_token: refreshToken });
             const { token, refresh_token: newRefreshToken } = response.data.data;
 
             user_store.getState().setToken(token);
@@ -70,10 +80,9 @@ http.interceptors.response.use((response) => {
         } catch (refreshError: any) {
             processQueue(refreshError, null);
 
-            // Check if it's a JWT expired error
-            if (refreshError.response?.data?.message?.includes('expired') ||
-                refreshError.response?.data?.message?.includes('jwt') ||
-                refreshError.response?.status === 401) {
+            if (refreshError.response?.status === 401 ||
+                refreshError.response?.data?.message?.includes('expired') ||
+                refreshError.response?.data?.message?.includes('jwt')) {
                 user_store.getState().setToken("");
                 localStorage.removeItem('refresh_token');
                 window.location.href = "/login";

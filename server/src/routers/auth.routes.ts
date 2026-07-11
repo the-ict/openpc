@@ -13,7 +13,7 @@ router.post("/login", validate(login_schema), login);
 
 router.post("/register", validate(register_schema), register);
 
-router.post("/refresh", async(req: Request, res: Response, next: NextFunction) => {
+router.post("/refresh", async (req: Request, res: Response, next: NextFunction) => {
     try {
         const { refresh_token } = req.body;
 
@@ -44,16 +44,22 @@ router.post("/refresh", async(req: Request, res: Response, next: NextFunction) =
             data: { token, refresh_token: new_refresh_token },
             ok: true,
         });
-    } catch (error) {
+    } catch (error: any) {
+        if (error.message.includes("jwt")) {
+            return res.status(401).json({
+                message: "Invalid or expired refresh token",
+                ok: false,
+            });
+        };
         next(error);
     }
 });
 
-router.get("/me", async(req: Request, res: Response, next: NextFunction) => {
+router.get("/me", async (req: Request, res: Response, next: NextFunction) => {
     try {
         const user = req.user;
 
-        if(!user) {
+        if (!user) {
             return res.status(403).json({
                 message: "User not found",
                 ok: false,
@@ -67,7 +73,7 @@ router.get("/me", async(req: Request, res: Response, next: NextFunction) => {
             message: "Here's your google account",
             data: { user, token, refresh_token },
             ok: true,
-        });        
+        });
     } catch (error) {
         next(error);
     }

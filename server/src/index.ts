@@ -8,10 +8,10 @@ import dotenv from "dotenv";
 import morgan from "morgan";
 import cors from "cors";
 
-import authRoutes from "./routers/auth.routes.js";
-import modelRoutes from "./routers/model.routes.js";
-import uploadRoutes from "./routers/upload.routes.js"
 import sessionRoutes from "./routers/session.routes.js";
+import uploadRoutes from "./routers/upload.routes.js"
+import modelRoutes from "./routers/model.routes.js";
+import authRoutes from "./routers/auth.routes.js";
 
 // configure dotenv
 dotenv.config();
