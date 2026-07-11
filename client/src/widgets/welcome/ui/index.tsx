@@ -1,5 +1,6 @@
 "use client"
 
+import { useState, useEffect } from "react";
 import ScrollTrigger from 'gsap/ScrollTrigger';
 import { ArrowUpRight } from 'lucide-react';
 import { socialLinks } from '../lib/data';
@@ -7,10 +8,21 @@ import { SplitText } from 'gsap/SplitText';
 import { useGSAP } from '@gsap/react';
 import gsap from 'gsap';
 import Link from 'next/link';
+import user_store from '@/src/shared/store/user.store';
+import BuilderPage from "@/public/icons/builder.png";
+import HowItWorks2 from "@/public/icons/session.png";
+import HowItWorks1 from "@/public/icons/register.png";
 
 gsap.registerPlugin(SplitText, ScrollTrigger);
 
 export default function Welcome() {
+    const [mounted, setMounted] = useState<boolean>(false);
+    const token = user_store.getState().token;
+
+    useEffect(() => {
+        setMounted(true);
+    }, []);
+
     useGSAP(() => {
         const howItWorksTimeline = gsap.timeline();
         const heroTimeline = gsap.timeline();
@@ -114,34 +126,35 @@ export default function Welcome() {
                     </h1>
 
                     <p className='text-gray-400 text-sm md:text-base max-w-xl mb-8 leading-relaxed hero-p'>
-                        Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-                        Lorem Ipsum has been the industry's standard dum my text.
+                        Barcha ehtiyojlaringiz va byudjetingizga mos kompyuter yig'ishni
+                        bizning platformamiz orqali boshlang. Oldindan tayyorlangan konfiguratsiyalar
+                        yoki o'zingiz xohlagandek sozlang.
                     </p>
 
                     <div className='flex items-center gap-6'>
-                        <Link href={"/login"} className='bg-[#C4D335] button-1 cursor-pointer text-black font-semibold px-8 py-3 rounded-full hover:bg-[#b3c22e] transition-colors duration-200 text-sm md:text-base'>
-                            Kirish
-                        </Link>
+                        {mounted && token.length > 0 ? (
+                            <Link href="/session" className='bg-[#C4D335] button-1 cursor-pointer text-black font-semibold px-8 py-3 rounded-full hover:bg-[#b3c22e] transition-colors duration-200 text-sm md:text-base'>
+                                Zborakalar
+                            </Link>
+                        ) : (
+                            <>
+                                <Link href={"/login"} className='bg-[#C4D335] button-1 cursor-pointer text-black font-semibold px-8 py-3 rounded-full hover:bg-[#b3c22e] transition-colors duration-200 text-sm md:text-base'>
+                                    Kirish
+                                </Link>
 
-                        <Link
-                            href="/register"
-                            className='text-[#C4D335] button-2 font-medium flex items-center gap-1 hover:underline text-sm md:text-base'
-                        >
-                            Ro'yxatdan o'tish
-                            <ArrowUpRight className='w-4 h-4' />
-                        </Link>
+                                <Link
+                                    href="/register"
+                                    className='text-[#C4D335] button-2 font-medium flex items-center gap-1 hover:underline text-sm md:text-base'
+                                >
+                                    Ro'yxatdan o'tish
+                                    <ArrowUpRight className='w-4 h-4' />
+                                </Link>
+                            </>
+                        )}
                     </div>
                 </div>
 
-                <div className='relative showcase w-full max-w-3xl aspect-square bg-[#D9D9D9] border-2 border-[#3B82F6] flex items-center justify-center p-4 sm:p-6 mx-auto'>
-                    <div className='hidden sm:block absolute -left-10 top-12 w-24 h-12 bg-[#D4E34A]' />
-
-                    <h2 className='text-black text-2xl sm:text-4xl md:text-5xl font-black uppercase tracking-wider text-center z-10 select-none'>
-                        Platform<br />Show Case
-                    </h2>
-
-                    <div className='hidden sm:block absolute -right-10 bottom-12 w-24 h-12 bg-[#E50000]' />
-                </div>
+                <img src={BuilderPage.src} alt="Builder Page" className='relative showcase w-full max-w-[60vw] flex items-center justify-center sm:p-6 mx-auto' />
             </section>
 
 
@@ -151,15 +164,14 @@ export default function Welcome() {
                         Qanday ishaydi ?
                     </h1>
                     <p className='text-gray-400 text-xs md:text-sm max-w-2xl mb-8 leading-relaxed how-p'>
-                        Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem
-                        Ipsum has been the industry's standard dum my text.
+                        Bir necha oddiy qadam orqali o'zingizga mos kompyuterni yig'ing.
+                        Platformamiz har bir qismning mosligini tekshiradi va eng yaxshi
+                        narx takliflarini taqdim etadi.
                     </p>
 
-                    <div className='cards w-full min-h-screen gap-4 sm:gap-5 flex-center flex-col relative'>
-                        <div className='card1 card bg-red-500 h-80 sm:h-187.5 w-full flex rounded-xl sm:rounded-2xl content-center text-xl sm:text-[30px] sticky top-20'></div>
-                        <div className='card2 card bg-blue-500 h-80 sm:h-187.5 w-full flex rounded-xl sm:rounded-2xl content-center text-xl sm:text-[30px] sticky top-20'></div>
-                        <div className='card3 card bg-green-500 h-80 sm:h-187.5 w-full flex rounded-xl sm:rounded-2xl content-center text-xl sm:text-[30px] sticky top-20'></div>
-                        <div className='card4 card bg-yellow-500 h-80 sm:h-187.5 w-full flex rounded-xl sm:rounded-2xl content-center text-xl sm:text-[30px] sticky top-20'></div>
+                    <div className='cards min-h-screen gap-4 sm:gap-5 flex-center flex-col relative'>
+                        <img src={HowItWorks1.src} alt="Step 1" className='card1 card h-80 sm:h-187.5 w-full rounded-xl sm:rounded-2xl sticky top-20 object-cover'/>
+                        <img src={HowItWorks2.src} alt="Step 2" className='card2 card h-80 sm:h-187.5 w-full rounded-xl sm:rounded-2xl sticky top-20 object-cover'/>
                     </div>
                 </section>
 
@@ -168,8 +180,9 @@ export default function Welcome() {
                         Bizning jamoa - siz
                     </h1>
                     <p className='text-gray-400 text-xs md:text-sm max-w-2xl mb-8 leading-relaxed'>
-                        Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem
-                        Ipsum has been the industry's standard dum my text.
+                        Bizning jamoa doimiy ravishda yangi komponentlar bazasini kengaytiradi
+                        va platformani yaxshilash ustida ishlaydi. Sizning fikr-mulohazalaringiz
+                        bizning eng kuchli vositamiz.
                     </p>
 
                     <div className='flex flex-col gap-3 w-full'>
