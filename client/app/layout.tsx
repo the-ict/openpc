@@ -1,13 +1,10 @@
-import { spaceGrotesk } from "@/src/shared/fonts/fonts";
+import { jaro } from "@/src/shared/fonts/fonts";
 import Navbar from "@/src/widgets/navbar/ui";
 import Footer from "@/src/widgets/footer/ui";
 import type { Metadata } from "next";
-import "./globals.css";
-import { Geist } from "next/font/google";
-import { cn } from "@/lib/utils";
 import Providers from "./providers";
-
-const geist = Geist({ subsets: ['latin'], variable: '--font-sans' });
+import { cn } from "@/lib/utils";
+import "./globals.css";
 
 export const metadata: Metadata = {
   title: "OpenPC - Kompyuter yig'ish platformasi",
@@ -22,7 +19,7 @@ export default function RootLayout({
   return (
     <html
       lang="uz"
-      className={cn("h-full", "antialiased", spaceGrotesk.variable, spaceGrotesk.className, "font-sans", geist.variable)}
+      className={cn("h-full", "antialiased", jaro.className, jaro.style, jaro.variable)}
     >
       <body className={`min-h-full flex flex-col`}>
         <Providers>

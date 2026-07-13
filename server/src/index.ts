@@ -9,10 +9,10 @@ import morgan from "morgan";
 import cors from "cors";
 
 import sessionRoutes from "./routers/session.routes.js";
+import exceptRoutes from "./routers/except.routes.js";
 import uploadRoutes from "./routers/upload.routes.js"
 import modelRoutes from "./routers/model.routes.js";
 import authRoutes from "./routers/auth.routes.js";
-
 // configure dotenv
 dotenv.config();
 
@@ -52,6 +52,7 @@ app.use("/uploads", express.static("public/uploads", {
 app.use("/api/auth", authRoutes);
 app.use("/api/models", modelRoutes);
 app.use("/api/upload", uploadRoutes);
+app.use("/api/excepts", exceptRoutes);
 app.use("/api/sessions", sessionRoutes);
 
 app.get("/", (req: Request, res: Response) => {

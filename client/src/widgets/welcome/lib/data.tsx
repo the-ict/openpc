@@ -1,6 +1,6 @@
-import Telegram from "../../../../public/icons/telegram.png"
-import Instagram from "../../../../public/icons/instagram.png"
-import Discord from "../../../../public/icons/discord.png"
+import Instagram from "../../../../public/icons/instagram.png";
+import Telegram from "../../../../public/icons/telegram.png";
+import Discord from "../../../../public/icons/discord.png";
 
 const socialLinks = [
     { name: 'DISCORD', url: '#discord', icon: Discord },

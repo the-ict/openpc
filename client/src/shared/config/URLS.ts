@@ -26,6 +26,10 @@ export const SESSION_URLS = {
     GET_ALL: "/api/sessions",
 } as const;
 
+export const EXCEPT_URLS = {
+  HERO_COMPONENTS: "/api/excepts/hero-components",
+} as const;
+
 export const UPLOAD_URLS = {
   UPLOAD: "/api/upload",
 } as const;
