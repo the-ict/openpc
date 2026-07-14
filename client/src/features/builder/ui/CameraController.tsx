@@ -14,10 +14,11 @@ export default function CMControls({ focusTarget, componentRefs }: CameraControl
     const { scene } = useThree();
 
     const toggleGlass = useCallback((visible: boolean) => {
-        const glass = scene.getObjectByName("socket_GLASS");
-        if (glass) {
-            glass.visible = visible;
-        }
+        scene.traverse((child) => {
+            if (child.name.toLowerCase().includes("glass")) {
+                child.visible = visible;
+            }
+        });
     }, [scene]);
 
     useEffect(() => {
@@ -59,12 +60,11 @@ export default function CMControls({ focusTarget, componentRefs }: CameraControl
 
         const cam = ref.current;
 
+        toggleGlass(false);
+
         if (focusTarget === "CASE") {
-            toggleGlass(true);
             cam.fitToBox(scene, true);
         } else {
-            toggleGlass(false);
-
             const targetObj = componentRefs[focusTarget as MODEL_TYPES]?.current;
             if (!targetObj) return;
 

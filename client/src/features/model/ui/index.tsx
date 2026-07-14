@@ -164,7 +164,7 @@ export default function AdminModelForm() {
             name="image"
             accept="image/*"
             onChange={(e) => setImage(e.target.files?.[0] || null)}
-            className="text-white text-sm file:mr-3 file:py-2 file:px-3 file:rounded-lg file:border-0 file:bg-[#E4E728] file:text-black file:font-semibold file:cursor-pointer"
+            className="text-white text-sm file:mr-3 file:py-2 file:px-3 file:rounded-lg file:border-0 file:bg-[#C4D335] file:text-black file:font-semibold file:cursor-pointer"
           />
           {image && (
             <span className="text-xs text-neutral-500">{image.name}</span>
@@ -181,7 +181,7 @@ export default function AdminModelForm() {
             name="model_file"
             accept=".glb,.gltf"
             onChange={(e) => setModelFile(e.target.files?.[0] || null)}
-            className="text-white text-sm file:mr-3 file:py-2 file:px-3 file:rounded-lg file:border-0 file:bg-[#E4E728] file:text-black file:font-semibold file:cursor-pointer"
+            className="text-white text-sm file:mr-3 file:py-2 file:px-3 file:rounded-lg file:border-0 file:bg-[#C4D335] file:text-black file:font-semibold file:cursor-pointer"
           />
           {modelFile && (
             <span className="text-xs text-neutral-500">{modelFile.name}</span>
@@ -191,7 +191,7 @@ export default function AdminModelForm() {
         <button
           type="submit"
           disabled={isSubmitting}
-          className="mt-2 bg-[#E4E728] hover:bg-[#C4D335] disabled:opacity-50 disabled:cursor-not-allowed text-black font-semibold rounded-lg py-2.5 transition-colors cursor-pointer"
+          className="mt-2 bg-[#C4D335] hover:bg-[#b3c22e] disabled:opacity-50 disabled:cursor-not-allowed text-black font-semibold rounded-lg py-2.5 transition-colors cursor-pointer"
         >
           {uploadProgress || (isCreating ? "Saqlanmoqda..." : "Qo'shish")}
         </button>

@@ -1,18 +1,18 @@
 "use client";
 
-import { Group } from 'three';
-import ModalSheet from './modalsSheet';
-import { Loader2 } from 'lucide-react';
-import SceneBuilder from "./SceneBuilder";
-import { requirements } from '../lib/data';
+import { IModel, MODEL_TYPES } from '@/src/shared/config/api/model/model.model';
+import { Bloom, EffectComposer, Outline } from "@react-three/postprocessing";
+import React, { useState, useEffect, useRef } from 'react';
+import { useGetSession } from '../../session/lib/hooks';
+import { useAddModelToSession } from '../lib/hooks';
 import { Canvas } from '@react-three/fiber';
 import CMControls from './CameraController';
 import { useParams } from 'next/navigation';
-import React, { useState, useEffect } from 'react';
-import { type Socket, useAddModelToSession } from '../lib/hooks';
-import { useGetSession } from '../../session/lib/hooks';
-import { Bloom, EffectComposer } from "@react-three/postprocessing";
-import { IModel, MODEL_TYPES } from '@/src/shared/config/api/model/model.model';
+import { requirements } from '../lib/data';
+import SceneBuilder from "./SceneBuilder";
+import { Loader2 } from 'lucide-react';
+import ModalSheet from './modalsSheet';
+import { Group } from 'three';
 
 export interface ComponentBuild {
     id: string;
@@ -26,13 +26,12 @@ export const BuilderPage: React.FC = () => {
     const [selectedCategory, setSelectedCategory] = useState<MODEL_TYPES>('CASE');
     const [builtComponents, setBuiltComponents] = useState<ComponentBuild[]>([]);
     const [activeBuild, setActiveBuild] = useState<Record<string, number>>({});
-    const [glassSocket, setGlassSocket] = useState<any>(null);
     const [priceRange, setPriceRange] = useState<[number, number]>([0, 5000]);
     const [focusTarget, setFocusTarget] = useState<MODEL_TYPES>("CASE");
-    const [selectedType, setSelectedType] = useState<string>('all');
     const [hasSelectedCase, setHasSelectedCase] = useState(false);
     const [searchQuery, setSearchQuery] = useState<string>('');
     const [isLoading, setIsLoading] = useState(true);
+    const [showSockets, setShowSockets] = useState(false);
 
     const params = useParams();
 
@@ -40,7 +39,6 @@ export const BuilderPage: React.FC = () => {
 
     const {
         mutateAsync: addModelToSessionMutation,
-        isPending: addModelToSessionPending
     } = useAddModelToSession();
 
     useEffect(() => {
@@ -104,18 +102,35 @@ export const BuilderPage: React.FC = () => {
 
     const [sidebarOpen, setSidebarOpen] = useState(false);
 
+    const outlineRef = useRef<any>(null);
+    const focusedRef = focusTarget === "CASE" ? undefined : componentRefs[focusTarget]?.current;
+
+    useEffect(() => {
+        const effect = outlineRef.current;
+        if (!effect) return;
+        if (focusedRef) {
+            const meshes: any[] = [];
+            focusedRef.traverse((child: any) => {
+                if (child.isMesh) meshes.push(child);
+            });
+            effect.selection.set(meshes);
+        } else {
+            effect.selection.clear();
+        }
+    }, [focusedRef]);
+
     return (
         <div className="flex flex-col h-screen w-screen bg-[#0A0A0A] text-[#FFFFFF] overflow-hidden font-sans select-none antialiased">
             {isLoading && (
                 <div className="fixed inset-0 z-100 bg-[#0A0A0A] flex items-center justify-center">
                     <div className="flex flex-col items-center gap-4">
-                        <Loader2 className="w-12 h-12 text-[#E4E728] animate-spin" />
+                        <Loader2 className="w-12 h-12 text-[#C4D335] animate-spin" />
                         <p className="text-neutral-400 text-sm">Builder yuklanmoqda...</p>
                     </div>
                 </div>
             )}
 
-            <header className="border-b border-[#555] bg-[#0A0A0A]/80 backdrop-blur-md sticky top-0 z-50 px-3 sm:px-8 py-3 sm:py-4 flex items-center justify-between w-full">
+            <header className="border-b border-[#222] bg-[#0A0A0A]/80 backdrop-blur-md sticky top-0 z-50 px-3 sm:px-8 py-3 sm:py-4 flex items-center justify-between w-full">
                 <button
                     className="lg:hidden cursor-pointer p-2 text-white mr-2"
                     onClick={() => setSidebarOpen(!sidebarOpen)}
@@ -143,7 +158,7 @@ export const BuilderPage: React.FC = () => {
                                 className={`shrink-0 flex items-center gap-1 lg:gap-2 px-2.5 lg:px-4 py-2 lg:py-2.5 rounded-lg lg:rounded-xl border text-[10px] lg:text-xs font-medium transition-all duration-200 cursor-pointer ${isDisabled
                                     ? 'bg-neutral-900/30 text-neutral-600 border-neutral-800 cursor-not-allowed opacity-50'
                                     : isSelected
-                                        ? 'bg-neutral-900 text-[#E4E728] border-neutral-800'
+                                        ? 'bg-neutral-900 text-[#C4D335] border-neutral-800'
                                         : 'bg-transparent text-neutral-400 border-transparent hover:text-white hover:bg-neutral-900/40'
                                     }`}
                             >
@@ -153,6 +168,20 @@ export const BuilderPage: React.FC = () => {
                         );
                     })}
                 </div>
+
+                <button
+                    onClick={() => setShowSockets(prev => !prev)}
+                    className={`shrink-0 cursor-pointer flex items-center gap-1.5 px-3 lg:px-4 py-2 lg:py-2.5 rounded-lg lg:rounded-xl border text-[10px] lg:text-xs font-medium transition-all duration-200 ${showSockets
+                        ? 'bg-[#C4D335]/10 text-[#C4D335] border-[#C4D335]/40'
+                        : 'bg-transparent text-neutral-400 border-transparent hover:text-white hover:bg-neutral-900/40'
+                    }`}
+                    title="Soket nuqtalarini ko'rsatish/yashirish"
+                >
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <circle cx="12" cy="12" r="3" /><path d="M12 2v3" /><path d="M12 19v3" /><path d="M2 12h3" /><path d="M19 12h3" />
+                    </svg>
+                    <span>Soketlar</span>
+                </button>
             </header>
 
             <aside className="flex flex-1 gap-0 lg:gap-3 items-start w-full overflow-hidden">
@@ -191,11 +220,19 @@ export const BuilderPage: React.FC = () => {
                             <directionalLight position={[5, 5, 5]} intensity={3} castShadow />
                             <directionalLight position={[-5, -5, -5]} intensity={1} />
 
-                            <SceneBuilder components={builtComponents} setComponentRef={setComponentRefs} />
+                            <SceneBuilder components={builtComponents} setComponentRef={setComponentRefs} showSockets={showSockets} />
 
                             <CMControls focusTarget={focusTarget} componentRefs={componentRefs} />
                             <EffectComposer>
                                 <Bloom intensity={0.6} luminanceThreshold={0.2} mipmapBlur />
+                                <Outline
+                                    ref={outlineRef}
+                                    edgeStrength={8}
+                                    visibleEdgeColor={0xC4D335}
+                                    hiddenEdgeColor={0xC4D335}
+                                    blur
+                                    xRay={false}
+                                />
                             </EffectComposer>
                         </Canvas>
                     ) : (

@@ -25,7 +25,7 @@ export default function Session({ session }: Props) {
     return (
         <div
             key={session.id}
-            className="group cursor-pointer bg-[#111]/30 rounded-xl sm:rounded-2xl p-4 sm:p-6 transition-all duration-300 flex flex-col justify-between hover:bg-[#111]"
+            className="group cursor-pointer bg-[#111]/40 rounded-2xl p-5 sm:p-6 transition-all duration-300 flex flex-col justify-between hover:bg-[#1a1a1a] border border-[#222] hover:border-[#333]"
         >
             <div>
                 <Link href={"/builder/" + session.id} key={session.id}>
@@ -39,7 +39,7 @@ export default function Session({ session }: Props) {
                     </div>
                 </Link>
 
-                <div className="space-y-2 bg-neutral-900 border border-[#555] rounded-xl p-3.5 mb-6">
+                <div className="space-y-2 bg-neutral-900 border border-[#222] rounded-xl p-3.5 mb-6">
                     {
                         session.models.length > 0 ? (
                             session.models.map((model: IModel
@@ -57,10 +57,10 @@ export default function Session({ session }: Props) {
             </div>
 
             <div>
-                <div className="border-t border-[#555] pt-4 flex items-end justify-between">
+                <div className="border-t border-[#222] pt-4 flex items-end justify-between">
                     <div>
-                        <span className="text-[10px] text-neutral-500 block uppercase tracking-wider font-medium">Taxminiy Narxi</span>
-                        <span className="text-base font-bold font-mono text-[#E4E728]">{formatUSD(session.models.reduce((acc: number, model: IModel) => acc + Number(model.price), 0))}</span>
+                        <span className="text-[10px] text-[#C4D335] block uppercase tracking-widest font-semibold">Taxminiy Narxi</span>
+                        <span className="text-base font-bold font-mono text-[#C4D335]">{formatUSD(session.models.reduce((acc: number, model: IModel) => acc + Number(model.price), 0))}</span>
                     </div>
                     <DropdownMenu>
                         <DropdownMenuTrigger>

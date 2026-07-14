@@ -13,6 +13,5 @@ export const useHeroComponents = () => {
     return useQuery({
         queryKey: ["hero-components"],
         queryFn: hero_components,
-        select: (data) => data.data
     })
 }

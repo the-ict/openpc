@@ -45,7 +45,7 @@ export default function EditSessionDialog({ session, trigger }: Props) {
             <ModalContent>
                 <Dialog.Title className="sr-only">Sessiyani tahrirlash</Dialog.Title>
                 <div className="space-y-5">
-                    <div className="border-b border-[#555] pb-3">
+                    <div className="border-b border-[#222] pb-3">
                         <h2 className="text-xl font-bold text-white">Sessiyani tahrirlash</h2>
                         <p className="text-sm text-neutral-500">Session ID: {session.id.slice(0, 8)}...</p>
                     </div>
@@ -57,13 +57,13 @@ export default function EditSessionDialog({ session, trigger }: Props) {
                             value={name}
                             onChange={(e) => setName(e.target.value)}
                             placeholder="Sessiya nomini kiriting"
-                            className="w-full px-4 py-3 rounded-xl bg-neutral-900 border border-[#555] text-white placeholder-neutral-500 focus:outline-none focus:border-[#C4D335] focus:ring-1 focus:ring-[#C4D335]"
+                            className="w-full px-4 py-3 rounded-xl bg-neutral-900 border border-[#222] text-white placeholder-neutral-500 focus:outline-none focus:border-[#C4D335] focus:ring-1 focus:ring-[#C4D335]"
                         />
                             <button
                                 type="button"
                                 onClick={handleUpdateName}
                                 disabled={name.length <= 0 || isUpdatingSession}
-                                className="w-full py-2.5 cursor-pointer rounded-xl bg-linear-to-r from-[#C4D335] to-[#E4E728] text-black font-semibold hover:opacity-90 transition-opacity text-sm disabled:opacity-50"
+                                className="w-full py-2.5 cursor-pointer rounded-xl bg-[#C4D335] text-black font-semibold hover:bg-[#b3c22e] transition-colors text-sm disabled:opacity-50"
                             >
                                 {isUpdatingSession ? "Saqlanmoqda..." : "Saqlash"}
                             </button>

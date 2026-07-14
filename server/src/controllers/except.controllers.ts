@@ -3,7 +3,7 @@ import prisma from "../lib/prisma.js";
 
 export const get_hero_components = async(req: Request, res: Response, next: NextFunction) => {
     try {
-        const [cpu_model, gpu_model,ram_model,storage_model] = await Promise.all([
+        const [cpu_model, gpu_model,ram_model,storage_model, case_model] = await Promise.all([
             await prisma.model.findFirst({
                 where: {
                     type: "CPU",
@@ -21,16 +21,22 @@ export const get_hero_components = async(req: Request, res: Response, next: Next
             }),
             await prisma.model.findFirst({
                 where: {
-                    type: "STORAGE",
+                    type: "MOTHER_BOARD",
                 }
             }),
+            await prisma.model.findFirst({
+                where: {
+                    type: "CASE"
+                }
+            })
         ]);
 
         res.status(200).json({
             cpu_model,
-            gpu_model,
+            gpu_model,  
             ram_model,
             storage_model,
+            case_model,
         });
     } catch (error) {
         next(error);

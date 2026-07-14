@@ -24,7 +24,7 @@ export default function AddModelDialog({ sessionId, onAddModel, isAdding }: AddM
     return (
         <Modal>
             <ModalTrigger>
-                <button className="text-neutral-400 hover:text-white p-2 rounded-lg bg-[#222] border border-[#555] transition-all">
+                <button className="text-neutral-400 hover:text-white p-2 rounded-lg bg-[#222] border border-[#222] transition-all">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                         <path d="M5 12h14" />
                         <path d="M12 5v14" />
@@ -42,7 +42,7 @@ export default function AddModelDialog({ sessionId, onAddModel, isAdding }: AddM
                             value={modelId}
                             onChange={(e) => setModelId(e.target.value)}
                             placeholder="Model ID ni kiriting"
-                            className="w-full px-4 py-2 rounded-lg bg-neutral-800 border border-neutral-700 text-white placeholder-neutral-500 focus:outline-none focus:border-[#E4E728]"
+                            className="w-full px-4 py-2 rounded-lg bg-neutral-800 border border-neutral-700 text-white placeholder-neutral-500 focus:outline-none focus:border-[#C4D335]"
                             required
                         />
                     </div>

@@ -1,5 +1,12 @@
 export const BASE_URL = process.env.NODE_ENV === "production" ? "https://openpc.uz" : "http://localhost:3001";
-export const UPLOAD_URL = process.env.NODE_ENV === "production"? "https://openpc.uz/uploads/" : "http://localhost:3001/uploads/";
+export const UPLOAD_URL = "/uploads/";
+
+const MODEL_CACHE_BUST = Date.now();
+
+export function modelFileUrl(file: string): string {
+    if (!file) return file;
+    return `${UPLOAD_URL}${file}?v=${MODEL_CACHE_BUST}`;
+}
 
 export const AUTH_URLS = {
   LOGIN: "/api/auth/login",

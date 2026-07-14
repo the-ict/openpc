@@ -36,6 +36,7 @@ export const useCaseSockets = (caseUrl: string): Record<string, Socket> => {
         scene.traverse((child) => {
             if (child.name.startsWith('socket_')) {
                 const key = child.name.replace('socket_', '').toUpperCase();
+                console.log("key: ", child);
 
                 const worldPos = new THREE.Vector3();
                 child.getWorldPosition(worldPos);
@@ -53,6 +54,21 @@ export const useCaseSockets = (caseUrl: string): Record<string, Socket> => {
                     rotation: [euler.x, euler.y, euler.z],
                 };
             }
+        });
+
+        const COMPONENT_TYPES = ["CPU", "GPU", "RAM", "STORAGE", "MOTHER_BOARD", "POWER_SUPPLY", "COOLER", "CASE"];
+        COMPONENT_TYPES.forEach((type) => {
+            if (sockets[type]) return;
+            const match = Object.keys(sockets).find((k) => k === type || k.startsWith(type + "_"));
+            if (match) sockets[type] = sockets[match];
+        });
+
+        const caseCenter = new THREE.Vector3();
+        new THREE.Box3().setFromObject(scene).getCenter(caseCenter);
+        Object.values(sockets).forEach((s) => {
+            s.position[0] -= caseCenter.x;
+            s.position[1] -= caseCenter.y;
+            s.position[2] -= caseCenter.z;
         });
 
         return sockets;

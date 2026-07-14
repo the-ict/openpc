@@ -36,8 +36,8 @@ export default function ModelDetail({ model, open, onClose, add_to_build }: Prop
                 <div className="space-y-6">
                     <div className="flex items-start justify-between">
                         <div className="flex items-center gap-3">
-                            <div className="w-12 h-12 rounded-lg bg-[#E4E728]/10 flex items-center justify-center">
-                                <TypeIcon className="w-6 h-6 text-[#E4E728]" />
+                            <div className="w-12 h-12 rounded-lg bg-[#C4D335]/10 flex items-center justify-center">
+                                <TypeIcon className="w-6 h-6 text-[#C4D335]" />
                             </div>
                             <div>
                                 <h2 className="text-2xl font-bold text-white">{model.name}</h2>
@@ -60,7 +60,7 @@ export default function ModelDetail({ model, open, onClose, add_to_build }: Prop
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                         <div className="bg-[#111] rounded-lg p-4 border border-[#333]">
                             <p className="text-neutral-400 text-xs uppercase tracking-wider mb-1">Narxi</p>
-                            <p className="text-2xl font-bold text-[#E4E728]">${model.price}</p>
+                            <p className="text-2xl font-bold text-[#C4D335]">${model.price}</p>
                         </div>
                         <div className="bg-[#111] rounded-lg p-4 border border-[#333]">
                             <p className="text-neutral-400 text-xs uppercase tracking-wider mb-1">Turi</p>
@@ -86,7 +86,7 @@ export default function ModelDetail({ model, open, onClose, add_to_build }: Prop
                         <button onClick={() => {
                             add_to_build(model)
                             onClose();
-                        }} className="flex-1 px-4 py-3 rounded-xl bg-linear-to-r from-[#C4D335] to-[#E4E728] text-black font-semibold hover:opacity-90 transition-opacity cursor-pointer">
+                        }} className="flex-1 px-4 py-3 rounded-xl bg-[#C4D335] text-black font-semibold hover:bg-[#b3c22e] transition-colors cursor-pointer">
                             Yig'ilmaga qo'shish
                         </button>
                     </div>

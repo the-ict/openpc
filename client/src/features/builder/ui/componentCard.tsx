@@ -29,20 +29,20 @@ export default function ComponentCard({ item, onClick, onChoose }: ComponentCard
                 </div>
                 <div className="flex-1 min-w-0">
                     <div className="flex items-start justify-between gap-2 mb-2">
-                        <h3 className="font-semibold text-white text-sm line-clamp-2 group-hover:text-[#E4E728] transition-colors">{item.name}</h3>
-                        <span className="text-xs px-2 py-1 rounded bg-[#E4E728]/10 text-[#E4E728] font-medium whitespace-nowrap">
+                        <h3 className="font-semibold text-white text-sm line-clamp-2 group-hover:text-[#C4D335] transition-colors">{item.name}</h3>
+                        <span className="text-xs px-2 py-1 rounded bg-[#C4D335]/10 text-[#C4D335] font-medium whitespace-nowrap">
                             {item.brand}
                         </span>
                     </div>
                     <p className="text-neutral-400 text-xs mb-2">{item.type}</p>
                     <div className="flex items-center justify-between">
-                        <p className="text-lg font-bold text-[#E4E728]">${item.price}</p>
+                        <p className="text-lg font-bold text-[#C4D335]">${item.price}</p>
                         <button 
                             onClick={(e) => {
                                 e.stopPropagation();
                                 if (onChoose) onChoose(item);
                             }}
-                            className="px-3 cursor-pointer py-1.5 bg-[#E4E728] hover:bg-[#C4D335] text-black text-xs font-semibold rounded-lg transition-colors"
+                            className="px-3 cursor-pointer py-1.5 bg-[#C4D335] hover:bg-[#b3c22e] text-black text-xs font-semibold rounded-lg transition-colors"
                         >
                             Tanlash
                         </button>
