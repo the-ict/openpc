@@ -51,4 +51,4 @@ export interface IModel {
 
 export type CreateModelResponse = Response<IModel>;
 
-export type MODEL_TYPES = 'CPU' | 'GPU' | 'MOTHER_BOARD' | 'RAM' | 'STORAGE' | 'POWER_SUPPLY' | 'COOLER' | 'CASE';
+export type MODEL_TYPES = 'CPU' | 'GPU' | 'MOTHER_BOARD' | 'RAM' | 'STORAGE' | 'POWER_SUPPLY' | 'COOLER' | 'RADIATOR' | 'CASE';

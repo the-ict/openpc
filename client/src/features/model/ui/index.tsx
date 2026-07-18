@@ -13,6 +13,7 @@ const MODEL_TYPES_LIST: MODEL_TYPES[] = [
   'STORAGE',
   'POWER_SUPPLY',
   'COOLER',
+  'RADIATOR',
   'CASE',
 ];
 

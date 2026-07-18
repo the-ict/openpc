@@ -17,6 +17,7 @@ export const MODEL_TYPES = {
   STORAGE: 'STORAGE',
   POWER_SUPPLY: 'POWER_SUPPLY',
   COOLER: 'COOLER',
+  RADIATOR: 'RADIATOR',
   CASE: 'CASE'
 } as const
 

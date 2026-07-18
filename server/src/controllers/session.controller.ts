@@ -33,8 +33,8 @@ export const create_session = async (req: Request, res: Response, next: NextFunc
 
 export const add_model_to_session = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const { model_id } = req.body;
-        console.log("model_id:", model_id);
+        const { model_id, slot } = req.body;
+        console.log("model_id:", model_id, "slot:", slot);
 
         const modelToAdd = await prisma.model.findUnique({
             where: { id: model_id },
@@ -46,47 +46,88 @@ export const add_model_to_session = async (req: Request, res: Response, next: Ne
 
         const session = await prisma.session.findUnique({
             where: { id: req.params.id as string },
-            include: { models: true },
         });
 
         if (!session) {
             return res.status(404).json({ message: "Session not found", ok: false });
         }
 
-        const existingModelOfSameType = session.models.find(
-            (m) => m.type === modelToAdd.type
-        );
+        const requestedSlot = typeof slot === "number" && slot >= 0 ? slot : 0;
 
-        const modelsUpdatePayload: any = {
-            connect: {
-                id: model_id,
-            },
-        };
-
-        if (existingModelOfSameType) {
-            modelsUpdatePayload.disconnect = {
-                id: existingModelOfSameType.id,
-            };
-        }
-
-        const updated_session = await prisma.session.update({
+        const existingSlot = await prisma.sessionModel.findUnique({
             where: {
-                id: req.params.id as string,
-            },
-            data: {
-                models: modelsUpdatePayload,
-            },
-            include: {
-                models: true,
+                sessionId_modelId_slot: {
+                    sessionId: session.id,
+                    modelId: model_id,
+                    slot: requestedSlot,
+                },
             },
         });
 
+        if (existingSlot) {
+            return res.status(200).json({
+                message: "Model already in this slot",
+                ok: true,
+                data: session,
+            });
+        }
+
+        const slotCount = await prisma.sessionModel.count({
+            where: { sessionId: session.id, type: modelToAdd.type },
+        });
+
+        await prisma.sessionModel.create({
+            data: {
+                sessionId: session.id,
+                modelId: model_id,
+                type: modelToAdd.type,
+                slot: requestedSlot,
+                order: slotCount,
+            },
+        });
+
+        const updated_session = await prisma.session.findUnique({
+            where: { id: session.id },
+            include: { sessionModels: { include: { model: true } } },
+        });
+
         if (!updated_session) {
-            return res.status(406).json({ message: "Not Acceptable" });
+            return res.status(406).json({ message: "Not Acceptable", ok: false });
         }
 
         res.status(200).json({
             message: "Model added to session successfully",
+            ok: true,
+            data: updated_session,
+        });
+    } catch (error) {
+        next(error);
+    }
+};
+
+export const remove_session_model = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const sessionModelId = req.params.sessionModelId as string;
+
+        const existing = await prisma.sessionModel.findUnique({
+            where: { id: sessionModelId },
+        });
+
+        if (!existing) {
+            return res.status(404).json({ message: "Session model not found", ok: false });
+        }
+
+        await prisma.sessionModel.delete({
+            where: { id: sessionModelId },
+        });
+
+        const updated_session = await prisma.session.findUnique({
+            where: { id: existing.sessionId },
+            include: { sessionModels: { include: { model: true } } },
+        });
+
+        res.status(200).json({
+            message: "Model removed from session successfully",
             ok: true,
             data: updated_session,
         });
@@ -139,7 +180,7 @@ export const get_one_session = async (req: Request, res: Response, next: NextFun
                 id: req.params.id as string,
             },
             include: {
-                models: true,
+                sessionModels: { include: { model: true } },
             },
         });
 
@@ -164,7 +205,7 @@ export const get_all_sessions = async (req: Request, res: Response, next: NextFu
                 user_id: req.user?.id || "",
             },
             include: {
-                models: true,
+                sessionModels: { include: { model: true } },
             },
         });
 

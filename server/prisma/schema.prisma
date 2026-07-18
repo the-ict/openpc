@@ -29,18 +29,31 @@ model Model {
   model_file      String
   createdAt       DateTime      @default(now())
   updatedAt       DateTime      @updatedAt
-  sessions        Session[]
+  sessionModels   SessionModel[]
+}
+
+model SessionModel {
+  id        String      @id @default(uuid())
+  session   Session     @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  sessionId String
+  model     Model       @relation(fields: [modelId], references: [id], onDelete: Cascade)
+  modelId   String
+  type      MODEL_TYPES
+  slot      Int         @default(0)
+  order     Int         @default(0)
+
+  @@unique([sessionId, modelId, slot])
 }
 
 model Session {
-  id        String   @id @default(uuid())
-  name      String
-  status    String   @default("In Progress")
-  models    Model[]
-  user      User     @relation(fields: [user_id], references: [id])
-  user_id   String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id            String        @id @default(uuid())
+  name          String
+  status        String        @default("In Progress")
+  sessionModels SessionModel[]
+  user          User          @relation(fields: [user_id], references: [id])
+  user_id       String
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
 }
 
 enum MODEL_TYPES {
@@ -51,5 +64,6 @@ enum MODEL_TYPES {
   STORAGE
   POWER_SUPPLY
   COOLER
+  RADIATOR
   CASE
 }

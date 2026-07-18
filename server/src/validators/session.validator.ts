@@ -6,6 +6,7 @@ export const create_session_schema = Joi.object({
 
 export const add_model_to_session_schema = Joi.object({
     model_id: Joi.string().required(),
+    slot: Joi.number().integer().min(0).optional(),
 });
 
 export const update_session_schema = Joi.object({

@@ -386,6 +386,7 @@ type FieldRefInputType<Model, FieldType> = Model extends never ? never : FieldRe
 export const ModelName = {
   User: 'User',
   Model: 'Model',
+  SessionModel: 'SessionModel',
   Session: 'Session'
 } as const
 
@@ -402,7 +403,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "model" | "session"
+    modelProps: "user" | "model" | "sessionModel" | "session"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -554,6 +555,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    SessionModel: {
+      payload: Prisma.$SessionModelPayload<ExtArgs>
+      fields: Prisma.SessionModelFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.SessionModelFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SessionModelPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.SessionModelFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SessionModelPayload>
+        }
+        findFirst: {
+          args: Prisma.SessionModelFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SessionModelPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.SessionModelFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SessionModelPayload>
+        }
+        findMany: {
+          args: Prisma.SessionModelFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SessionModelPayload>[]
+        }
+        create: {
+          args: Prisma.SessionModelCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SessionModelPayload>
+        }
+        createMany: {
+          args: Prisma.SessionModelCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.SessionModelCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SessionModelPayload>[]
+        }
+        delete: {
+          args: Prisma.SessionModelDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SessionModelPayload>
+        }
+        update: {
+          args: Prisma.SessionModelUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SessionModelPayload>
+        }
+        deleteMany: {
+          args: Prisma.SessionModelDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.SessionModelUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.SessionModelUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SessionModelPayload>[]
+        }
+        upsert: {
+          args: Prisma.SessionModelUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$SessionModelPayload>
+        }
+        aggregate: {
+          args: Prisma.SessionModelAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateSessionModel>
+        }
+        groupBy: {
+          args: Prisma.SessionModelGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.SessionModelGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.SessionModelCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.SessionModelCountAggregateOutputType> | number
+        }
+      }
+    }
     Session: {
       payload: Prisma.$SessionPayload<ExtArgs>
       fields: Prisma.SessionFieldRefs
@@ -694,6 +769,18 @@ export const ModelScalarFieldEnum = {
 } as const
 
 export type ModelScalarFieldEnum = (typeof ModelScalarFieldEnum)[keyof typeof ModelScalarFieldEnum]
+
+
+export const SessionModelScalarFieldEnum = {
+  id: 'id',
+  sessionId: 'sessionId',
+  modelId: 'modelId',
+  type: 'type',
+  slot: 'slot',
+  order: 'order'
+} as const
+
+export type SessionModelScalarFieldEnum = (typeof SessionModelScalarFieldEnum)[keyof typeof SessionModelScalarFieldEnum]
 
 
 export const SessionScalarFieldEnum = {
@@ -919,6 +1006,7 @@ export type PrismaClientOptions = ({
 export type GlobalOmitConfig = {
   user?: Prisma.UserOmit
   model?: Prisma.ModelOmit
+  sessionModel?: Prisma.SessionModelOmit
   session?: Prisma.SessionOmit
 }
 

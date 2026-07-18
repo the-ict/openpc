@@ -1,6 +1,6 @@
 import http from "../../httpConfig";
 import { SESSION_URLS } from "../../URLS";
-import { AddModelToSessionResponse, CreateSessionRequest, CreateSessionResponse, DeleteSessionResponse, GetSessionResponse, GetSessionsResponse, UpdateSessionRequest, UpdateSessionResponse } from "./session.model";
+import { AddModelToSessionResponse, CreateSessionRequest, CreateSessionResponse, DeleteSessionResponse, GetSessionResponse, GetSessionsResponse, RemoveSessionModelResponse, UpdateSessionRequest, UpdateSessionResponse } from "./session.model";
 
 export const create_session = async (data: CreateSessionRequest): Promise<CreateSessionResponse> => {
     const response = await http.post<CreateSessionResponse>(SESSION_URLS.CREATE, data);
@@ -22,8 +22,13 @@ export const get_sessions = async (): Promise<GetSessionsResponse> => {
     return response.data;
 };
 
-export const add_model_to_session = async (sessionId: string, modelId: string): Promise<AddModelToSessionResponse> => {
-    const response = await http.post<AddModelToSessionResponse>(SESSION_URLS.ADD_MODEL(sessionId), { model_id: modelId });
+export const add_model_to_session = async (sessionId: string, modelId: string, slot?: number): Promise<AddModelToSessionResponse> => {
+    const response = await http.post<AddModelToSessionResponse>(SESSION_URLS.ADD_MODEL(sessionId), { model_id: modelId, slot });
+    return response.data;
+};
+
+export const remove_session_model = async (sessionId: string, sessionModelId: string): Promise<RemoveSessionModelResponse> => {
+    const response = await http.delete<RemoveSessionModelResponse>(`${SESSION_URLS.ADD_MODEL(sessionId)}/${sessionModelId}`);
     return response.data;
 };
 

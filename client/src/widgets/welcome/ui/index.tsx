@@ -50,7 +50,7 @@ export default function Welcome() {
     const [progress, setProgress] = useState<number>(0);
     const progressRef = useRef<number>(0);
 
-    const token = user_store.getState().token;
+    const token = user_store.getState().token ?? "";
 
     const { data } = useHeroComponents();
 
@@ -120,7 +120,7 @@ export default function Welcome() {
         ? [data.cpu_model, data.gpu_model, data.ram_model, data.storage_model].filter(Boolean)
         : [];
 
-    const activeStep = Math.min(STEPS.length - 1, Math.floor(progress * STEPS.length));
+    const activeStep = Math.min(STEPS?.length - 1, Math.floor(progress * STEPS?.length));
     const showBuildUI = progress > 0.001;
 
     const focusTarget: MODEL_TYPES | "OVERVIEW" = progress < 0.02 || progress > 0.98 ? "OVERVIEW" : (STEPS[activeStep].type as MODEL_TYPES);
@@ -170,7 +170,7 @@ export default function Welcome() {
                     </p>
 
                     <div className='flex flex-wrap items-center justify-center gap-4 sm:gap-6'>
-                        {mounted && token.length > 0 ? (
+                        {mounted && token?.length > 0 ? (
                             <Link href="/session" className='bg-[#C4D335] button-1 cursor-pointer text-black font-semibold px-8 py-3 rounded-full hover:bg-[#b3c22e] transition-colors duration-200 text-sm md:text-base'>
                                 Zborakalar
                             </Link>
@@ -193,13 +193,13 @@ export default function Welcome() {
                 </div>
 
                 <div className='flex flex-wrap items-center gap-4 sm:gap-10 justify-center'>
-                    {heroModels.length > 0 &&
+                    {heroModels?.length > 0 &&
                         heroModels.map((item) => (
-                            <div className='text-center bg-[#1515FF] p-3 sm:p-2 rounded-sm' key={item.id}>
+                            <div className='text-center bg-[#1515FF] flex items-center flex-col p-3 sm:p-2 rounded-sm' key={item.id}>
                                 <div>
                                     <img src={UPLOAD_URL + item.image} alt={item.type} className='w-16 h-16 sm:w-20 sm:h-20 md:w-25 md:h-25' />
                                 </div>
-                                <span className='text-white font-bold text-lg sm:text-2xl'>{item.type}</span>
+                                <span className='text-white font-bold text-lg sm:text-2xl'>{item.type === "MOTHER_BOARD" ? "mother board" : item.type.toLowerCase()}</span>
                             </div>
                         ))
                     }
@@ -255,7 +255,7 @@ export default function Welcome() {
                         <div className='flex items-start justify-between'>
                             <div className='max-w-sm'>
                                 <p className='text-[#C4D335] text-xs md:text-sm font-semibold tracking-widest uppercase mb-2'>
-                                    Qadam {activeStep + 1} / {STEPS.length}
+                                    Qadam {activeStep + 1} / {STEPS?.length}
                                 </p>
                                 <h2 className='text-2xl md:text-4xl font-bold text-white mb-3'>
                                     {STEPS[activeStep].title}

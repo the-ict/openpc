@@ -26,17 +26,27 @@ export interface Socket {
     rotation: [number, number, number];
 };
 
-export const useCaseSockets = (caseUrl: string): Record<string, Socket> => {
+export type SocketsByType = Record<string, Socket[]>;
+
+export const useCaseSockets = (caseUrl: string): SocketsByType => {
     const { scene } = useGLTF(caseUrl);
 
     return useMemo(() => {
-        const sockets: Record<string, Socket> = {};
+        const raw: { base: string; index: number; socket: Socket }[] = [];
         scene.updateWorldMatrix(true, true);
 
         scene.traverse((child) => {
             if (child.name.startsWith('socket_')) {
-                const key = child.name.replace('socket_', '').toUpperCase();
-                console.log("key: ", child);
+                const rest = child.name.replace('socket_', '').toUpperCase();
+                console.log("socket node: ", child.name);
+
+                let base = rest;
+                let index = 0;
+                const suffixMatch = rest.match(/^(.+?)_(\d+)$/);
+                if (suffixMatch) {
+                    base = suffixMatch[1];
+                    index = parseInt(suffixMatch[2], 10);
+                }
 
                 const worldPos = new THREE.Vector3();
                 child.getWorldPosition(worldPos);
@@ -46,29 +56,34 @@ export const useCaseSockets = (caseUrl: string): Record<string, Socket> => {
                 child.getWorldQuaternion(worldQuat);
                 const euler = new THREE.Euler().setFromQuaternion(worldQuat);
 
-                const worldScale = new THREE.Vector3();
-                child.getWorldScale(worldScale);
-
-                sockets[key] = {
-                    position: [localPos.x, localPos.y, localPos.z],
-                    rotation: [euler.x, euler.y, euler.z],
-                };
+                raw.push({
+                    base,
+                    index,
+                    socket: {
+                        position: [localPos.x, localPos.y, localPos.z],
+                        rotation: [euler.x, euler.y, euler.z],
+                    },
+                });
             }
-        });
-
-        const COMPONENT_TYPES = ["CPU", "GPU", "RAM", "STORAGE", "MOTHER_BOARD", "POWER_SUPPLY", "COOLER", "CASE"];
-        COMPONENT_TYPES.forEach((type) => {
-            if (sockets[type]) return;
-            const match = Object.keys(sockets).find((k) => k === type || k.startsWith(type + "_"));
-            if (match) sockets[type] = sockets[match];
         });
 
         const caseCenter = new THREE.Vector3();
         new THREE.Box3().setFromObject(scene).getCenter(caseCenter);
-        Object.values(sockets).forEach((s) => {
-            s.position[0] -= caseCenter.x;
-            s.position[1] -= caseCenter.y;
-            s.position[2] -= caseCenter.z;
+
+        const sockets: SocketsByType = {};
+        raw.forEach(({ base, index, socket }) => {
+            socket.position[0] -= caseCenter.x;
+            socket.position[1] -= caseCenter.y;
+            socket.position[2] -= caseCenter.z;
+
+            if (!sockets[base]) sockets[base] = [];
+            sockets[base][index] = socket;
+        });
+
+        Object.values(sockets).forEach((arr) => {
+            for (let i = 0; i < arr.length; i++) {
+                if (!arr[i]) arr[i] = arr[i - 1] ?? { position: [0, 0, 0], rotation: [0, 0, 0] };
+            }
         });
 
         return sockets;
@@ -79,6 +94,6 @@ export const useCaseSockets = (caseUrl: string): Record<string, Socket> => {
 export const useAddModelToSession = () => {
     return useMutation({
         mutationKey: ["add-model-to-session"],
-        mutationFn: ({ session_id, model_id }: { session_id: string, model_id: string }) => add_model_to_session(session_id, model_id),
+        mutationFn: ({ session_id, model_id, slot }: { session_id: string, model_id: string, slot?: number }) => add_model_to_session(session_id, model_id, slot),
     });
 };

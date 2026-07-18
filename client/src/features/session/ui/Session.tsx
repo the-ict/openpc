@@ -41,12 +41,11 @@ export default function Session({ session }: Props) {
 
                 <div className="space-y-2 bg-neutral-900 border border-[#222] rounded-xl p-3.5 mb-6">
                     {
-                        session.models.length > 0 ? (
-                            session.models.map((model: IModel
-                            ) => (
-                                <div key={model.id} className="flex justify-between text-xs">
-                                    <span className="text-neutral-500">{model.name}</span>
-                                    <span className="text-neutral-300 font-medium truncate max-w-45">{formatUSD(Number(model.price))}</span>
+                        session.sessionModels.length > 0 ? (
+                            session.sessionModels.map((sm) => (
+                                <div key={sm.id} className="flex justify-between text-xs">
+                                    <span className="text-neutral-500">{sm.model.name}</span>
+                                    <span className="text-neutral-300 font-medium truncate max-w-45">{formatUSD(Number(sm.model.price))}</span>
                                 </div>
                             ))
                         ) : (
@@ -60,7 +59,7 @@ export default function Session({ session }: Props) {
                 <div className="border-t border-[#222] pt-4 flex items-end justify-between">
                     <div>
                         <span className="text-[10px] text-[#C4D335] block uppercase tracking-widest font-semibold">Taxminiy Narxi</span>
-                        <span className="text-base font-bold font-mono text-[#C4D335]">{formatUSD(session.models.reduce((acc: number, model: IModel) => acc + Number(model.price), 0))}</span>
+                        <span className="text-base font-bold font-mono text-[#C4D335]">{formatUSD(session.sessionModels.reduce((acc: number, sm) => acc + Number(sm.model.price), 0))}</span>
                     </div>
                     <DropdownMenu>
                         <DropdownMenuTrigger>

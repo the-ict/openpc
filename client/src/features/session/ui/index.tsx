@@ -34,7 +34,7 @@ export default function Index() {
             </div>
             <div className="bg-[#111] rounded-xl sm:rounded-2xl p-4 sm:p-6">
               <span className="text-[10px] sm:text-xs text-neutral-500 font-medium uppercase tracking-wider">O&apos;rtacha Narx</span>
-              <p className="text-2xl sm:text-3xl font-bold mt-2 text-[#C4D335] font-mono">{formatUSD(Array.isArray(data?.data) ? data?.data.reduce((acc, session) => acc + session.models.reduce((mAcc, model) => mAcc + Number(model.price), 0), 0) / (data.data.length || 1) : 0)}</p>
+              <p className="text-2xl sm:text-3xl font-bold mt-2 text-[#C4D335] font-mono">{formatUSD(Array.isArray(data?.data) ? data?.data.reduce((acc, session) => acc + session.sessionModels.reduce((mAcc, sm) => mAcc + Number(sm.model.price), 0), 0) / (data.data.length || 1) : 0)}</p>
             </div>
             <div className="bg-[#111] rounded-xl sm:rounded-2xl p-4 sm:p-6 sm:col-span-2 lg:col-span-1">
               <span className="text-[10px] sm:text-xs text-neutral-500 font-medium uppercase tracking-wider">Faol loyihalar</span>

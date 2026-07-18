@@ -1,4 +1,4 @@
-import { useCaseSockets, Socket } from "@/src/features/builder/lib/hooks";
+import { useCaseSockets, Socket, SocketsByType } from "@/src/features/builder/lib/hooks";
 import { RenderCaseModel } from "@/src/features/builder/ui/SceneBuilder";
 import { IModel } from "@/src/shared/config/api/model/model.model";
 import { modelFileUrl } from "@/src/shared/config/URLS";
@@ -45,6 +45,11 @@ const RenderCase = ({ cpu_model, gpu_model, ram_model, storage_model, case_model
         return { position: [center.x, center.y, center.z], rotation: [0, 0, 0] };
     }, [caseBox]);
 
+    const resolveSocket = React.useCallback((sockets: SocketsByType, type: string): Socket => {
+        const list = sockets[type];
+        return (list && list[0]) || fallbackSocket(type);
+    }, [fallbackSocket]);
+
     const components: IModel[] = [cpu_model, gpu_model, ram_model, storage_model].filter(
         (m): m is IModel => Boolean(m)
     );
@@ -56,15 +61,13 @@ const RenderCase = ({ cpu_model, gpu_model, ram_model, storage_model, case_model
             )}
 
             {components.map((model: IModel) => {
-                const resolved = sockets[model.type];
+                const socket_point = resolveSocket(sockets, model.type);
 
-                if (!resolved) {
+                if (!sockets[model.type]) {
                     console.warn(
                         `Socket topilmadi: socket_${model.type} (${model.type}). Model markazda ko'rsatiladi.`
                     );
                 }
-
-                const socket_point = resolved ?? fallbackSocket(model.type);
 
                 return (
                     <RenderModel

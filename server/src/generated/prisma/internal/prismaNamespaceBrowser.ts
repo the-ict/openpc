@@ -53,6 +53,7 @@ export const AnyNull = runtime.AnyNull
 export const ModelName = {
   User: 'User',
   Model: 'Model',
+  SessionModel: 'SessionModel',
   Session: 'Session'
 } as const
 
@@ -99,6 +100,18 @@ export const ModelScalarFieldEnum = {
 } as const
 
 export type ModelScalarFieldEnum = (typeof ModelScalarFieldEnum)[keyof typeof ModelScalarFieldEnum]
+
+
+export const SessionModelScalarFieldEnum = {
+  id: 'id',
+  sessionId: 'sessionId',
+  modelId: 'modelId',
+  type: 'type',
+  slot: 'slot',
+  order: 'order'
+} as const
+
+export type SessionModelScalarFieldEnum = (typeof SessionModelScalarFieldEnum)[keyof typeof SessionModelScalarFieldEnum]
 
 
 export const SessionScalarFieldEnum = {

@@ -7,7 +7,8 @@ import {
   Microchip,
   Power,
   PcCase,
-  AirVent
+  AirVent,
+  Snowflake
 } from "lucide-react";
 
 const requirements: IRequirements[] = [
@@ -50,6 +51,11 @@ const requirements: IRequirements[] = [
     name: "COOLING",
     type: "COOLER",
     icon: <AirVent />,
+  },
+  {
+    name: "RADIATOR",
+    type: "RADIATOR",
+    icon: <Snowflake />,
   },
 ];
 

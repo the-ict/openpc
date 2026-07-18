@@ -2,7 +2,7 @@
 
 import { IModel, MODEL_TYPES } from '@/src/shared/config/api/model/model.model';
 import { Bloom, EffectComposer, Outline } from "@react-three/postprocessing";
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { useGetSession } from '../../session/lib/hooks';
 import { useAddModelToSession } from '../lib/hooks';
 import { Canvas } from '@react-three/fiber';
@@ -16,6 +16,8 @@ import { Group } from 'three';
 
 export interface ComponentBuild {
     id: string;
+    instanceId: string;
+    slot: number;
     type: MODEL_TYPES;
     modelFile: string;
     name: string;
@@ -49,17 +51,19 @@ export const BuilderPage: React.FC = () => {
     }, []);
 
     useEffect(() => {
-        if (sessionData?.models) {
-            const components: ComponentBuild[] = sessionData.models.map((model: any) => ({
-                id: model.id,
-                type: model.type,
-                modelFile: model.model_file,
-                name: model.name,
+        if (sessionData?.sessionModels) {
+            const components: ComponentBuild[] = sessionData.sessionModels.map((sm: any) => ({
+                id: sm.model.id,
+                instanceId: sm.id,
+                slot: sm.slot ?? 0,
+                type: sm.model.type,
+                modelFile: sm.model.model_file,
+                name: sm.model.name,
             }));
 
             const activeBuildState: Record<string, number> = {};
-            sessionData.models.forEach((model: any) => {
-                activeBuildState[model.type] = 1;
+            sessionData.sessionModels.forEach((sm: any) => {
+                activeBuildState[sm.model.type] = (activeBuildState[sm.model.type] ?? 0) + 1;
             });
 
             setBuiltComponents(components);
@@ -68,7 +72,7 @@ export const BuilderPage: React.FC = () => {
     }, [sessionData]);
 
     useEffect(() => {
-        setHasSelectedCase(!!activeBuild['CASE']);
+        setHasSelectedCase((activeBuild['CASE'] ?? 0) > 0);
     }, [activeBuild]);
 
     const handleChooseComponent = async (model: IModel) => {
@@ -77,24 +81,25 @@ export const BuilderPage: React.FC = () => {
                 throw new Error("There is no params");
             };
 
+            const currentCount = builtComponents.filter(c => c.type === model.type).length;
+
             const componentData: ComponentBuild = {
                 id: model.id,
+                instanceId: `local_${model.id}_${Date.now()}_${currentCount}`,
+                slot: currentCount,
                 type: model.type,
                 modelFile: model.model_file,
                 name: model.name,
             };
 
-            setBuiltComponents(prev => {
-                const filtered = prev.filter(c => c.type !== componentData.type);
-                return [...filtered, componentData];
-            });
+            setBuiltComponents(prev => [...prev, componentData]);
 
             setActiveBuild(prev => ({
                 ...prev,
-                [model.type]: 1
+                [model.type]: (prev[model.type] ?? 0) + 1
             }));
 
-            await addModelToSessionMutation({ session_id: params.id as string, model_id: model.id });
+            await addModelToSessionMutation({ session_id: params.id as string, model_id: model.id, slot: currentCount });
         } catch (error) {
             console.log("error: ", error);
         };
@@ -103,7 +108,12 @@ export const BuilderPage: React.FC = () => {
     const [sidebarOpen, setSidebarOpen] = useState(false);
 
     const outlineRef = useRef<any>(null);
-    const focusedRef = focusTarget === "CASE" ? undefined : componentRefs[focusTarget]?.current;
+    const focusedInstanceId = useMemo(() => {
+        if (focusTarget === "CASE") return undefined;
+        const match = builtComponents.find(c => c.type === focusTarget);
+        return match?.instanceId;
+    }, [focusTarget, builtComponents]);
+    const focusedRef = focusedInstanceId ? componentRefs[focusedInstanceId]?.current : undefined;
 
     useEffect(() => {
         const effect = outlineRef.current;

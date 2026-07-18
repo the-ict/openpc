@@ -2,7 +2,7 @@
 
 import React, { useEffect, useMemo, useRef } from 'react';
 import { modelFileUrl } from '@/src/shared/config/URLS';
-import { useCaseSockets, type Socket } from '../lib/hooks';
+import { useCaseSockets, type Socket, type SocketsByType } from '../lib/hooks';
 import { useGLTF, Html, Line } from '@react-three/drei';
 import { ComponentBuild } from '.';
 import { Group } from 'three';
@@ -17,41 +17,45 @@ const SOCKET_DISPLAY: Record<string, string> = {
   MOTHER_BOARD: "MOTHERBOARD",
   POWER_SUPPLY: "POWER SUPPLY",
   COOLER: "COOLER",
+  RADIATOR: "RADIATOR",
   CASE: "CASE",
 };
 
-function SocketMarkers({ sockets, components }: { sockets: Record<string, Socket>; components: ComponentBuild[] }) {
+function SocketMarkers({ sockets, components }: { sockets: SocketsByType; components: ComponentBuild[] }) {
   return (
     <>
-      {Object.entries(sockets).map(([type, socket]) => {
-        const comp = components.find((c) => c.type === type);
-        const color = comp ? "#C4D335" : "#ff5555";
+      {Object.entries(sockets).map(([type, socketList]) =>
+        socketList.map((socket, idx) => {
+          const comp = components.find((c) => c.type === type && c.slot === idx);
+          const color = comp ? "#C4D335" : "#ff5555";
+          const label = (SOCKET_DISPLAY[type] || type) + (socketList.length > 1 ? ` ${idx + 1}` : "");
 
-        return (
-          <group key={type} position={socket.position}>
-            <mesh>
-              <sphereGeometry args={[0.05, 16, 16]} />
-              <meshBasicMaterial color={color} />
-            </mesh>
+          return (
+            <group key={`${type}_${idx}`} position={socket.position}>
+              <mesh>
+                <sphereGeometry args={[0.05, 16, 16]} />
+                <meshBasicMaterial color={color} />
+              </mesh>
 
-            <Line points={[[0, 0, 0], [0, 0.45, 0]]} color={color} lineWidth={2} />
+              <Line points={[[0, 0, 0], [0, 0.45, 0]]} color={color} lineWidth={2} />
 
-            <Html position={[0, 0.6, 0]} center distanceFactor={undefined} className="pointer-events-none select-none">
-              <div
-                style={{ borderColor: color }}
-                className="whitespace-nowrap rounded-md border bg-black/80 px-2 py-1 text-center shadow-lg backdrop-blur-sm"
-              >
-                <div className="text-[11px] font-bold tracking-wide" style={{ color }}>
-                  {SOCKET_DISPLAY[type] || type}
+              <Html position={[0, 0.6, 0]} center distanceFactor={undefined} className="pointer-events-none select-none">
+                <div
+                  style={{ borderColor: color }}
+                  className="whitespace-nowrap rounded-md border bg-black/80 px-2 py-1 text-center shadow-lg backdrop-blur-sm"
+                >
+                  <div className="text-[11px] font-bold tracking-wide" style={{ color }}>
+                    {label}
+                  </div>
+                  <div className="text-[10px] text-white/90">
+                    {comp ? comp.name : "Bo'sh"}
+                  </div>
                 </div>
-                <div className="text-[10px] text-white/90">
-                  {comp ? comp.name : "Bo'sh"}
-                </div>
-              </div>
-            </Html>
-          </group>
-        );
-      })}
+              </Html>
+            </group>
+          );
+        })
+      )}
     </>
   );
 }
@@ -73,9 +77,9 @@ function ModelComponent({ component, set_component_refs, position, rotation, cas
 
   useEffect(() => {
     if (ref.current) {
-      set_component_refs(prev => ({ ...prev, [component.type]: ref }));
+      set_component_refs(prev => ({ ...prev, [component.instanceId]: ref }));
     };
-  }, [ref, component.type, set_component_refs]);
+  }, [ref, component.instanceId, set_component_refs]);
 
   useEffect(() => {
     const box = new THREE.Box3().setFromObject(scene);
@@ -182,16 +186,17 @@ export default function SceneBuilder({ components, setComponentRef, showSockets 
 
       {other_components.length > 0 && (
         other_components.map((component, index) => {
-          const socket = socket_points[component.type];
+          const socketList = socket_points[component.type];
+          const socket = socketList?.[component.slot ?? 0];
 
           if (!socket) {
-            console.warn(`Socket topilmadi: socket_${component.type}. Artist bu nomni case'ga qo'shganmi?`);
+            console.warn(`Socket topilmadi: socket_${component.type}${component.slot ? "_" + component.slot : ""}. Artist bu nomni case'ga qo'shganmi?`);
             return null;
           };
 
           return (
             <ModelComponent
-              key={index}
+              key={component.instanceId ?? index}
               component={component}
               set_component_refs={setComponentRef}
               position={socket.position}
