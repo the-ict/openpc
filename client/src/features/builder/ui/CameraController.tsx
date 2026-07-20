@@ -31,8 +31,8 @@ export default function CMControls({ focusTarget, componentRefs }: CameraControl
             cam.maxPolarAngle = Math.PI - 0.1;
             cam.minAzimuthAngle = -Infinity;
             cam.maxAzimuthAngle = Infinity;
-            cam.maxDistance = 25;
-            cam.minDistance = 25;
+            cam.maxDistance = 200;
+            cam.minDistance = 0.5;
             cam.mouseButtons = {
                 left: 1,
                 middle: 0,
@@ -44,8 +44,8 @@ export default function CMControls({ focusTarget, componentRefs }: CameraControl
             cam.maxPolarAngle = (Math.PI / 6) * 5;
             cam.minAzimuthAngle = -Math.PI / 6;
             cam.maxAzimuthAngle = Math.PI / 6;
-            cam.maxDistance = 25;
-            cam.minDistance = 25;
+            cam.maxDistance = 200;
+            cam.minDistance = 0.5;
             cam.mouseButtons = {
                 left: 1,
                 middle: 0,
@@ -68,18 +68,7 @@ export default function CMControls({ focusTarget, componentRefs }: CameraControl
             const targetObj = componentRefs[focusTarget as MODEL_TYPES]?.current;
             if (!targetObj) return;
 
-            const targetPosition = new THREE.Vector3();
-            targetObj.getWorldPosition(targetPosition);
-
-            cam.setLookAt(
-                targetPosition.x + 2,
-                targetPosition.y + 2,
-                targetPosition.z + 2,
-                targetPosition.x,
-                targetPosition.y,
-                targetPosition.z,
-                true
-            );
+            cam.fitToBox(targetObj, true, { paddingLeft: 0.5, paddingRight: 0.5, paddingTop: 0.5, paddingBottom: 0.5 });
         }
     }, [scene, focusTarget, componentRefs, toggleGlass]);
 

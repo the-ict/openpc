@@ -32,22 +32,9 @@ export default function AnimationCameraController({ focusTarget, componentRefs }
         console.log("focusTarget: ", focusTarget);
 
         const targetObj = componentRefs[focusTarget]?.current;
-        console.log("target OBj: ", targetObj);
         if (!targetObj) return;
 
-        const targetPosition = new THREE.Vector3();
-        targetObj.getWorldPosition(targetPosition);
-        console.log(targetObj, "target Obj")
-
-        cam.setLookAt(
-            targetPosition.x + 2,
-            targetPosition.y + 2,
-            targetPosition.z + 2,
-            targetPosition.x,
-            targetPosition.y,
-            targetPosition.z,
-            true
-        );
+        cam.fitToBox(targetObj, true, { paddingLeft: 0.5, paddingRight: 0.5, paddingTop: 0.5, paddingBottom: 0.5 });
     }, [focusTarget, componentRefs, scene]);
 
     return <CameraControls ref={controls} />;

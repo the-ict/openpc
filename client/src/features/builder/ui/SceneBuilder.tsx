@@ -32,10 +32,12 @@ function ModelComponent({ component, set_component_refs, position, rotation }: M
     const clone = scene.clone();
 
     clone.traverse((child: any) => {
-      if (child.isMesh && child.material) {
-        child.material = child.material.clone();
-        if (child.material.envMapIntensity !== undefined) {
-          child.material.envMapIntensity = 0.01;
+      const mesh = child as THREE.Mesh;
+      if (mesh.isMesh && mesh.material) {
+        if (Array.isArray(mesh.material)) {
+          mesh.material = mesh.material.map((m: THREE.Material) => m.clone());
+        } else {
+          mesh.material = mesh.material.clone();
         }
       }
     });
@@ -128,13 +130,13 @@ export default function SceneBuilder({ components, setComponentRef, showSockets 
           };
 
           return (
-            <ModelComponent
-              key={component.instanceId ?? index}
-              component={component}
-              set_component_refs={setComponentRef}
-              position={socket.position}
-              rotation={socket.rotation}
-            />
+              <ModelComponent
+                key={component.instanceId ?? index}
+                component={component}
+                set_component_refs={setComponentRef}
+                position={socket.position}
+                rotation={socket.rotation}
+              />
           )
         })
       )}
