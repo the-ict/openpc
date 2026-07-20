@@ -27,28 +27,18 @@ const RenderCase = ({ cpu_model, gpu_model, ram_model, storage_model, case_model
 
     const caseBox = React.useMemo(() => {
         const box = new THREE.Box3().setFromObject(caseScene);
+        const size = box.getSize(new THREE.Vector3());
         return {
             center: box.getCenter(new THREE.Vector3()),
-            size: box.getSize(new THREE.Vector3()),
+            size,
+            caseSize: [size.x || 1, size.y || 1, size.z || 1] as Vec3,
         };
     }, [caseScene]);
 
-    const fallbackSocket = React.useCallback((type: string): Socket => {
-        const center = caseBox.center;
-        const size = caseBox.size;
-        if (type === "STORAGE") {
-            return {
-                position: [center.x, center.y - size.y * 0.25, center.z + size.z * 0.4],
-                rotation: [0, 0, 0],
-            };
-        }
-        return { position: [center.x, center.y, center.z], rotation: [0, 0, 0] };
-    }, [caseBox]);
-
     const resolveSocket = React.useCallback((sockets: SocketsByType, type: string): Socket => {
         const list = sockets[type];
-        return (list && list[0]) || fallbackSocket(type);
-    }, [fallbackSocket]);
+        return (list && list[0]) ?? { position: [0, 0, 0], rotation: [0, 0, 0] };
+    }, []);
 
     const components: IModel[] = [cpu_model, gpu_model, ram_model, storage_model].filter(
         (m): m is IModel => Boolean(m)
@@ -62,6 +52,7 @@ const RenderCase = ({ cpu_model, gpu_model, ram_model, storage_model, case_model
 
             {components.map((model: IModel) => {
                 const socket_point = resolveSocket(sockets, model.type);
+                console.log("socket point for welcome: ", socket_point);
 
                 if (!sockets[model.type]) {
                     console.warn(
@@ -74,6 +65,7 @@ const RenderCase = ({ cpu_model, gpu_model, ram_model, storage_model, case_model
                         key={model.id}
                         model={model}
                         socket={socket_point}
+                        caseSize={caseBox.caseSize}
                         setCasePartsRefs={setCasePartsRefs}
                     />
                 );

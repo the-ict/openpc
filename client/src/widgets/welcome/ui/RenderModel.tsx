@@ -9,10 +9,11 @@ import * as THREE from "three";
 interface Props {
     model: IModel;
     socket: { position: Vec3; rotation: Vec3 };
+    caseSize: Vec3;
     setCasePartsRefs: React.Dispatch<React.SetStateAction<Record<string, React.RefObject<THREE.Group | null>>>>;
 };
 
-export default function RenderModel({ model, socket, setCasePartsRefs }: Props) {
+export default function RenderModel({ model, socket, caseSize, setCasePartsRefs }: Props) {
     const { scene } = useGLTF(modelFileUrl(model.model_file));
     const ref = useRef<THREE.Group>(null);
 
@@ -32,7 +33,7 @@ export default function RenderModel({ model, socket, setCasePartsRefs }: Props) 
             }
         });
 
-        fitAndCenter(clone);
+        fitAndCenter(clone, new THREE.Vector3(caseSize[0], caseSize[1], caseSize[2]), model.type);
 
         return clone;
     }, [scene]);

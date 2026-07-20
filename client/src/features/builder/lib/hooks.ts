@@ -45,8 +45,8 @@ export const useCaseSockets = (caseUrl: string): SocketsByType => {
                 const suffixMatch = rest.match(/^(.+?)_(\d+)$/);
                 if (suffixMatch) {
                     base = suffixMatch[1];
-                    index = parseInt(suffixMatch[2], 10);
-                }
+                    index = parseInt(suffixMatch[2], 10) - 1;
+                };
 
                 const worldPos = new THREE.Vector3();
                 child.getWorldPosition(worldPos);
@@ -67,26 +67,18 @@ export const useCaseSockets = (caseUrl: string): SocketsByType => {
             }
         });
 
-        const caseCenter = new THREE.Vector3();
-        new THREE.Box3().setFromObject(scene).getCenter(caseCenter);
-
         const sockets: SocketsByType = {};
         raw.forEach(({ base, index, socket }) => {
-            socket.position[0] -= caseCenter.x;
-            socket.position[1] -= caseCenter.y;
-            socket.position[2] -= caseCenter.z;
-
             if (!sockets[base]) sockets[base] = [];
             sockets[base][index] = socket;
         });
 
-        Object.values(sockets).forEach((arr) => {
-            for (let i = 0; i < arr.length; i++) {
-                if (!arr[i]) arr[i] = arr[i - 1] ?? { position: [0, 0, 0], rotation: [0, 0, 0] };
-            }
+        const cleaned: SocketsByType = {};
+        Object.entries(sockets).forEach(([base, arr]) => {
+            cleaned[base] = arr.filter(Boolean);
         });
 
-        return sockets;
+        return cleaned;
     }, [scene]);
 };
 

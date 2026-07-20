@@ -1,8 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { MODEL_TYPES } from "@/src/shared/config/api/model/model.model";
 import { useMe } from "@/src/widgets/welcome/lib/hooks";
+import { MODEL_TYPES } from "@/src/shared/config/api/model/model.model";
 import { useCreateModel, useUploadModel } from "@/src/features/model/lib/hooks";
 
 const MODEL_TYPES_LIST: MODEL_TYPES[] = [

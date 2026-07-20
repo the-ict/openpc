@@ -1,8 +1,8 @@
-import * as THREE from "three";
-import { useThree } from "@react-three/fiber";
+import { MODEL_TYPES } from "@/src/shared/config/api/model/model.model";
 import React, { useCallback, useEffect, useRef } from "react";
 import { CameraControls } from "@react-three/drei";
-import { MODEL_TYPES } from "@/src/shared/config/api/model/model.model";
+import { useThree } from "@react-three/fiber";
+import * as THREE from "three";
 
 interface AnimationCameraControllerProps {
     focusTarget?: MODEL_TYPES | "OVERVIEW" | "CASE";
@@ -12,14 +12,6 @@ interface AnimationCameraControllerProps {
 export default function AnimationCameraController({ focusTarget, componentRefs }: AnimationCameraControllerProps) {
     const controls = useRef<CameraControls | null>(null);
     const { scene } = useThree();
-
-    const toggleGlass = useCallback((visible: boolean) => {
-        scene.traverse((child) => {
-            if (child.name.toLowerCase().includes("glass")) {
-                child.visible = visible;
-            }
-        });
-    }, [scene]);
 
     useEffect(() => {
         const cam = controls.current;
@@ -32,14 +24,15 @@ export default function AnimationCameraController({ focusTarget, componentRefs }
             wheel: 0,
         };
 
-        toggleGlass(false);
-
         if (!focusTarget || focusTarget === "OVERVIEW" || focusTarget === "CASE") {
             cam.fitToBox(scene, true);
             return;
         };
 
+        console.log("focusTarget: ", focusTarget);
+
         const targetObj = componentRefs[focusTarget]?.current;
+        console.log("target OBj: ", targetObj);
         if (!targetObj) return;
 
         const targetPosition = new THREE.Vector3();
@@ -55,7 +48,7 @@ export default function AnimationCameraController({ focusTarget, componentRefs }
             targetPosition.z,
             true
         );
-    }, [focusTarget, componentRefs, scene, toggleGlass]);
+    }, [focusTarget, componentRefs, scene]);
 
     return <CameraControls ref={controls} />;
 }
