@@ -81,6 +81,8 @@ export const BuilderPage: React.FC = () => {
                 throw new Error("There is no params");
             };
 
+            setFocusTarget(model.type);
+
             const currentCount = builtComponents.filter(c => c.type === model.type).length;
 
             const componentData: ComponentBuild = {
@@ -232,7 +234,7 @@ export const BuilderPage: React.FC = () => {
 
                             <SceneBuilder components={builtComponents} setComponentRef={setComponentRefs} showSockets={showSockets} />
 
-                            <CMControls focusTarget={focusTarget} componentRefs={componentRefs} />
+                            <CMControls focusTarget={focusTarget} componentRefs={componentRefs} builtComponents={builtComponents} />
                             <EffectComposer>
                                 <Bloom intensity={0.6} luminanceThreshold={0.2} mipmapBlur />
                                 <Outline

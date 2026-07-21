@@ -1,41 +1,92 @@
-import { MODEL_TYPES } from "@/src/shared/config/api/model/model.model";
-import React, { useCallback, useEffect, useRef } from "react";
-import { CameraControls } from "@react-three/drei";
-import { useThree } from "@react-three/fiber";
+"use client";
+
 import * as THREE from "three";
 
-interface AnimationCameraControllerProps {
-    focusTarget?: MODEL_TYPES | "OVERVIEW" | "CASE";
-    componentRefs: Record<string, React.RefObject<THREE.Group | null>>;
-};
 
-export default function AnimationCameraController({ focusTarget, componentRefs }: AnimationCameraControllerProps) {
+import { CameraControls } from "@react-three/drei";
+import { useFrame, useThree } from "@react-three/fiber";
+import { useEffect, useRef } from "react";
+
+interface Props {
+    casePartsRefs: Record<string, React.RefObject<THREE.Group | null>>;
+    currentStep: number;
+    steps: Array<{ type: string }>;
+    scrollProgress: number;
+}
+
+export default function AnimationCameraController({
+    casePartsRefs,
+    currentStep,
+    steps,
+    scrollProgress,
+}: Props) {
     const controls = useRef<CameraControls | null>(null);
-    const { scene } = useThree();
+    const scene = useThree((state) => state.scene);
+    const initialFitDone = useRef(false);
 
     useEffect(() => {
-        const cam = controls.current;
-        if (!cam) return;
+        if (controls.current && scene) {
+            const caseModel = scene.getObjectByName("case-model");
 
-        cam.mouseButtons = {
-            left: 1,
-            middle: 0,
-            right: 0,
-            wheel: 0,
-        };
+            if (caseModel && !initialFitDone.current) {
+                setTimeout(() => {
+                    controls.current?.fitToBox(caseModel, true, {
+                        paddingLeft: 0.15,
+                        paddingRight: 0.15,
+                        paddingTop: 0.15,
+                        paddingBottom: 0.15,
+                    });
+                    initialFitDone.current = true;
+                }, 100);
+            }
+        }
+    }, [scene]);
 
-        if (!focusTarget || focusTarget === "OVERVIEW" || focusTarget === "CASE") {
-            cam.fitToBox(scene, true);
+    useEffect(() => {
+        if (!controls.current || !initialFitDone.current) return;
+
+        if (scrollProgress < 0.01) {
+            const caseModel = scene.getObjectByName("case-model");
+            if (caseModel) {
+                controls.current.fitToBox(caseModel, true, { paddingLeft: 0.15, paddingRight: 0.15, paddingTop: 0.15, paddingBottom: 0.15 });
+            }
             return;
-        };
+        }
 
-        console.log("focusTarget: ", focusTarget);
+        const currentStepType = steps[currentStep]?.type;
+        const targetRef = casePartsRefs[currentStepType];
 
-        const targetObj = componentRefs[focusTarget]?.current;
-        if (!targetObj) return;
+        if (targetRef && targetRef.current) {
+            const targetPosition = targetRef.current.position;
+            const target = new THREE.Box3().setFromObject(targetRef.current);
+            console.log('target: ', target);
 
-        cam.fitToBox(targetObj, true, { paddingLeft: 0.5, paddingRight: 0.5, paddingTop: 0.5, paddingBottom: 0.5 });
-    }, [focusTarget, componentRefs, scene]);
+            const distance = 0.24;
 
-    return <CameraControls ref={controls} />;
+            const targetX = targetPosition.x + distance;
+            const targetY = targetPosition.y + distance;
+            const targetZ = targetPosition.z + distance;
+
+            controls.current.setLookAt(
+                targetX, targetY, targetZ,
+                targetPosition.x, targetPosition.y, targetPosition.z,
+                true
+            );
+        }
+    }, [currentStep, scrollProgress]);
+
+    return (
+        <CameraControls
+            ref={controls}
+            smoothTime={0.8}
+            draggingSmoothTime={0.1}
+            infinityDolly={true}
+            mouseButtons={{ left: 0, middle: 0, right: 0, wheel: 0 }}
+            touches={{ one: 0, two: 0, three: 0 }}
+            minZoom={0.1}
+            maxZoom={10}
+            minPolarAngle={0}
+            maxPolarAngle={Math.PI}
+        />
+    );
 }

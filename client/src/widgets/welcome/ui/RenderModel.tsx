@@ -3,7 +3,6 @@ import React, { useEffect, useMemo, useRef } from "react";
 import { modelFileUrl } from "@/src/shared/config/URLS";
 import { useGLTF } from "@react-three/drei";
 import { Vec3 } from "./RenderCase";
-import { fitAndCenter } from "@/src/features/builder/lib/scale";
 import * as THREE from "three";
 
 interface Props {
@@ -16,8 +15,6 @@ interface Props {
 export default function RenderModel({ model, socket, caseSize, setCasePartsRefs }: Props) {
     const { scene } = useGLTF(modelFileUrl(model.model_file));
     const ref = useRef<THREE.Group>(null);
-
-    console.log("socket positon for model", model.type, socket);
 
     const cloned = useMemo(() => {
         const clone = scene.clone();
@@ -33,16 +30,17 @@ export default function RenderModel({ model, socket, caseSize, setCasePartsRefs 
             }
         });
 
-        fitAndCenter(clone, new THREE.Vector3(caseSize[0], caseSize[1], caseSize[2]), model.type);
-
         return clone;
     }, [scene]);
 
     useEffect(() => {
         if (ref.current) {
-            setCasePartsRefs((prev) => ({ ...prev, [model.type]: ref }));
+            setCasePartsRefs((prev) => {
+                if (prev[model.type] === ref) return prev;
+                return { ...prev, [model.type]: ref };
+            });
         }
-    }, [ref.current]);
+    }, [ref, model.type]);
 
     return (
         <group ref={ref} position={socket.position} rotation={socket.rotation}>

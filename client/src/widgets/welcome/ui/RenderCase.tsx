@@ -23,8 +23,6 @@ const RenderCase = ({ cpu_model, gpu_model, ram_model, storage_model, case_model
     const { scene: caseScene } = useGLTF(caseUrl);
     const sockets = useCaseSockets(caseUrl);
 
-    console.log("sockets: ", sockets);
-
     const caseBox = React.useMemo(() => {
         const box = new THREE.Box3().setFromObject(caseScene);
         const size = box.getSize(new THREE.Vector3());
@@ -52,7 +50,6 @@ const RenderCase = ({ cpu_model, gpu_model, ram_model, storage_model, case_model
 
             {components.map((model: IModel) => {
                 const socket_point = resolveSocket(sockets, model.type);
-                console.log("socket point for welcome: ", socket_point);
 
                 if (!sockets[model.type]) {
                     console.warn(

@@ -58,22 +58,12 @@ export function RenderCaseModel({ url, opacity }: { url: string; opacity?: numbe
   const cloned = useMemo(() => {
     const clone = scene.clone();
     clone.traverse((child) => {
-      if (child.name.toLowerCase().includes("glass")) {
-        child.visible = false;
-        return;
-      }
-
       const mesh = child as THREE.Mesh;
       if (mesh.isMesh && mesh.material) {
         const apply = (m: THREE.Material) => {
           const mat = m as THREE.MeshStandardMaterial;
           if (mat.envMapIntensity !== undefined) {
             mat.envMapIntensity = 0.4;
-          }
-          if (opacity !== undefined) {
-            m.transparent = true;
-            m.opacity = opacity;
-            m.depthWrite = false;
           }
         };
         if (Array.isArray(mesh.material)) {
@@ -86,7 +76,7 @@ export function RenderCaseModel({ url, opacity }: { url: string; opacity?: numbe
     return clone;
   }, [scene, opacity]);
 
-  return <primitive object={cloned} />;
+  return <primitive object={cloned} name="case-model"/>;
 };
 
 interface SceneBuilderProps {
@@ -97,10 +87,7 @@ interface SceneBuilderProps {
 
 export default function SceneBuilder({ components, setComponentRef, showSockets }: SceneBuilderProps) {
   const case_component = components.find(c => c.type === "CASE");
-
   const caseUrl = case_component?.modelFile ? modelFileUrl(case_component.modelFile) : "";
-
-  const { scene: caseScene } = useGLTF(caseUrl);
 
   const socket_points = useCaseSockets(caseUrl);
   const other_components = components.filter(c => c.type !== "CASE");

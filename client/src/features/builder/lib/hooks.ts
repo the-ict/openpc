@@ -1,7 +1,7 @@
 "use client";
 
 import * as THREE from "three";
-import React, { useMemo } from "react";
+import { useMemo } from "react";
 import { useGLTF } from "@react-three/drei";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { get_models } from "@/src/shared/config/api/model/model.requests";

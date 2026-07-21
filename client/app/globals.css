@@ -146,19 +146,21 @@ body {
 .highlighted-text {
   position: relative;
   display: inline-block;
-  margin: 0px 10px;
-  color: black;
+  margin: 0 10px;
+  color: #fff;
 }
 
 .highlighted-text::after {
   content: '';
   position: absolute;
-  top: 0%;
-  left: 0%;
-  right: 0%;
-  height: 90%;
-  background-color: #efefef;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 1.2em;
+  background-color: #C4D335;
   z-index: -1;
+  transform: translateY(-50%);
+  border-radius: 4px;
 }
 
 .dark {
