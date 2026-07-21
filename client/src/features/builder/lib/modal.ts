@@ -4,6 +4,7 @@ interface IRequirements {
   name: string;
   icon: any;
   type: MODEL_TYPES;
+  maxSlots: number;
 };
 
 export type {

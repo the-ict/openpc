@@ -3,9 +3,9 @@ import Telegram from "../../../../public/icons/telegram.png";
 import Discord from "../../../../public/icons/discord.png";
 
 const socialLinks = [
-    { name: 'DISCORD', url: '#discord', icon: Discord },
-    { name: 'TELEGRAM', url: '#telegram', icon: Telegram },
-    { name: 'INSTAGRAM', url: '#instagram', icon: Instagram },
+    { name: 'DISCORD', url: 'https://discord.gg/openpc', icon: Discord },
+    { name: 'TELEGRAM', url: 'https://t.me/openpc', icon: Telegram },
+    { name: 'INSTAGRAM', url: 'https://instagram.com/openpc', icon: Instagram },
 ];
 
 export {

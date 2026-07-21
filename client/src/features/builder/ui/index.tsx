@@ -84,6 +84,14 @@ export const BuilderPage: React.FC = () => {
             setFocusTarget(model.type);
 
             const currentCount = builtComponents.filter(c => c.type === model.type).length;
+            
+            const requirement = requirements.find(r => r.type === model.type);
+            const maxSlots = requirement?.maxSlots ?? 1;
+            
+            if (currentCount >= maxSlots) {
+                console.log(`Max slots (${maxSlots}) reached for ${model.type}`);
+                return;
+            }
 
             const componentData: ComponentBuild = {
                 id: model.id,
