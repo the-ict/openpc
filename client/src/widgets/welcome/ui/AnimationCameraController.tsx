@@ -61,7 +61,7 @@ export default function AnimationCameraController({
             const target = new THREE.Box3().setFromObject(targetRef.current);
             console.log('target: ', target);
 
-            const distance = 0.24;
+            const distance = 0.1;
 
             const targetX = targetPosition.x + distance;
             const targetY = targetPosition.y + distance;
