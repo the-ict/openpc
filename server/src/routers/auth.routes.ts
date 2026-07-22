@@ -132,7 +132,7 @@ router.get('/google/callback',
         const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET || "", { expiresIn: "1d" });
         const refresh_token = jwt.sign({ id: user.id }, process.env.JWT_SECRET || "", { expiresIn: "30d" });
 
-        res.redirect(`http://coreform.uz/auth/google/callback?token=${token}&refresh_token=${refresh_token}`);
+        res.redirect(`https://coreform.uz/auth/google/callback?token=${token}&refresh_token=${refresh_token}`);
     });
 
 
