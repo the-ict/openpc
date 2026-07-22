@@ -15,7 +15,7 @@ export const isAuthenticated = (req: Request, res: Response, next: NextFunction)
             throw new Error("Invalid token");
         };
 
-        req.user = decoded;
+        (req as any).user = decoded;
         next();
     } catch (error: any) {
         console.log("error message: ", error);

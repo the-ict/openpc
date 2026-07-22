@@ -2,8 +2,7 @@ name: coreform
 
 services:
   server:
-    build: 
-      dockerfile: ./server
+    build: ./server
     container_name: coreform-server
     env_file:
       - ./server/.env 

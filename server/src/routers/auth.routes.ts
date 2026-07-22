@@ -57,7 +57,7 @@ router.post("/refresh", async (req: Request, res: Response, next: NextFunction) 
 
 router.get("/me", async (req: Request, res: Response, next: NextFunction) => {
     try {
-        const user = req.user;
+        const user = req.user as any;
 
         if (!user) {
             return res.status(403).json({

@@ -3,7 +3,7 @@ import prisma from "../lib/prisma.js";
 
 export const create_session = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        console.log("this is request id: ", req.user?.id);
+        console.log("this is request id: ", (req as any).user?.id);
         console.log("req body: ", req.body);
 
         const new_session = await prisma.session.create({
@@ -11,7 +11,7 @@ export const create_session = async (req: Request, res: Response, next: NextFunc
                 name: req.body.name,
                 user: {
                     connect: {
-                        id: req.user?.id!
+                        id: (req as any).user?.id!
                     }
                 }
             },
@@ -202,7 +202,7 @@ export const get_all_sessions = async (req: Request, res: Response, next: NextFu
     try {
         const sessions = await prisma.session.findMany({
             where: {
-                user_id: req.user?.id || "",
+                user_id: (req as any).user?.id || "",
             },
             include: {
                 sessionModels: { include: { model: true } },
