@@ -1,4 +1,4 @@
-export const BASE_URL = process.env.NODE_ENV === "production" ? "https://coreform.uz" : "http://localhost:3001";
+export const BASE_URL = process.env.NODE_ENV === "production" ? "https://api.coreform.uz" : "http://localhost:3001";
 export const UPLOAD_URL = "/uploads/";
 
 const MODEL_CACHE_BUST = Date.now();

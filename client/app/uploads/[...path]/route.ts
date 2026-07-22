@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 const UPLOAD_BASE =
     process.env.NODE_ENV === "production"
-        ? "https://coreform.uz/uploads/"
+        ? "https://api.coreform.uz/uploads/"
         : "http://localhost:3001/uploads/";
 
 export async function GET(
