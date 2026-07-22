@@ -11,6 +11,7 @@ export default function Navbar() {
   const token = useSyncExternalStore(
     user_store.subscribe,
     () => user_store.getState().token,
+    () => "",
   );
 
   if (whereToIgnore().some((path) => pathname.includes(path))) {
