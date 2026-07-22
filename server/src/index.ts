@@ -24,7 +24,7 @@ app.use(express.json());
 app.use(helmet());
 app.use(morgan("combined"));
 app.use(cors({
-    origin: "http://localhost:3000",
+    origin: ["https://coreform.uz", "https://www.coreform.uz"],
     credentials: true,
 }));
 
