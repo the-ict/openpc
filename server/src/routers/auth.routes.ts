@@ -85,7 +85,7 @@ const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET || "";
 const googleOptions: StrategyOptions = {
     clientID: GOOGLE_CLIENT_ID,
     clientSecret: GOOGLE_CLIENT_SECRET,
-    callbackURL: "http://localhost:3001/api/auth/google/callback"
+    callbackURL: "https://api.coreform.uz/api/auth/google/callback"
 };
 
 passport.use(new GoogleStrategy(googleOptions,
@@ -132,7 +132,7 @@ router.get('/google/callback',
         const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET || "", { expiresIn: "1d" });
         const refresh_token = jwt.sign({ id: user.id }, process.env.JWT_SECRET || "", { expiresIn: "30d" });
 
-        res.redirect(`http://localhost:3000/auth/google/callback?token=${token}&refresh_token=${refresh_token}`);
+        res.redirect(`http://coreform.uz/auth/google/callback?token=${token}&refresh_token=${refresh_token}`);
     });
 
 
