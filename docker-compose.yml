@@ -19,8 +19,9 @@ services:
       POSTGRES_USER: coreform
       POSTGRES_PASSWORD: coreform
       POSTGRES_DB: coreform
+      PGPORT: 5444
     ports:
-      - "5444:5432"
+      - "5444:5444"
     volumes:
       - postgres_data:/var/lib/postgresql/data
     networks:
