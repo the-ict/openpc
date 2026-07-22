@@ -7,7 +7,7 @@ import { cn } from "@/lib/utils";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "OpenPC - Kompyuter yig'ish platformasi",
+  title: "Coreform - Kompyuter yig'ish platformasi",
   description: "O'z orzungizdagi kompyuterni 3D rejimda yig'ing",
 };
 

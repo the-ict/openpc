@@ -24,7 +24,7 @@ const STEPS = [
     {
         type: "MOTHER_BOARD",
         title: "Qadam 1 · Ona platasi",
-        description: "OpenPC — bu kompyuter yig'ishni qadam-baqadam osonlashtiruvchi platforma. Birinchi navbatda ona platasi (MOTHER_BOARD) tanlanadi: u barcha qismlar ulanishi uchun asos bo'lib xizmat qiladi.",
+        description: "Coreform — bu kompyuter yig'ishni qadam-baqadam osonlashtiruvchi platforma. Birinchi navbatda ona platasi (MOTHER_BOARD) tanlanadi: u barcha qismlar ulanishi uchun asos bo'lib xizmat qiladi.",
     },
     {
         type: "GPU",

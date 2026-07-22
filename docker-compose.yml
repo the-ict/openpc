@@ -1,24 +1,24 @@
-name: openpc
+name: coreform
 
 services:
   postgres:
     image: postgres:15
-    container_name: openpc-postgres
+    container_name: coreform-postgres
     environment:
-      POSTGRES_USER: openpc
-      POSTGRES_PASSWORD: openpc
-      POSTGRES_DB: openpc
+      POSTGRES_USER: coreform
+      POSTGRES_PASSWORD: coreform
+      POSTGRES_DB: coreform
     ports:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
     networks:
-      - openpc-network
+      - coreform-network
     restart: always
 
 volumes:
   postgres_data:
 
 networks:
-  openpc-network:
+  coreform-network:
     driver: bridge
