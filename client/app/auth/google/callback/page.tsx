@@ -27,7 +27,7 @@ function GoogleCallbackContent() {
   return (
     <div className="h-screen w-screen bg-[#0A0A0A] text-white flex items-center justify-center">
       <div className="text-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#E4E728] mx-auto mb-4"></div>
+        <div className="animate-[spin_0.5s_linear_infinite] rounded-full h-12 w-12 border-b-2 border-[#E4E728] mx-auto mb-4"></div>
         <p>Tizimga kirilmoqda...</p>
       </div>
     </div>
@@ -39,7 +39,7 @@ export default function GoogleCallbackPage() {
     <Suspense fallback={
       <div className="h-screen w-screen bg-[#0A0A0A] text-white flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-[#E4E728] mx-auto mb-4"></div>
+          <div className="animate-[spin_0.5s_linear_infinite] rounded-full h-12 w-12 border-b-2 border-[#E4E728] mx-auto mb-4"></div>
           <p>Tizimga kirilmoqda...</p>
         </div>
       </div>

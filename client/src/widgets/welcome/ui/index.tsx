@@ -3,7 +3,6 @@
 import { Bloom, EffectComposer } from '@react-three/postprocessing';
 import { useState, useEffect, useRef, Suspense, useMemo, useCallback } from "react";
 import user_store from '@/src/shared/store/user.store';
-import { UPLOAD_URL } from '@/src/shared/config/URLS';
 import { useHeroComponents } from '../lib/hooks';
 import { Environment, useProgress } from '@react-three/drei';
 import { ArrowUpRight, Loader2 } from 'lucide-react';
@@ -153,8 +152,7 @@ export default function Welcome() {
             {!showPage && (
                 <div className='fixed inset-0 z-[9999] bg-[#050505] flex items-center justify-center'>
                     <div className='flex flex-col items-center gap-4'>
-                        <Loader2 className='w-10 h-10 sm:w-12 sm:h-12 text-[#C4D335] animate-spin' />
-                        <p className='text-neutral-400 text-xs sm:text-sm'>Yuklanmoqda...</p>
+                        <Loader2 className='w-10 h-10 sm:w-12 sm:h-12 text-[#C4D335] animate-[spin_0.5s_linear_infinite]' />
                     </div>
                 </div>
             )}
