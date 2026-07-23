@@ -26,6 +26,9 @@ COPY --from=builder /app/dist/ ./dist/
 COPY --from=builder /app/prisma/ ./prisma/
 COPY --from=builder /app/prisma.config.* ./
 
+RUN mkdir -p public/uploads && \
+    chown -R express:nodejs public/uploads
+
 USER express
 
 EXPOSE 3001
