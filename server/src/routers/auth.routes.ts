@@ -133,9 +133,7 @@ router.get('/google/callback',
         const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET || "", { expiresIn: "1d" });
         const refresh_token = jwt.sign({ id: user.id }, process.env.JWT_SECRET || "", { expiresIn: "30d" });
 
-        const frontendUrl = process.env.NODE_ENV === "production" 
-            ? "https://coreform.uz" 
-            : "http://localhost:3000";
+        const frontendUrl = "https://coreform.uz";
         
         res.redirect(`${frontendUrl}/auth/google/callback?token=${token}&refresh_token=${refresh_token}`);
     });
