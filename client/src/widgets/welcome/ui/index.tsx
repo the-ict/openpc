@@ -149,15 +149,7 @@ export default function Welcome() {
 
     return (
         <div className='relative'>
-            {!showPage && (
-                <div className='fixed inset-0 z-[9999] bg-[#050505] flex items-center justify-center'>
-                    <div className='flex flex-col items-center gap-4'>
-                        <Loader2 className='w-10 h-10 sm:w-12 sm:h-12 text-[#C4D335] animate-[spin_0.5s_linear_infinite]' />
-                    </div>
-                </div>
-            )}
-
-            <div className={`flex flex-col items-center bg-[#050505] ${!showPage ? 'invisible' : ''}`}>
+            <div className={`flex flex-col items-center bg-[#050505]`}>
                 {/* HERO SECTION */}
                 <section id='welcome' className='text-white flex flex-col items-center mt-12 sm:mt-20 justify-center px-4 py-12 sm:py-20 font-sans select-none'>
                     <div className='max-w-3xl w-full text-center flex flex-col items-center mb-16 sm:mb-20'>

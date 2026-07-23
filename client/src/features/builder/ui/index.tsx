@@ -141,15 +141,6 @@ export const BuilderPage: React.FC = () => {
 
     return (
         <div className="flex flex-col h-screen w-screen bg-[#0A0A0A] text-[#FFFFFF] overflow-hidden font-sans select-none antialiased">
-            {isLoading && (
-                <div className="fixed inset-0 z-100 bg-[#0A0A0A] flex items-center justify-center">
-                    <div className="flex flex-col items-center gap-4">
-                        <Loader2 className="w-12 h-12 text-[#C4D335] animate-[spin_0.5s_linear_infinite]" />
-                        <p className="text-neutral-400 text-sm">Builder yuklanmoqda...</p>
-                    </div>
-                </div>
-            )}
-
             <header className="border-b border-[#222] bg-[#0A0A0A]/80 backdrop-blur-md sticky top-0 z-50 px-3 sm:px-8 py-3 sm:py-4 flex items-center justify-between w-full">
                 <button
                     className="lg:hidden cursor-pointer p-2 text-white mr-2"
