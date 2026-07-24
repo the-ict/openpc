@@ -1,19 +1,18 @@
 "use client";
 
-import { useCaseSockets } from '../lib/hooks';
 import React, { useEffect, useMemo, useRef } from 'react';
 import { modelFileUrl } from '@/src/shared/config/URLS';
+import { useCaseSockets } from '../lib/hooks';
 import { useGLTF } from '@react-three/drei';
 import { ComponentBuild } from '.';
-import * as THREE from "three";
 import { Group } from 'three';
 
 
 interface ModelComponentProps {
-  component: ComponentBuild,
   set_component_refs: React.Dispatch<React.SetStateAction<Record<string, React.RefObject<Group | null>>>>;
   position: [number, number, number];
   rotation: [number, number, number];
+  component: ComponentBuild,
 };
 
 function ModelComponent({ component, set_component_refs, position, rotation }: ModelComponentProps) {
@@ -30,18 +29,6 @@ function ModelComponent({ component, set_component_refs, position, rotation }: M
 
   const cloned = useMemo(() => {
     const clone = scene.clone();
-
-    clone.traverse((child: any) => {
-      const mesh = child as THREE.Mesh;
-      if (mesh.isMesh && mesh.material) {
-        if (Array.isArray(mesh.material)) {
-          mesh.material = mesh.material.map((m: THREE.Material) => m.clone());
-        } else {
-          mesh.material = mesh.material.clone();
-        }
-      }
-    });
-
     return clone;
   }, [scene, component.type]);
 
@@ -52,30 +39,9 @@ function ModelComponent({ component, set_component_refs, position, rotation }: M
   );
 };
 
-export function RenderCaseModel({ url, opacity }: { url: string; opacity?: number }) {
+export function RenderCaseModel({ url }: { url: string }) {
   const { scene } = useGLTF(url);
-
-  const cloned = useMemo(() => {
-    const clone = scene.clone();
-    clone.traverse((child) => {
-      const mesh = child as THREE.Mesh;
-      if (mesh.isMesh && mesh.material) {
-        const apply = (m: THREE.Material) => {
-          const mat = m as THREE.MeshStandardMaterial;
-          if (mat.envMapIntensity !== undefined) {
-            mat.envMapIntensity = 0.4;
-          }
-        };
-        if (Array.isArray(mesh.material)) {
-          mesh.material.forEach(apply);
-        } else {
-          apply(mesh.material);
-        }
-      }
-    });
-    return clone;
-  }, [scene, opacity]);
-
+  const cloned = useMemo(() => scene.clone(), [scene]);
   return <primitive object={cloned} name="case-model"/>;
 };
 

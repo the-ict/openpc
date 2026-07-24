@@ -1,4 +1,4 @@
-export const BASE_URL = "https://api.coreform.uz"
+export const BASE_URL = "https://api.coreform.uz";
 export const UPLOAD_URL = "/uploads/";
 
 const MODEL_CACHE_BUST = Date.now();
