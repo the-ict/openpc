@@ -2,7 +2,7 @@
 
 import { IModel, MODEL_TYPES } from '@/src/shared/config/api/model/model.model';
 import { Bloom, EffectComposer } from "@react-three/postprocessing";
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState, useEffect, useRef, useCallback, Suspense } from 'react';
 import { useGetSession } from '../../session/lib/hooks';
 import { useAddModelToSession } from '../lib/hooks';
 import { useProgress } from '@react-three/drei';
@@ -203,9 +203,9 @@ export const BuilderPage: React.FC = () => {
                             <directionalLight position={[5, 5, 5]} intensity={3} castShadow />
                             <directionalLight position={[-5, -5, -5]} intensity={1} />
 
-                            <SceneBuilder components={builtComponents} setComponentRef={setComponentRefs} />
-
-                            <LoadMonitor onDone={handleLoadComplete} />
+                            <Suspense fallback={<Loader />}>
+                                <SceneBuilder components={builtComponents} setComponentRef={setComponentRefs} />
+                            </Suspense>
 
                             <CMControls focusTarget={focusTarget} componentRefs={componentRefs} builtComponents={builtComponents} />
                             <EffectComposer>
@@ -228,16 +228,17 @@ export const BuilderPage: React.FC = () => {
 
 export default BuilderPage;
 
-function LoadMonitor({ onDone }: { onDone: () => void }) {
-    const { active } = useProgress();
-    const wasActive = useRef(false);
+const Loader = () => {
+    const { progress } = useProgress()
 
     useEffect(() => {
-        if (wasActive.current && !active) {
-            onDone();
-        }
-        wasActive.current = active;
-    }, [active, onDone]);
+        console.log("progress: ", progress);
+    }, [progress])
 
-    return null;
+    return <div className="absolute inset-0 z-50 flex items-center justify-center bg-black/50">
+        <div className="flex flex-col items-center gap-3">
+            <Loader2 className="w-8 h-8 animate-spin text-[#C4D335]" />
+            <p className="text-white text-sm font-medium">{progress} % loaded</p>
+        </div>
+    </div>
 };
