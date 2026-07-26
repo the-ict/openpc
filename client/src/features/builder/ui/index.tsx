@@ -151,7 +151,7 @@ export const BuilderPage: React.FC = () => {
             </header>
 
             <aside className="flex flex-1 gap-0 lg:gap-3 items-start w-full overflow-hidden">
-                <div className={`${sidebarOpen ? 'block' : 'hidden'} lg:block lg:flex-[3] w-full lg:w-auto h-full overflow-y-auto`}>
+                <div className={`${sidebarOpen ? 'block' : 'hidden'} lg:block lg:flex-3 w-full lg:w-auto h-full overflow-y-auto`}>
                     <div className="lg:hidden fixed inset-0 z-40 bg-black/50" onClick={() => setSidebarOpen(false)} />
                     <div className={`${sidebarOpen ? 'translate-x-0' : '-translate-x-full'} lg:translate-x-0 fixed lg:relative left-0 top-0 h-full z-50 lg:z-auto transition-transform duration-300 lg:transition-none`}>
                         <div className="h-full overflow-y-auto w-[85vw] lg:w-auto">
