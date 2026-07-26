@@ -2,15 +2,17 @@
 
 import { IModel, MODEL_TYPES } from '@/src/shared/config/api/model/model.model';
 import { Bloom, EffectComposer } from "@react-three/postprocessing";
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useGetSession } from '../../session/lib/hooks';
 import { useAddModelToSession } from '../lib/hooks';
+import { useProgress } from '@react-three/drei';
 import { Canvas } from '@react-three/fiber';
 import CMControls from './CameraController';
 import { useParams } from 'next/navigation';
 import { requirements } from '../lib/data';
 import SceneBuilder from "./SceneBuilder";
 import ModalSheet from './modalsSheet';
+import { Loader2 } from 'lucide-react';
 import { Group } from 'three';
 
 export interface ComponentBuild {
@@ -27,9 +29,9 @@ export const BuilderPage: React.FC = () => {
     const [selectedCategory, setSelectedCategory] = useState<MODEL_TYPES>('CASE');
     const [builtComponents, setBuiltComponents] = useState<ComponentBuild[]>([]);
     const [selectingModelId, setSelectingModelId] = useState<string | null>(null);
+    const [loadingCount, setLoadingCount] = useState(0);
     const [activeBuild, setActiveBuild] = useState<Record<string, number>>({});
     const [priceRange, setPriceRange] = useState<[number, number]>([0, 5000]);
-    const [isLoadingModel, setIsLoadingMedel] = useState<boolean>(false);
     const [focusTarget, setFocusTarget] = useState<MODEL_TYPES>("CASE");
     const [sidebarOpen, setSidebarOpen] = useState<boolean>(false);
     const [hasSelectedCase, setHasSelectedCase] = useState(false);
@@ -74,6 +76,7 @@ export const BuilderPage: React.FC = () => {
             };
 
             setSelectingModelId(model.id);
+            setLoadingCount(c => c + 1);
             setFocusTarget(model.type);
 
             const currentCount = builtComponents.filter(c => c.type === model.type).length;
@@ -92,8 +95,6 @@ export const BuilderPage: React.FC = () => {
                 name: model.name,
             };
 
-            setIsLoadingMedel(true);
-
             setBuiltComponents(prev => [...prev, componentData]);
 
             setActiveBuild(prev => ({
@@ -103,11 +104,18 @@ export const BuilderPage: React.FC = () => {
 
             await addModelToSessionMutation({ session_id: params.id as string, model_id: model.id, slot: currentCount });
         } catch (error) {
+            setLoadingCount(c => Math.max(0, c - 1));
             setSelectingModelId(null);
-        } finally {
-            setIsLoadingMedel(false);
         }
     };
+
+    const handleLoadComplete = useCallback(() => {
+        setLoadingCount(c => {
+            const next = Math.max(0, c - 1);
+            if (next <= 0) setSelectingModelId(null);
+            return next;
+        });
+    }, []);
 
     return (
         <div className="flex flex-col h-screen w-screen bg-[#0A0A0A] text-[#FFFFFF] overflow-hidden font-sans select-none antialiased">
@@ -172,9 +180,12 @@ export const BuilderPage: React.FC = () => {
                     </div>
                 </div>
                 <main className="flex-1 lg:flex-10 h-full relative bg-[#1a1a1a] w-full">
-                    {isLoadingModel && (
+                    {loadingCount > 0 && (
                         <div className="absolute inset-0 z-50 flex items-center justify-center bg-black/50">
-                            <div className="text-white text-lg">Loading...</div>
+                            <div className="flex flex-col items-center gap-3">
+                                <Loader2 className="w-8 h-8 animate-spin text-[#C4D335]" />
+                                <p className="text-white text-sm font-medium">Model yuklanmoqda...</p>
+                            </div>
                         </div>
                     )}
                     {hasSelectedCase ? (
@@ -193,6 +204,8 @@ export const BuilderPage: React.FC = () => {
                             <directionalLight position={[-5, -5, -5]} intensity={1} />
 
                             <SceneBuilder components={builtComponents} setComponentRef={setComponentRefs} />
+
+                            <LoadMonitor onDone={handleLoadComplete} />
 
                             <CMControls focusTarget={focusTarget} componentRefs={componentRefs} builtComponents={builtComponents} />
                             <EffectComposer>
@@ -214,3 +227,17 @@ export const BuilderPage: React.FC = () => {
 };
 
 export default BuilderPage;
+
+function LoadMonitor({ onDone }: { onDone: () => void }) {
+    const { active } = useProgress();
+    const wasActive = useRef(false);
+
+    useEffect(() => {
+        if (wasActive.current && !active) {
+            onDone();
+        }
+        wasActive.current = active;
+    }, [active, onDone]);
+
+    return null;
+};
