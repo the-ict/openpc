@@ -5,7 +5,6 @@ import {
   PopoverTitle,
   PopoverTrigger,
 } from "@/components/ui/popover"
-import { MODEL_TYPES } from "@/src/shared/config/api/model/model.model";
 import { IconMoneybagHeart } from "@tabler/icons-react";
 import { Search } from "lucide-react";
 import ComponentCard from "./componentCard";
@@ -22,6 +21,7 @@ interface PropsModalSheet {
   setSearchQuery: (query: string) => void;
   selectedCategory: string;
   hasSelectedCase: boolean;
+  selectingModelId: string | null;
   onChooseComponent?: (model: any) => void;
 };
 
@@ -32,6 +32,7 @@ export default function ModalShet({
   setPriceRange,
   selectedCategory,
   hasSelectedCase,
+  selectingModelId,
   onChooseComponent
 }: PropsModalSheet) {
   const [selectedModel, setSelectedModel] = useState<any>(null);
@@ -112,6 +113,7 @@ export default function ModalShet({
               item={model}
               onClick={() => handleModelClick(model)}
               onChoose={onChooseComponent}
+              isSelected={model.id === selectingModelId}
             />
           ))
         ) : (
@@ -125,6 +127,7 @@ export default function ModalShet({
           open={isModelDetailOpen}
           onClose={() => setIsModelDetailOpen(false)}
           add_to_build={onChooseComponent!}
+          isSelected={selectedModel.id === selectingModelId}
         />
       )}
     </div>

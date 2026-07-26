@@ -1,13 +1,15 @@
 import { IModel } from "@/src/shared/config/api/model/model.model";
 import { UPLOAD_URL } from "@/src/shared/config/URLS";
+import { Loader2 } from 'lucide-react';
 
 interface ComponentCardProps {
     item: IModel;
+    isSelected?: boolean;
     onClick?: () => void;
     onChoose?: (model: IModel) => void;
 };
 
-export default function ComponentCard({ item, onClick, onChoose }: ComponentCardProps) {
+export default function ComponentCard({ item, onClick, onChoose, isSelected }: ComponentCardProps) {
     const imageUrl = UPLOAD_URL + item.image;
 
     return (
@@ -42,9 +44,11 @@ export default function ComponentCard({ item, onClick, onChoose }: ComponentCard
                                 e.stopPropagation();
                                 if (onChoose) onChoose(item);
                             }}
-                            className="px-3 cursor-pointer py-1.5 bg-[#C4D335] hover:bg-[#b3c22e] text-black text-xs font-semibold rounded-lg transition-colors"
+                            disabled={isSelected}
+                            className="px-3 cursor-pointer py-1.5 bg-[#C4D335] hover:bg-[#b3c22e] disabled:opacity-60 disabled:cursor-not-allowed text-black text-xs font-semibold rounded-lg transition-colors flex items-center gap-1.5"
                         >
-                            Tanlash
+                            {isSelected ? <Loader2 className="w-3.5 h-3.5 animate-spin" /> : null}
+                            {isSelected ? "Tanlanmoqda" : "Tanlash"}
                         </button>
                     </div>
                 </div>

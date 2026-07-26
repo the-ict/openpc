@@ -1,8 +1,8 @@
 "use client";
 
 import { IModel, MODEL_TYPES } from '@/src/shared/config/api/model/model.model';
-import { Bloom, EffectComposer, Outline } from "@react-three/postprocessing";
-import React, { useState, useEffect, useRef, useMemo } from 'react';
+import { Bloom, EffectComposer } from "@react-three/postprocessing";
+import React, { useState, useEffect } from 'react';
 import { useGetSession } from '../../session/lib/hooks';
 import { useAddModelToSession } from '../lib/hooks';
 import { Canvas } from '@react-three/fiber';
@@ -10,7 +10,6 @@ import CMControls from './CameraController';
 import { useParams } from 'next/navigation';
 import { requirements } from '../lib/data';
 import SceneBuilder from "./SceneBuilder";
-import { Loader2 } from 'lucide-react';
 import ModalSheet from './modalsSheet';
 import { Group } from 'three';
 
@@ -27,13 +26,14 @@ export const BuilderPage: React.FC = () => {
     const [componentRefs, setComponentRefs] = useState<Record<string, React.RefObject<Group | null>>>({});
     const [selectedCategory, setSelectedCategory] = useState<MODEL_TYPES>('CASE');
     const [builtComponents, setBuiltComponents] = useState<ComponentBuild[]>([]);
+    const [selectingModelId, setSelectingModelId] = useState<string | null>(null);
     const [activeBuild, setActiveBuild] = useState<Record<string, number>>({});
     const [priceRange, setPriceRange] = useState<[number, number]>([0, 5000]);
+    const [isLoadingModel, setIsLoadingMedel] = useState<boolean>(false);
     const [focusTarget, setFocusTarget] = useState<MODEL_TYPES>("CASE");
+    const [sidebarOpen, setSidebarOpen] = useState<boolean>(false);
     const [hasSelectedCase, setHasSelectedCase] = useState(false);
     const [searchQuery, setSearchQuery] = useState<string>('');
-    const [isLoading, setIsLoading] = useState(true);
-    const [showSockets, setShowSockets] = useState(false);
 
     const params = useParams();
 
@@ -42,14 +42,6 @@ export const BuilderPage: React.FC = () => {
     const {
         mutateAsync: addModelToSessionMutation,
     } = useAddModelToSession();
-
-    useEffect(() => {
-        const timer = setTimeout(() => {
-            setIsLoading(false);
-        }, 2000);
-        return () => clearTimeout(timer);
-    }, []);
-
     useEffect(() => {
         if (sessionData?.sessionModels) {
             const components: ComponentBuild[] = sessionData.sessionModels.map((sm: any) => ({
@@ -81,17 +73,15 @@ export const BuilderPage: React.FC = () => {
                 throw new Error("There is no params");
             };
 
+            setSelectingModelId(model.id);
             setFocusTarget(model.type);
 
             const currentCount = builtComponents.filter(c => c.type === model.type).length;
-            
+
             const requirement = requirements.find(r => r.type === model.type);
             const maxSlots = requirement?.maxSlots ?? 1;
-            
-            if (currentCount >= maxSlots) {
-                console.log(`Max slots (${maxSlots}) reached for ${model.type}`);
-                return;
-            }
+
+            if (currentCount >= maxSlots) return;
 
             const componentData: ComponentBuild = {
                 id: model.id,
@@ -102,6 +92,8 @@ export const BuilderPage: React.FC = () => {
                 name: model.name,
             };
 
+            setIsLoadingMedel(true);
+
             setBuiltComponents(prev => [...prev, componentData]);
 
             setActiveBuild(prev => ({
@@ -111,33 +103,11 @@ export const BuilderPage: React.FC = () => {
 
             await addModelToSessionMutation({ session_id: params.id as string, model_id: model.id, slot: currentCount });
         } catch (error) {
-            console.log("error: ", error);
-        };
-    };
-
-    const [sidebarOpen, setSidebarOpen] = useState(false);
-
-    const outlineRef = useRef<any>(null);
-    const focusedInstanceId = useMemo(() => {
-        if (focusTarget === "CASE") return undefined;
-        const match = builtComponents.find(c => c.type === focusTarget);
-        return match?.instanceId;
-    }, [focusTarget, builtComponents]);
-    const focusedRef = focusedInstanceId ? componentRefs[focusedInstanceId]?.current : undefined;
-
-    useEffect(() => {
-        const effect = outlineRef.current;
-        if (!effect) return;
-        if (focusedRef) {
-            const meshes: any[] = [];
-            focusedRef.traverse((child: any) => {
-                if (child.isMesh) meshes.push(child);
-            });
-            effect.selection.set(meshes);
-        } else {
-            effect.selection.clear();
+            setSelectingModelId(null);
+        } finally {
+            setIsLoadingMedel(false);
         }
-    }, [focusedRef]);
+    };
 
     return (
         <div className="flex flex-col h-screen w-screen bg-[#0A0A0A] text-[#FFFFFF] overflow-hidden font-sans select-none antialiased">
@@ -179,20 +149,6 @@ export const BuilderPage: React.FC = () => {
                         );
                     })}
                 </div>
-
-                <button
-                    onClick={() => setShowSockets(prev => !prev)}
-                    className={`shrink-0 cursor-pointer flex items-center gap-1.5 px-3 lg:px-4 py-2 lg:py-2.5 rounded-lg lg:rounded-xl border text-[10px] lg:text-xs font-medium transition-all duration-200 ${showSockets
-                        ? 'bg-[#C4D335]/10 text-[#C4D335] border-[#C4D335]/40'
-                        : 'bg-transparent text-neutral-400 border-transparent hover:text-white hover:bg-neutral-900/40'
-                    }`}
-                    title="Soket nuqtalarini ko'rsatish/yashirish"
-                >
-                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                        <circle cx="12" cy="12" r="3" /><path d="M12 2v3" /><path d="M12 19v3" /><path d="M2 12h3" /><path d="M19 12h3" />
-                    </svg>
-                    <span>Soketlar</span>
-                </button>
             </header>
 
             <aside className="flex flex-1 gap-0 lg:gap-3 items-start w-full overflow-hidden">
@@ -209,13 +165,18 @@ export const BuilderPage: React.FC = () => {
                                 setSearchQuery={setSearchQuery}
                                 selectedCategory={selectedCategory}
                                 hasSelectedCase={hasSelectedCase}
+                                selectingModelId={selectingModelId}
                                 onChooseComponent={handleChooseComponent}
                             />
                         </div>
                     </div>
                 </div>
-
-                <main className="flex-1 lg:flex-[10] h-full relative bg-[#1a1a1a] w-full">
+                <main className="flex-1 lg:flex-10 h-full relative bg-[#1a1a1a] w-full">
+                    {isLoadingModel && (
+                        <div className="absolute inset-0 z-50 flex items-center justify-center bg-black/50">
+                            <div className="text-white text-lg">Loading...</div>
+                        </div>
+                    )}
                     {hasSelectedCase ? (
                         <Canvas
                             gl={{
@@ -231,19 +192,11 @@ export const BuilderPage: React.FC = () => {
                             <directionalLight position={[5, 5, 5]} intensity={3} castShadow />
                             <directionalLight position={[-5, -5, -5]} intensity={1} />
 
-                            <SceneBuilder components={builtComponents} setComponentRef={setComponentRefs} showSockets={showSockets} />
+                            <SceneBuilder components={builtComponents} setComponentRef={setComponentRefs} />
 
                             <CMControls focusTarget={focusTarget} componentRefs={componentRefs} builtComponents={builtComponents} />
                             <EffectComposer>
                                 <Bloom intensity={0.6} luminanceThreshold={0.2} mipmapBlur />
-                                <Outline
-                                    ref={outlineRef}
-                                    edgeStrength={8}
-                                    visibleEdgeColor={0xC4D335}
-                                    hiddenEdgeColor={0xC4D335}
-                                    blur
-                                    xRay={false}
-                                />
                             </EffectComposer>
                         </Canvas>
                     ) : (

@@ -4,13 +4,14 @@ import * as Dialog from "@radix-ui/react-dialog";
 import { UPLOAD_URL } from "@/src/shared/config/URLS";
 import { Modal, ModalContent } from "@/src/shared/ui/dialog";
 import { IModel } from "@/src/shared/config/api/model/model.model";
-import { Cpu, HardDrive, Box, Fan, MemoryStick, CardSim, Power } from "lucide-react";
+import { Cpu, HardDrive, Box, Fan, MemoryStick, CardSim, Power, Loader2 } from "lucide-react";
 
 interface Props {
     model: IModel;
     open: boolean;
     onClose: () => void;
     add_to_build: (model: any) => void;
+    isSelected?: boolean;
 };
 
 const typeIcons: Record<string, any> = {
@@ -24,7 +25,7 @@ const typeIcons: Record<string, any> = {
     CASE: Box,
 };
 
-export default function ModelDetail({ model, open, onClose, add_to_build }: Props) {
+export default function ModelDetail({ model, open, onClose, add_to_build, isSelected }: Props) {
     const imageUrl = UPLOAD_URL + model.image;
     const TypeIcon = typeIcons[model.type] || Box;
 
@@ -86,8 +87,9 @@ export default function ModelDetail({ model, open, onClose, add_to_build }: Prop
                         <button onClick={() => {
                             add_to_build(model)
                             onClose();
-                        }} className="flex-1 px-4 py-3 rounded-xl bg-[#C4D335] text-black font-semibold hover:bg-[#b3c22e] transition-colors cursor-pointer">
-                            Yig'ilmaga qo'shish
+                        }} disabled={isSelected} className="flex-1 px-4 py-3 rounded-xl bg-[#C4D335] text-black font-semibold hover:bg-[#b3c22e] disabled:opacity-60 disabled:cursor-not-allowed transition-colors cursor-pointer flex items-center justify-center gap-2">
+                            {isSelected ? <Loader2 className="w-4 h-4 animate-spin" /> : null}
+                            {isSelected ? "Qo'shilmoqda" : "Yig'ilmaga qo'shish"}
                         </button>
                     </div>
                 </div>

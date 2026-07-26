@@ -1,12 +1,16 @@
-export const BASE_URL = "https://api.coreform.uz";
-export const UPLOAD_URL = "/uploads/";
+export const BASE_URL = "https://api.coreform.uz" 
+export const UPLOAD_URL = `${BASE_URL}/uploads/`;
 
 const MODEL_CACHE_BUST = Date.now();
 
 export function modelFileUrl(file: string): string {
     if (!file) return file;
     return `${UPLOAD_URL}${file}?v=${MODEL_CACHE_BUST}`;
-}
+};
+
+export function getLocalModelUrl(type: string): string {
+    return `/models/${type}.glb`;
+};
 
 export const AUTH_URLS = {
   LOGIN: "/api/auth/login",
