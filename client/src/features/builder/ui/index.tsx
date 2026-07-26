@@ -1,18 +1,15 @@
 "use client";
 
 import { IModel, MODEL_TYPES } from '@/src/shared/config/api/model/model.model';
-import { Bloom, EffectComposer } from "@react-three/postprocessing";
-import React, { useState, useEffect, useRef, useCallback, Suspense } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useGetSession } from '../../session/lib/hooks';
 import { useAddModelToSession } from '../lib/hooks';
-import { useProgress } from '@react-three/drei';
 import { Canvas } from '@react-three/fiber';
 import CMControls from './CameraController';
 import { useParams } from 'next/navigation';
 import { requirements } from '../lib/data';
 import SceneBuilder from "./SceneBuilder";
 import ModalSheet from './modalsSheet';
-import { Loader2 } from 'lucide-react';
 import { Group } from 'three';
 
 export interface ComponentBuild {
@@ -75,16 +72,16 @@ export const BuilderPage: React.FC = () => {
                 throw new Error("There is no params");
             };
 
-            setSelectingModelId(model.id);
-            setLoadingCount(c => c + 1);
-            setFocusTarget(model.type);
-
             const currentCount = builtComponents.filter(c => c.type === model.type).length;
 
             const requirement = requirements.find(r => r.type === model.type);
             const maxSlots = requirement?.maxSlots ?? 1;
 
             if (currentCount >= maxSlots) return;
+
+            setSelectingModelId(model.id);
+            setLoadingCount(c => c + 1);
+            setFocusTarget(model.type);
 
             const componentData: ComponentBuild = {
                 id: model.id,
@@ -104,18 +101,12 @@ export const BuilderPage: React.FC = () => {
 
             await addModelToSessionMutation({ session_id: params.id as string, model_id: model.id, slot: currentCount });
         } catch (error) {
+            console.error(error);
+        } finally {
             setLoadingCount(c => Math.max(0, c - 1));
             setSelectingModelId(null);
         }
     };
-
-    const handleLoadComplete = useCallback(() => {
-        setLoadingCount(c => {
-            const next = Math.max(0, c - 1);
-            if (next <= 0) setSelectingModelId(null);
-            return next;
-        });
-    }, []);
 
     return (
         <div className="flex flex-col h-screen w-screen bg-[#0A0A0A] text-[#FFFFFF] overflow-hidden font-sans select-none antialiased">
@@ -183,7 +174,7 @@ export const BuilderPage: React.FC = () => {
                     {loadingCount > 0 && (
                         <div className="absolute inset-0 z-50 flex items-center justify-center bg-black/50">
                             <div className="flex flex-col items-center gap-3">
-                                <Loader2 className="w-8 h-8 animate-spin text-[#C4D335]" />
+                                <div className="w-8 h-8 border-4 border-[#C4D335] border-t-transparent rounded-full animate-spin" />
                                 <p className="text-white text-sm font-medium">Model yuklanmoqda...</p>
                             </div>
                         </div>
@@ -203,14 +194,9 @@ export const BuilderPage: React.FC = () => {
                             <directionalLight position={[5, 5, 5]} intensity={3} castShadow />
                             <directionalLight position={[-5, -5, -5]} intensity={1} />
 
-                            <Suspense fallback={<Loader />}>
-                                <SceneBuilder components={builtComponents} setComponentRef={setComponentRefs} />
-                            </Suspense>
+                            <SceneBuilder components={builtComponents} setComponentRef={setComponentRefs} />
 
                             <CMControls focusTarget={focusTarget} componentRefs={componentRefs} builtComponents={builtComponents} />
-                            <EffectComposer>
-                                <Bloom intensity={0.6} luminanceThreshold={0.2} mipmapBlur />
-                            </EffectComposer>
                         </Canvas>
                     ) : (
                         <div className="flex items-center justify-center h-full px-4">
@@ -227,18 +213,3 @@ export const BuilderPage: React.FC = () => {
 };
 
 export default BuilderPage;
-
-const Loader = () => {
-    const { progress } = useProgress()
-
-    useEffect(() => {
-        console.log("progress: ", progress);
-    }, [progress])
-
-    return <div className="absolute inset-0 z-50 flex items-center justify-center bg-black/50">
-        <div className="flex flex-col items-center gap-3">
-            <Loader2 className="w-8 h-8 animate-spin text-[#C4D335]" />
-            <p className="text-white text-sm font-medium">{progress} % loaded</p>
-        </div>
-    </div>
-};

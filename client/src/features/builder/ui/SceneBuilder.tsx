@@ -17,7 +17,7 @@ interface ModelComponentProps {
 function ModelComponent({ component, set_component_refs, position, rotation }: ModelComponentProps) {
   const modelUrl = getLocalModelUrl(component.type);
 
-  const { scene } = useGLTF(modelUrl, true);
+  const { scene } = useGLTF(modelUrl);
   const ref = useRef<Group | null>(null);
 
   useEffect(() => {
@@ -39,7 +39,7 @@ function ModelComponent({ component, set_component_refs, position, rotation }: M
 };
 
 export function RenderCaseModel({ url }: { url: string }) {
-  const { scene } = useGLTF(url, true);
+  const { scene } = useGLTF(url);
   const cloned = useMemo(() => scene.clone(), [scene]);
   return <primitive object={cloned} name="case-model"/>;
 };

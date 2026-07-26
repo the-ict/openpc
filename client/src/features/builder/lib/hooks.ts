@@ -29,7 +29,7 @@ export interface Socket {
 export type SocketsByType = Record<string, Socket[]>;
 
 export const useCaseSockets = (caseUrl: string): SocketsByType => {
-    const { scene } = useGLTF(caseUrl, true);
+    const { scene } = useGLTF(caseUrl);
 
     return useMemo(() => {
         const raw: { base: string; index: number; socket: Socket }[] = [];
